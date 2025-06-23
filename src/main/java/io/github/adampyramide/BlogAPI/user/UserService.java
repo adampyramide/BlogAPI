@@ -1,5 +1,7 @@
 package io.github.adampyramide.BlogAPI.user;
 
+import io.github.adampyramide.BlogAPI.exception.ApiRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,14 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerUser(RegisterUserDTO registerUserDTO) {
-        if (repo.existsByUsername(registerUserDTO.username())) {
-            throw new IllegalArgumentException("Username already in use");
+    public void registerUser(UserDTO userDTO) {
+        if (repo.existsByUsername(userDTO.username())) {
+            throw new ApiRequestException("Username is already taken", HttpStatus.CONFLICT);
         }
 
         User user = new User();
-        user.setUsername(registerUserDTO.username());
-        user.setPassword(passwordEncoder.encode(registerUserDTO.password()));
+        user.setUsername(userDTO.username());
+        user.setPassword(passwordEncoder.encode(userDTO.password()));
 
         repo.save(user);
     }

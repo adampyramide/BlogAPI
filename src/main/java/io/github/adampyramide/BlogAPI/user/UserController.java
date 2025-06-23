@@ -14,8 +14,13 @@ public class UserController {
     }
 
     @PostMapping("/api/public/user/register")
-    public void registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
-        service.registerUser(registerUserDTO);
+    public void registerUser(@RequestBody UserDTO userDTO) {
+        service.registerUser(userDTO);
+    }
+
+    @PostMapping("/api/public/user/login")
+    public void loginUser(@RequestBody UserDTO userDTO) {
+        service.loginUser(userDTO);
     }
 
 }
