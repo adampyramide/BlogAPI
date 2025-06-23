@@ -17,9 +17,8 @@ public class UserService {
     }
 
     public void registerUser(UserDTO userDTO) {
-        if (repo.existsByUsername(userDTO.username())) {
+        if (repo.existsByUsername(userDTO.username()))
             throw new ApiRequestException("Username is already taken", HttpStatus.CONFLICT);
-        }
 
         User user = new User();
         user.setUsername(userDTO.username());
