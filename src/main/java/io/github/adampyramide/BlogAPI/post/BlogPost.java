@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-public class Post {
+public class BlogPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
