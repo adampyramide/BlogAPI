@@ -14,21 +14,21 @@ public class UserController {
         this.service = service;
     }
 
-    @PostMapping("/api/public/user/register")
+    @PostMapping("/api/auth/register")
     public String registerUser(@RequestBody UserDTO userDTO) {
         service.registerUser(userDTO);
         return service.loginUser(userDTO);
     }
 
-    @PostMapping("/api/public/user/login")
+    @PostMapping("/api/auth/login")
     public String loginUser(@RequestBody UserDTO userDTO) {
         return service.loginUser(userDTO);
     }
 
-    @GetMapping("/api/admin")
-    public String admin() {
-        System.out.println("Running as admin");
-        return "Running as admin";
+    @GetMapping("/api/closed-endpoint")
+    public String closedEndPoint() {
+        System.out.println("Closed end point ran");
+        return "Closed end point ran";
     }
 
 }
