@@ -1,14 +1,10 @@
 # Login
 
----
-
 Log in to a user and return a JWT.
 
 **Method:** `POST`
 
 **URL:** `/api/auth/login`
-
----
 
 **Request Body:**
 ```json
@@ -20,8 +16,6 @@ Log in to a user and return a JWT.
 
 ## Success Responses
 
----
-
 **Condition:** Correct username and password provided
 
 **Code:** `200 OK`
@@ -29,8 +23,6 @@ Log in to a user and return a JWT.
 **Content:** JWT Token string
 
 ## Error Responses
-
----
 
 **Condition:** Incorrect username or password provided
 
