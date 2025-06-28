@@ -1,14 +1,10 @@
-# Register 
-
----
+# Register
 
 Creates a new user with the provided username and password.
 
 **Method:** `POST`
 
 **URL:** `/api/auth/register`
-
----
 
 **Request Body:**
 ```json
@@ -20,8 +16,6 @@ Creates a new user with the provided username and password.
 
 ## Success Responses
 
----
-
 **Condition:** No account with username exists
 
 **Code:** `201 CREATED`
@@ -29,8 +23,6 @@ Creates a new user with the provided username and password.
 **Content:** JWT Token string
 
 ## Error Responses
-
----
 
 **Condition:** Account with username exists
 
