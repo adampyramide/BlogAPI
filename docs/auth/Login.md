@@ -6,7 +6,7 @@ Log in to a user and return a JWT.
 
 **URL:** `/api/auth/login`
 
-**Request Body:**
+**Body:**
 ```json
 {
   "username": "yourUsername",
@@ -27,3 +27,5 @@ Log in to a user and return a JWT.
 **Condition:** Incorrect username or password provided
 
 **Code:** `401 UNAUTHORIZED`
+
+**Content:** None

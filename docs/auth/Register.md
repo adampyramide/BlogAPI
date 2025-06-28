@@ -6,7 +6,7 @@ Creates a new user with the provided username and password.
 
 **URL:** `/api/auth/register`
 
-**Request Body:**
+**Body:**
 ```json
 {
   "username": "yourUsername",
@@ -27,3 +27,5 @@ Creates a new user with the provided username and password.
 **Condition:** Account with username exists
 
 **Code:** `409 CONFLICT`
+
+**Content:** None
