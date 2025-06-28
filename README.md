@@ -14,9 +14,13 @@ Unavailable as of now
 
 ---
 
+**Project**
 - Spring Boot (Maven)
 - MySQL
+
+**Development**
 - Intellij IDEA Community
+- Postman
 
 ## Features
 
