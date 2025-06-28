@@ -32,7 +32,10 @@ public class SecurityConfig {
 
         return http.csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/api/public/**").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/api/auth/**"
+                        ).permitAll()
                         .anyRequest().authenticated()).
                 httpBasic(Customizer.withDefaults()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
