@@ -1,11 +1,9 @@
 package io.github.adampyramide.BlogAPI.user;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/auth")
 public class UserController {
 
     private final UserService service;
@@ -14,21 +12,15 @@ public class UserController {
         this.service = service;
     }
 
-    @PostMapping("/api/auth/register")
+    @PostMapping("/register")
     public String registerUser(@RequestBody UserDTO userDTO) {
         service.registerUser(userDTO);
         return service.loginUser(userDTO);
     }
 
-    @PostMapping("/api/auth/login")
+    @PostMapping("/login")
     public String loginUser(@RequestBody UserDTO userDTO) {
         return service.loginUser(userDTO);
-    }
-
-    @GetMapping("/api/closed-endpoint")
-    public String closedEndPoint() {
-        System.out.println("Closed end point ran");
-        return "Closed end point ran";
     }
 
 }
