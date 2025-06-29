@@ -17,7 +17,7 @@ public class BlogPost {
     private int id;
 
     private String title;
-    private String content;
+    private String body;
     private LocalDateTime createTime;
 
     @ManyToOne
