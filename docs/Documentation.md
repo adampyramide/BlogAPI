@@ -11,6 +11,11 @@ Endpoints related to user authentication.
 ## Closed Endpoints
 Closed enpoints require a valid token which can be fetched with the Login endpoint.
 
+### Users
+Endpoints related to users.
+- [GetUserById](blog-posts/GetUserById.md) `GET /api/users/:id`
+- [GetPostsByUserId](blog-posts/GetPostsByUserId.md) `GET /api/users:/id/posts`
+
 ### Blog-posts
 Endpoints related to blog posts.
 - [GetBlogPosts](blog-posts/GetBlogPosts.md) `GET /api/blog-posts`
