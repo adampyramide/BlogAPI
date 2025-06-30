@@ -21,4 +21,6 @@ Unavailable as of now
     
 - User registration with password hashing
 - User login with JWT authentication
-- View/Create/Edit/Delete blog posts which have authors (the user).
+- Get/Create/Edit/Delete blog posts which have authors (user).
+- Get all posts made by a certain user only.
+- Get user data with user id.
