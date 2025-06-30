@@ -19,7 +19,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
-    JWTService jwtService;
+    JwtService jwtService;
 
     @Autowired
     ApplicationContext appContext;
