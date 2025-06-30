@@ -1,5 +1,7 @@
 package io.github.adampyramide.BlogAPI.user;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,14 +15,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody AuthUserDTO userDTO) {
+    public ResponseEntity<String> registerUser(@RequestBody AuthUserDTO userDTO) {
         service.registerUser(userDTO);
-        return service.loginUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.loginUser(userDTO));
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody AuthUserDTO userDTO) {
-        return service.loginUser(userDTO);
+    public ResponseEntity<String> loginUser(@RequestBody AuthUserDTO userDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.loginUser(userDTO));
     }
 
 }
