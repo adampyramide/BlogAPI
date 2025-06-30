@@ -28,3 +28,4 @@ Unavailable as of now
     
 - User registration with password hashing
 - User login with JWT authentication
+- View/Create/Edit/Delete blog posts which have authors (the user).
