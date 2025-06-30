@@ -2,49 +2,39 @@ package io.github.adampyramide.BlogAPI.blogpost;
 
 import io.github.adampyramide.BlogAPI.exception.ApiRequestException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
-import io.github.adampyramide.BlogAPI.user.PublicUserDTO;
 import io.github.adampyramide.BlogAPI.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class BlogPostService {
 
     private final BlogPostRepository repo;
+    private final BlogPostMapper mapper;
+
     private final SecurityUtils securityUtils;
 
-    public BlogPostService(BlogPostRepository repo, SecurityUtils securityUtils) {
+    public BlogPostService(BlogPostRepository repo, BlogPostMapper blogPostMapper, SecurityUtils securityUtils) {
         this.repo = repo;
+        this.mapper = blogPostMapper;
         this.securityUtils = securityUtils;
     }
 
     public List<BlogPostResponseDTO> getPosts() {
         return repo.findAll().stream()
-                .map(blogPostDTO -> {
-                    User author = blogPostDTO.getAuthor();
-                    return new BlogPostResponseDTO(
-                            blogPostDTO.getId(),
-                            blogPostDTO.getTitle(),
-                            blogPostDTO.getBody(),
-                            blogPostDTO.getCreateTime(),
-                            new PublicUserDTO(author.getId(),
-                                    author.getUsername()
-                            )
-                    );
-                })
+                .map(mapper::toResponseDTO)
                 .toList();
     }
 
     public void createPost(BlogPostRequestDTO blogPostDTO) {
         User user = securityUtils.getAuthenticatedUser();
 
-        BlogPost blogPost = new BlogPost();
-        blogPost.setTitle(blogPostDTO.title());
-        blogPost.setBody(blogPostDTO.body());
-        blogPost.setCreateTime(blogPostDTO.createTime());
+        BlogPost blogPost = mapper.toEntity(blogPostDTO);
         blogPost.setAuthor(user);
+        blogPost.setCreateTime(LocalDateTime.now());
         repo.save(blogPost);
     }
 
@@ -53,10 +43,7 @@ public class BlogPostService {
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
 
-        blogPost.setTitle(blogPostDTO.title());
-        blogPost.setBody(blogPostDTO.body());
-        blogPost.setCreateTime(blogPostDTO.createTime());
-        blogPost.setAuthor(user);
+        mapper.updateBlogPostFromDto(blogPostDTO, blogPost);
         repo.save(blogPost);
     }
 
