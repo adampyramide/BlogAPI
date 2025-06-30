@@ -3,16 +3,11 @@ A personal project I built to learn more about backend web development and show 
 
 **For full API details and usage, see the [documentation](docs/Documentation.md).**
 
-
 ## Run BlogAPI
-
----
 
 Unavailable as of now
 
 ## Utilized technologies
-
----
 
 **Project**
 - Spring Boot (Maven)
@@ -23,8 +18,6 @@ Unavailable as of now
 - Postman
 
 ## Features
-
----
     
 - User registration with password hashing
 - User login with JWT authentication
