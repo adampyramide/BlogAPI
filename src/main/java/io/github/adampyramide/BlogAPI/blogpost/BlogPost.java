@@ -1,4 +1,4 @@
-package io.github.adampyramide.BlogAPI.post;
+package io.github.adampyramide.BlogAPI.blogpost;
 
 import io.github.adampyramide.BlogAPI.user.User;
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class BlogPost {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String title;
