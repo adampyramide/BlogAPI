@@ -15,5 +15,5 @@ Closed enpoints require a valid token which can be fetched with the Login endpoi
 Endpoints related to blog posts.
 - [GetBlogPosts](blog-posts/GetBlogPosts.md) `GET /api/blog-posts`
 - [CreateBlogPost](blog-posts/CreateBlogPost.md) `POST /api/blog-posts`
-- [EditBlogPost](blog-posts/EditBlogPost.md) `PUT /api/blog-posts`
-- [DeleteBlogPost](blog-posts/DeleteBlogPost.md) `DELETE /api/blog-posts`
+- [EditBlogPost](blog-posts/EditBlogPost.md) `PUT /api/blog-posts/:id`
+- [DeleteBlogPost](blog-posts/DeleteBlogPost.md) `DELETE /api/blog-posts/:id`
