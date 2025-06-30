@@ -1,28 +1,31 @@
 package io.github.adampyramide.BlogAPI.user;
 
+import io.github.adampyramide.BlogAPI.blogpost.BlogPostResponseDTO;
+import io.github.adampyramide.BlogAPI.blogpost.BlogPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService service;
+    private final BlogPostService blogPostService;
 
-    public UserController(UserService service) {
-        this.service = service;
+    public UserController(BlogPostService blogPostService) {
+        this.blogPostService = blogPostService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody AuthUserDTO userDTO) {
-        service.registerUser(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.loginUser(userDTO));
+    @GetMapping("/{id}")
+    public ResponseEntity<List<BlogPostResponseDTO>> getUserById(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(blogPostService.getPostsByUserId(id));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody AuthUserDTO userDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.loginUser(userDTO));
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<BlogPostResponseDTO>> getPostsByUserId(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(blogPostService.getPostsByUserId(id));
     }
 
 }
