@@ -1,5 +1,6 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,24 +17,26 @@ public class BlogPostController {
     }
 
     @GetMapping
-    public List<BlogPostResponseDTO> getBlogPosts() {
-        return service.getPosts();
+    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPosts() {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getPosts());
     }
 
     @PostMapping
-    public void createBlogPost(@RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> createBlogPost(@RequestBody BlogPostRequestDTO blogPostDTO) {
         service.createPost(blogPostDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public void editBlogPost(@PathVariable int id, @RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> editBlogPost(@PathVariable int id, @RequestBody BlogPostRequestDTO blogPostDTO) {
         service.editPost(id, blogPostDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBlogPost(@PathVariable int id) {
         service.deletePost(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
