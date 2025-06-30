@@ -13,13 +13,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody UserDTO userDTO) {
+    public String registerUser(@RequestBody AuthUserDTO userDTO) {
         service.registerUser(userDTO);
         return service.loginUser(userDTO);
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody UserDTO userDTO) {
+    public String loginUser(@RequestBody AuthUserDTO userDTO) {
         return service.loginUser(userDTO);
     }
 

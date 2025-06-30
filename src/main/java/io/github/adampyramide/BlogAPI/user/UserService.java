@@ -24,7 +24,7 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
-    public void registerUser(UserDTO userDTO) {
+    public void registerUser(AuthUserDTO userDTO) {
         if (repo.existsByUsername(userDTO.username()))
             throw new ApiRequestException("Username is already taken", HttpStatus.CONFLICT);
 
@@ -36,7 +36,7 @@ public class UserService {
     }
 
 
-    public String loginUser(UserDTO userDTO) {
+    public String loginUser(AuthUserDTO userDTO) {
         try {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.username(), userDTO.password())
