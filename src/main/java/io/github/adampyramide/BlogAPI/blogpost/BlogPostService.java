@@ -55,6 +55,12 @@ public class BlogPostService {
         repo.deleteById(id);
     }
 
+    public List<BlogPostResponseDTO> getPostsByUserId(int userId) {
+        return repo.findAllByAuthor_Id(userId).stream()
+                .map(mapper::toResponseDTO)
+                .toList();
+    }
+
     private BlogPost getBlogPostOrThrow(int id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ApiRequestException("Blogpost not found", HttpStatus.NOT_FOUND));
