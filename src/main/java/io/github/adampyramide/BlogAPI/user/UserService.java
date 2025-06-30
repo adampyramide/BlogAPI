@@ -13,13 +13,16 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository repo;
+    private final UserMapper mapper;
+
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
-    public UserService(UserRepository repo, AuthenticationManager authManager, JwtService jwtService) {
+    public UserService(UserRepository repo, UserMapper mapper, AuthenticationManager authManager, JwtService jwtService) {
         this.repo = repo;
+        this.mapper = mapper;
         this.authManager = authManager;
         this.jwtService = jwtService;
     }
@@ -28,8 +31,7 @@ public class UserService {
         if (repo.existsByUsername(userDTO.username()))
             throw new ApiRequestException("Username is already taken", HttpStatus.CONFLICT);
 
-        User user = new User();
-        user.setUsername(userDTO.username());
+        User user = mapper.authDTOToEntity(userDTO);
         user.setPassword(passwordEncoder.encode(userDTO.password()));
 
         repo.save(user);
