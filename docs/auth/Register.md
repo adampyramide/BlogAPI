@@ -1,6 +1,6 @@
 # Register
 
-Creates a new user with the provided username and password.
+Creates a new user with the provided username and password, then returns a JWT token.
 
 **Method:** `POST`
 
