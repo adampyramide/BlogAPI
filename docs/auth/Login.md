@@ -1,6 +1,6 @@
 # Login
 
-Log in to a user and return a JWT.
+Returns a JWT token.
 
 **Method:** `POST`
 
