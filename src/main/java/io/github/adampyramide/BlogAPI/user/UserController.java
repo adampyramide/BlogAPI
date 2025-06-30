@@ -12,15 +12,18 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
+    private final UserService service;
+
     private final BlogPostService blogPostService;
 
-    public UserController(BlogPostService blogPostService) {
+    public UserController(UserService service, BlogPostService blogPostService) {
+        this.service = service;
         this.blogPostService = blogPostService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<BlogPostResponseDTO>> getUserById(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(blogPostService.getPostsByUserId(id));
+    public ResponseEntity<PublicUserDTO> getUserById(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getUserById(id));
     }
 
     @GetMapping("/{id}/posts")
