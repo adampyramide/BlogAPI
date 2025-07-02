@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.security;
 
-import io.github.adampyramide.BlogAPI.exception.ApiRequestException;
+import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class SecurityUtils {
     public User getAuthenticatedUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepo.findByUsername(username)
-                .orElseThrow(() -> new ApiRequestException("Authenticated user not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("Authenticated user not found", HttpStatus.NOT_FOUND));
     }
 
 }
