@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.user;
 
-import io.github.adampyramide.BlogAPI.exception.ApiRequestException;
+import io.github.adampyramide.BlogAPI.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class UserService {
     public PublicUserDTO getUserById(int id) {
         return mapper.toPublicDTO(
                 userRepo.findById(id)
-                        .orElseThrow(() -> new ApiRequestException("User not found", HttpStatus.NOT_FOUND)
+                        .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND)
                 )
         );
     }
