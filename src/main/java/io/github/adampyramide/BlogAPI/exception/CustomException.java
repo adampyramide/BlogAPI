@@ -2,11 +2,11 @@ package io.github.adampyramide.BlogAPI.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class ApiRequestException extends RuntimeException {
+public class CustomException extends RuntimeException {
 
     private final HttpStatus httpStatus;
 
-    public ApiRequestException(String message, HttpStatus httpStatus) {
+    public CustomException(String message, HttpStatus httpStatus) {
         super(message);
         this.httpStatus = httpStatus;
     }
