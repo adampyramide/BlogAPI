@@ -1,5 +1,6 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,13 @@ public class BlogPostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createBlogPost(@RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> createBlogPost(@Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
         service.createPost(blogPostDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editBlogPost(@PathVariable int id, @RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> editBlogPost(@PathVariable int id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
         service.editPost(id, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
