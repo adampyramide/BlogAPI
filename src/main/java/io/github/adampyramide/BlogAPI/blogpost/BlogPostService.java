@@ -55,6 +55,22 @@ public class BlogPostService {
         repo.deleteById(id);
     }
 
+    public void bulkDeletePosts(List<Integer> ids) {
+        User user = securityUtils.getAuthenticatedUser();
+
+        List<BlogPost> posts = repo.findAllById(ids);
+
+        if (posts.size() != ids.size()) {
+            throw new CustomException("Zero posts found", HttpStatus.NOT_FOUND);
+        }
+
+        for (BlogPost post : posts) {
+            checkAuthorOrThrow(post, user);
+        }
+
+        repo.deleteAll(posts);
+    }
+
     public List<BlogPostResponseDTO> getPostsByUserId(int userId) {
         return repo.findAllByAuthor_Id(userId).stream()
                 .map(mapper::toResponseDTO)
