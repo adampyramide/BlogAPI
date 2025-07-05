@@ -1,7 +1,11 @@
 # Blog API
 A personal project I built to learn more about backend web development and show my experience and knowledge.
 
-**For full API details and usage, see the [documentation](docs/Documentation.md).**
+## API Documentation
+API documentation for this project is available via Swagger UI.
+
+**View the API docs here:**
+https://adampyramide.github.io/BlogAPI/.
 
 ## Run BlogAPI
 
