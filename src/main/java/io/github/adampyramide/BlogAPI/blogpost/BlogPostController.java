@@ -40,4 +40,10 @@ public class BlogPostController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> bulkDeleteBlogPosts(@RequestParam List<Integer> ids) {
+        service.bulkDeletePosts(ids);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
