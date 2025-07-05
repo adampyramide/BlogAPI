@@ -5,8 +5,8 @@ Open endpoints require no authentication.
 
 ### Auth
 Endpoints related to user authentication.
-- [Register](auth/Register.md) `POST /api/register`
-- [Login](auth/Login.md) `POST /api/login`
+- [Register](auth/Register.md) `POST /api/auth/register`
+- [Login](auth/Login.md) `POST /api/auth/login`
 
 ## Closed Endpoints
 Closed enpoints require a valid token which can be fetched with the Login endpoint.
