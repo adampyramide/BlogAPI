@@ -1,11 +1,15 @@
 package io.github.adampyramide.BlogAPI.auth;
 
 import io.github.adampyramide.BlogAPI.user.AuthUserDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Auth", description = "User authorization")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -16,12 +20,25 @@ public class AuthController {
         this.service = service;
     }
 
+    @Operation(
+            summary = "Create a new user and get token",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "User created and token returned")
+            }
+    )
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody AuthUserDTO userDTO) {
         service.registerUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.loginUser(userDTO));
     }
 
+    @Operation(
+            summary = "Get token for user",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Valid credentials passed and token returned"),
+                    @ApiResponse(responseCode = "404", description = "Invalid credentials passed")
+            }
+    )
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@Valid @RequestBody AuthUserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(service.loginUser(userDTO));
