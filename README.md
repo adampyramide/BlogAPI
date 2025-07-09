@@ -7,12 +7,10 @@ API documentation for this project is available via Swagger UI.
 **View the API docs here:**
 https://adampyramide.github.io/BlogAPI/.
 
-## Run BlogAPI
-
-Unavailable as of now
+## Try the API
+Not available yet, but I'm planning on deploying this API live to be tested (and possibly consumed by a frontend in the future).
 
 ## Utilized technologies
-
 **Project**
 - Spring Boot (Maven)
 - MySQL
@@ -22,7 +20,6 @@ Unavailable as of now
 - Postman
 
 ## Features
-    
 - User registration with password hashing
 - User login with JWT authentication
 - Get/Create/Edit/Delete blog posts which have authors (user).
