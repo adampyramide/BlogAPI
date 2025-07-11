@@ -2,7 +2,7 @@ package io.github.adampyramide.BlogAPI.user;
 
 public record PublicUserDTO(
 
-        int id,
+        long id,
         String username
 
 ) {}

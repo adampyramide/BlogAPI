@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record BlogPostResponseDTO(
 
-        int id,
+        long id,
         String title,
         String body,
         LocalDateTime createTime,
