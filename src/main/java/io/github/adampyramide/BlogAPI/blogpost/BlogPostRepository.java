@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @Repository
-public interface BlogPostRepository extends JpaRepository<BlogPost, Integer> {
+public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
 
     Page<BlogPost> findAll(PageableDefault pageable);
 
-    List<BlogPost> findAllByAuthor_Id(int userId);
+    List<BlogPost> findAllByAuthor_Id(long userId);
 
 }
