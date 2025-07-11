@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 public record BlogPostResponseDTO(
 
         long id,
+        PublicUserDTO author,
         String title,
         String body,
-        LocalDateTime createTime,
-        PublicUserDTO author
+        LocalDateTime createTime
 
 ) {}
