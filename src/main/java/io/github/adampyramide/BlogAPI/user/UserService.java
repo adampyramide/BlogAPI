@@ -18,8 +18,7 @@ public class UserService {
     public PublicUserDTO getUserById(Long id) {
         return mapper.toPublicDTO(
                 userRepo.findById(id)
-                        .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND)
-                )
+                        .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND))
         );
     }
 
