@@ -15,7 +15,7 @@ public class UserService {
         this.mapper = mapper;
     }
 
-    public PublicUserDTO getUserById(int id) {
+    public PublicUserDTO getUserById(Long id) {
         return mapper.toPublicDTO(
                 userRepo.findById(id)
                         .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND)

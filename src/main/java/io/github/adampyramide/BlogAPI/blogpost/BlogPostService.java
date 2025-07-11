@@ -5,6 +5,8 @@ import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +45,7 @@ public class BlogPostService {
         repo.save(blogPost);
     }
 
-    public void editPost(int id, BlogPostRequestDTO blogPostDTO) {
+    public void editPost(long id, BlogPostRequestDTO blogPostDTO) {
         User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
@@ -52,7 +54,7 @@ public class BlogPostService {
         repo.save(blogPost);
     }
 
-    public void deletePost(int id) {
+    public void deletePost(long id) {
         User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
@@ -60,7 +62,7 @@ public class BlogPostService {
         repo.deleteById(id);
     }
 
-    public void bulkDeletePosts(List<Integer> ids) {
+    public void bulkDeletePosts(List<Long> ids) {
         User user = securityUtils.getAuthenticatedUser();
 
         List<BlogPost> posts = repo.findAllById(ids);
@@ -76,7 +78,7 @@ public class BlogPostService {
         repo.deleteAll(posts);
     }
 
-    public List<BlogPostResponseDTO> getPostsByUserId(int userId) {
+    public List<BlogPostResponseDTO> getPostsByUserId(long userId) {
         if (!userRepository.existsById(userId))
             throw new CustomException("User not found", HttpStatus.NOT_FOUND);
 
@@ -85,7 +87,7 @@ public class BlogPostService {
                 .toList();
     }
 
-    private BlogPost getBlogPostOrThrow(int id) {
+    private BlogPost getBlogPostOrThrow(long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new CustomException("Blogpost not found", HttpStatus.NOT_FOUND));
     }

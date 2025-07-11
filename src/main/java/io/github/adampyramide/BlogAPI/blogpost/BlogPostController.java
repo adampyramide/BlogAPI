@@ -1,10 +1,12 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +55,7 @@ public class BlogPostController {
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editBlogPost(@PathVariable int id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> editBlogPost(@PathVariable Long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
         service.editPost(id, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -66,7 +68,7 @@ public class BlogPostController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBlogPost(@PathVariable int id) {
+    public ResponseEntity<Void> deleteBlogPost(@PathVariable Long id) {
         service.deletePost(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -79,7 +81,7 @@ public class BlogPostController {
             }
     )
     @DeleteMapping
-    public ResponseEntity<Void> bulkDeleteBlogPosts(@RequestParam List<Integer> ids) {
+    public ResponseEntity<Void> bulkDeleteBlogPosts(@RequestParam List<Long> ids) {
         service.bulkDeletePosts(ids);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

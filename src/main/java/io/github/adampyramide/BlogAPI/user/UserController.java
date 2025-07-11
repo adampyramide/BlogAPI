@@ -34,7 +34,7 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<PublicUserDTO> getUserById(@PathVariable int id) {
+    public ResponseEntity<PublicUserDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getUserById(id));
     }
 
@@ -46,7 +46,7 @@ public class UserController {
             }
     )
     @GetMapping("/{id}/posts")
-    public ResponseEntity<List<BlogPostResponseDTO>> getPostsByUserId(@PathVariable int id) {
+    public ResponseEntity<List<BlogPostResponseDTO>> getPostsByUserId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(blogPostService.getPostsByUserId(id));
     }
 
