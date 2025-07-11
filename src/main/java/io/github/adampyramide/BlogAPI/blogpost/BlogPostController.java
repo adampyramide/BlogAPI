@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,17 @@ public class BlogPostController {
     }
 
     @Operation(
+            summary = "Get blogpost by id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Blogpost found and returned")
+            }
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<BlogPostResponseDTO> getBlogPosts(@PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getPostById(id));
+    }
+
+    @Operation(
             summary = "Create a new blogpost",
             responses = {
                     @ApiResponse(responseCode = "200", description = "New blogpost created")
@@ -55,7 +67,7 @@ public class BlogPostController {
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editBlogPost(@PathVariable Long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> editBlogPost(@PathVariable long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
         service.editPost(id, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -68,7 +80,7 @@ public class BlogPostController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBlogPost(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBlogPost(@PathVariable long id) {
         service.deletePost(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
