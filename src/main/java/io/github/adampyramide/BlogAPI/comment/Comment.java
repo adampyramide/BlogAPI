@@ -20,6 +20,8 @@ public class Comment {
 
     private long postId;
 
+    private long parentCommentId;
+
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
