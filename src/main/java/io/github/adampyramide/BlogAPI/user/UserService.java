@@ -7,17 +7,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    UserRepository userRepo;
+    UserRepository repo;
     UserMapper mapper;
 
     public UserService(UserRepository userRepo, UserMapper mapper) {
-        this.userRepo = userRepo;
+        this.repo = userRepo;
         this.mapper = mapper;
     }
 
     public PublicUserDTO getUserById(Long id) {
         return mapper.toPublicDTO(
-                userRepo.findById(id)
+                repo.findById(id)
                         .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND))
         );
     }
