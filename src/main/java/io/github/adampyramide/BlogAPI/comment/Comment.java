@@ -23,7 +23,7 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private BlogPost post;
 
-    private long parentCommentId;
+    private Long parentCommentId;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
