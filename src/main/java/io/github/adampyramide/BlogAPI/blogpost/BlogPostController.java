@@ -1,22 +1,23 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Blog Posts")
+@Tag(name = "Blogposts")
+@SecurityRequirement(name = "bearerAuth")
+
 @RestController
-@RequestMapping("/api/blog-posts")
+@RequestMapping("/api")
 public class BlogPostController {
 
     private final BlogPostService service;
@@ -26,76 +27,115 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Get all existing blogposts",
+            summary = "Get all blogposts",
+            description = "Returns a list of all blogposts",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Existing blogposts returned")
+                    @ApiResponse(responseCode = "200", description = "List of all blogposts")
             }
     )
-    @GetMapping
+    @GetMapping("/blog-posts")
     public ResponseEntity<List<BlogPostResponseDTO>> getBlogPosts() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getPosts());
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPosts());
     }
 
     @Operation(
-            summary = "Get blogpost by id",
+            summary = "Get blogpost",
+            description = "Returns a blogpost with the specified ID",
+            parameters = {
+                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
+            },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Blogpost found and returned")
+                    @ApiResponse(responseCode = "200", description = "Blogpost")
             }
     )
-    @GetMapping("/{id}")
-    public ResponseEntity<BlogPostResponseDTO> getBlogPosts(@PathVariable long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getPostById(id));
+    @GetMapping("/blog-posts/{id}")
+    public ResponseEntity<BlogPostResponseDTO> getBlogPostById(@PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostById(id));
     }
 
     @Operation(
-            summary = "Create a new blogpost",
+            summary = "Create blogpost",
+            description = "Creates a blogpost",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "New blogpost created")
+                    @ApiResponse(responseCode = "200", description = "Blogpost created")
             }
     )
-    @PostMapping
+    @PostMapping("/blog-posts")
     public ResponseEntity<Void> createBlogPost(@Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
-        service.createPost(blogPostDTO);
+        service.createBlogPost(blogPostDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
-            summary = "Edit an existing blogpost made by the same user",
+            summary = "Edit blogpost",
+            description = "Edits a blogpost with the specified ID",
+            parameters = {
+                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
+            },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Existing blogpost edited"),
-                    @ApiResponse(responseCode = "204", description = "Blogpost not found")
+                    @ApiResponse(responseCode = "200", description = "Blogpost edited"),
+                    @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> editBlogPost(@PathVariable long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
-        service.editPost(id, blogPostDTO);
+    @PutMapping("/blog-posts/{id}")
+    public ResponseEntity<Void> editBlogPostById(@PathVariable long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
+        service.editBlogPostById(id, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Operation(
-            summary = "Delete an existing blogpost made by the same user",
+            summary = "Delete blogpost",
+            description = "Deletes a blogpost with the specified ID",
+            parameters = {
+                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
+            },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Existing blogpost edited"),
-                    @ApiResponse(responseCode = "204", description = "Blogpost not found")
+                    @ApiResponse(responseCode = "200", description = "Blogpost deleted"),
+                    @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBlogPost(@PathVariable long id) {
-        service.deletePost(id);
+    @DeleteMapping("/blog-posts/{id}")
+    public ResponseEntity<Void> deleteBlogPostById(@PathVariable long id) {
+        service.deleteBlogPostById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Operation(
-            summary = "Delete multiple existing blogposts made by the same user",
+            summary = "Bulk delete blogposts",
+            description = "Deletes multiple blogposts with the specified IDs",
+            parameters = {
+                    @Parameter(
+                            name = "ids",
+                            description = "Comma-separated list of blogpost IDs",
+                            required = true,
+                            in = ParameterIn.QUERY
+                    )
+            },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Existing blogposts deleted"),
-                    @ApiResponse(responseCode = "204", description = "One of the blogposts not found")
+                    @ApiResponse(responseCode = "204", description = "All blogposts deleted"),
+                    @ApiResponse(responseCode = "404", description = "One or more blogposts not found")
             }
     )
-    @DeleteMapping
+    @DeleteMapping("/blog-posts")
     public ResponseEntity<Void> bulkDeleteBlogPosts(@RequestParam List<Long> ids) {
-        service.bulkDeletePosts(ids);
+        service.bulkDeletePostsByIds(ids);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Operation(
+            summary = "Get all blogposts by user",
+            description = "Get all the blogposts created by the specified user",
+            parameters = {
+                    @Parameter(name = "id", description = "ID of the user", required = true)
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "List of blogposts created by the user"),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            }
+    )
+    @GetMapping("/user/{id}/posts")
+    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostsByUserId(id));
     }
 
 }
