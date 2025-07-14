@@ -27,20 +27,20 @@ public class BlogPostService {
         this.securityUtils = securityUtils;
     }
 
-    public List<BlogPostResponseDTO> getPosts() {
+    public List<BlogPostResponseDTO> getBlogPosts() {
         return repo.findAll().stream()
                 .map(mapper::toResponseDTO)
                 .toList();
     }
 
-    public BlogPostResponseDTO getPostById(long id) {
+    public BlogPostResponseDTO getBlogPostById(long id) {
         return mapper.toResponseDTO(
                 repo.findById(id)
                         .orElseThrow(() -> new CustomException("Blogpost not found", HttpStatus.NOT_FOUND))
         );
     }
 
-    public void createPost(BlogPostRequestDTO blogPostDTO) {
+    public void createBlogPost(BlogPostRequestDTO blogPostDTO) {
         User user = securityUtils.getAuthenticatedUser();
 
         BlogPost blogPost = mapper.toEntity(blogPostDTO);
@@ -49,7 +49,7 @@ public class BlogPostService {
         repo.save(blogPost);
     }
 
-    public void editPost(long id, BlogPostRequestDTO blogPostDTO) {
+    public void editBlogPostById(long id, BlogPostRequestDTO blogPostDTO) {
         User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
@@ -58,7 +58,7 @@ public class BlogPostService {
         repo.save(blogPost);
     }
 
-    public void deletePost(long id) {
+    public void deleteBlogPostById(long id) {
         User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
@@ -66,7 +66,7 @@ public class BlogPostService {
         repo.deleteById(id);
     }
 
-    public void bulkDeletePosts(List<Long> ids) {
+    public void bulkDeletePostsByIds(List<Long> ids) {
         User user = securityUtils.getAuthenticatedUser();
 
         List<BlogPost> posts = repo.findAllById(ids);
@@ -82,7 +82,7 @@ public class BlogPostService {
         repo.deleteAll(posts);
     }
 
-    public List<BlogPostResponseDTO> getPostsByUserId(long userId) {
+    public List<BlogPostResponseDTO> getBlogPostsByUserId(long userId) {
         if (!userRepository.existsById(userId))
             throw new CustomException("User not found", HttpStatus.NOT_FOUND);
 
