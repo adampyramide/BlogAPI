@@ -1,5 +1,6 @@
 package io.github.adampyramide.BlogAPI.comment;
 
+import io.github.adampyramide.BlogAPI.blogpost.BlogPost;
 import io.github.adampyramide.BlogAPI.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long postId;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private BlogPost post;
 
     private long parentCommentId;
 
@@ -27,5 +30,4 @@ public class Comment {
     private User author;
 
     private String body;
-
 }
