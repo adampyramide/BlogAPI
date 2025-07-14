@@ -41,16 +41,13 @@ public class BlogPostController {
     @Operation(
             summary = "Get blogpost",
             description = "Returns a blogpost with the specified ID",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Blogpost returned")
             }
     )
     @GetMapping("/blog-posts/{id}")
-    public ResponseEntity<BlogPostResponseDTO> getBlogPostById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostById(id));
+    public ResponseEntity<BlogPostResponseDTO> getBlogPostById(@PathVariable Long postId) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostById(postId));
     }
 
     @Operation(
@@ -69,34 +66,28 @@ public class BlogPostController {
     @Operation(
             summary = "Edit blogpost",
             description = "Edits a blogpost with the specified ID",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Blogpost edited"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
     @PutMapping("/blog-posts/{id}")
-    public ResponseEntity<Void> editBlogPostById(@PathVariable Long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
-        service.editBlogPostById(id, blogPostDTO);
+    public ResponseEntity<Void> editBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
+        service.editBlogPostById(postId, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Operation(
             summary = "Delete blogpost",
             description = "Deletes a blogpost with the specified ID",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "204", description = "Blogpost deleted"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
     @DeleteMapping("/blog-posts/{id}")
-    public ResponseEntity<Void> deleteBlogPostById(@PathVariable Long id) {
-        service.deleteBlogPostById(id);
+    public ResponseEntity<Void> deleteBlogPostById(@PathVariable Long postId) {
+        service.deleteBlogPostById(postId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -125,17 +116,14 @@ public class BlogPostController {
     @Operation(
             summary = "Get all blogposts by user",
             description = "Get all the blogposts created by the specified user",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the user", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "List of blogposts created by the user"),
                     @ApiResponse(responseCode = "404", description = "User not found")
             }
     )
     @GetMapping("/users/{id}/posts")
-    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostsByUserId(id));
+    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostsByUserId(userId));
     }
 
 }
