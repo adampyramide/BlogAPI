@@ -54,7 +54,7 @@ public class BlogPostService {
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
 
-        mapper.updateBlogPostFromDto(blogPostDTO, blogPost);
+        mapper.updateEntityWithDto(blogPostDTO, blogPost);
         repo.save(blogPost);
     }
 
