@@ -3,6 +3,7 @@ package io.github.adampyramide.BlogAPI.blogpost;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,7 +43,8 @@ public class BlogPostController {
             summary = "Get blogpost",
             description = "Returns a blogpost with the specified ID",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Blogpost returned")
+                    @ApiResponse(responseCode = "200", description = "Blogpost returned"),
+                    @ApiResponse(responseCode = "404", description = "Blogpost not found", content = @Content())
             }
     )
     @GetMapping("/blog-posts/{id}")
@@ -118,7 +120,7 @@ public class BlogPostController {
             description = "Get all the blogposts created by the specified user",
             responses = {
                     @ApiResponse(responseCode = "200", description = "List of blogposts created by the user"),
-                    @ApiResponse(responseCode = "404", description = "User not found")
+                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content())
             }
     )
     @GetMapping("/users/{id}/posts")

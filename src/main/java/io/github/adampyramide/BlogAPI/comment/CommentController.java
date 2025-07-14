@@ -1,6 +1,7 @@
 package io.github.adampyramide.BlogAPI.comment;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +29,7 @@ public class CommentController {
             description = "Returns a comment with the specified ID",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comment returned"),
-                    @ApiResponse(responseCode = "404", description = "Comment not found")
+                    @ApiResponse(responseCode = "404", description = "Comment not found", content = @Content())
             }
     )
     @GetMapping("comments/{id}")
@@ -69,7 +70,7 @@ public class CommentController {
             description = "Returns a list of all comments created on a certain blogpost",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments on blogpost returned"),
-                    @ApiResponse(responseCode = "404", description = "Blogpost not found")
+                    @ApiResponse(responseCode = "404", description = "Blogpost not found", content = @Content())
             }
     )
     @GetMapping("/blog-posts/{id}/comments")
@@ -96,7 +97,7 @@ public class CommentController {
             description = "Returns a list of all comments created by a certain user",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments by user returned"),
-                    @ApiResponse(responseCode = "404", description = "User not found")
+                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content())
             }
     )
     @GetMapping("/users/{id}/comments")
