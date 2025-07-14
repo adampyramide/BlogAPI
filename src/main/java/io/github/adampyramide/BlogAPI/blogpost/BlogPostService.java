@@ -4,6 +4,7 @@ import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserRepository;
+import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -41,45 +42,54 @@ public class BlogPostService {
     }
 
     public void createBlogPost(BlogPostRequestDTO blogPostDTO) {
-        User user = securityUtils.getAuthenticatedUser();
-
         BlogPost blogPost = mapper.toEntity(blogPostDTO);
-        blogPost.setAuthor(user);
+        blogPost.setAuthor(securityUtils.getAuthenticatedUser());
         blogPost.setCreateTime(LocalDateTime.now());
+
         repo.save(blogPost);
     }
 
     public void editBlogPostById(Long id, BlogPostRequestDTO blogPostDTO) {
-        User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
-        checkAuthorOrThrow(blogPost, user);
+
+        OwnershipValidator.authorizeAuthor(
+                blogPost.getAuthor(),
+                securityUtils.getAuthenticatedUser(),
+                "blogpost"
+        );
 
         mapper.updateEntityWithDto(blogPostDTO, blogPost);
         repo.save(blogPost);
     }
 
     public void deleteBlogPostById(Long id) {
-        User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
-        checkAuthorOrThrow(blogPost, user);
+
+        OwnershipValidator.authorizeAuthor(
+                blogPost.getAuthor(),
+                securityUtils.getAuthenticatedUser(),
+                "blogpost"
+        );
 
         repo.deleteById(id);
     }
 
     public void bulkDeletePostsByIds(List<Long> ids) {
-        User user = securityUtils.getAuthenticatedUser();
+        List<BlogPost> blogPosts = repo.findAllById(ids);
 
-        List<BlogPost> posts = repo.findAllById(ids);
-
-        if (posts.size() != ids.size()) {
+        if (blogPosts.size() != ids.size())
             throw new CustomException("Zero posts found", HttpStatus.NOT_FOUND);
+
+        User authenticatedUser = securityUtils.getAuthenticatedUser();
+        for (BlogPost blogPost : blogPosts) {
+            OwnershipValidator.authorizeAuthor(
+                    blogPost.getAuthor(),
+                    authenticatedUser,
+                    "blogpost"
+            );
         }
 
-        for (BlogPost post : posts) {
-            checkAuthorOrThrow(post, user);
-        }
-
-        repo.deleteAll(posts);
+        repo.deleteAll(blogPosts);
     }
 
     public List<BlogPostResponseDTO> getBlogPostsByUserId(Long userId) {
@@ -91,14 +101,13 @@ public class BlogPostService {
                 .toList();
     }
 
+    public BlogPost getBlogPostEntityById(Long id) {
+        return getBlogPostOrThrow(id);
+    }
+
     private BlogPost getBlogPostOrThrow(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new CustomException("Blogpost not found", HttpStatus.NOT_FOUND));
-    }
-
-    private void checkAuthorOrThrow(BlogPost blogPost, User user) {
-        if (blogPost.getAuthor().getId() != user.getId())
-            throw new CustomException("Post not created by user", HttpStatus.UNAUTHORIZED);
     }
 
 }
