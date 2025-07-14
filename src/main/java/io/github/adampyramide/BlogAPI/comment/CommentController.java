@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,97 +27,82 @@ public class CommentController {
     @Operation(
             summary = "Get comment",
             description = "Returns a comment with the specified ID",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the comment", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comment returned"),
                     @ApiResponse(responseCode = "404", description = "Comment not found")
             }
     )
     @GetMapping("comments/{id}")
-    public CommentResponseDTO getCommentById(@PathVariable Long id) {
-        return service.getCommentById(id);
+    public ResponseEntity<CommentResponseDTO> getCommentById(@PathVariable Long commentId) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getCommentById(commentId));
     }
 
     @Operation(
             summary = "Edit comment",
             description = "Edits a comment with the specified ID",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the comment", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comment edited"),
                     @ApiResponse(responseCode = "404", description = "Comment not found")
             }
     )
     @PutMapping("/comments/{id}")
-    public void editCommentById(@PathVariable Long id, @RequestBody CommentRequestDTO commentDTO) {
-        service.editCommentById(id, commentDTO);
+    public ResponseEntity<Void> editCommentById(@PathVariable Long commentId, @RequestBody CommentRequestDTO commentDTO) {
+        service.editCommentById(commentId, commentDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Operation(
             summary = "Delete comment",
             description = "Deletes a comment with the specified ID",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the comment", required = true)
-            },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Comment deleted"),
+                    @ApiResponse(responseCode = "204", description = "Comment deleted"),
                     @ApiResponse(responseCode = "404", description = "Comment not found")
             }
     )
     @DeleteMapping("/comments/{id}")
-    public void deleteCommentById(@PathVariable Long id) {
-        service.deleteCommentById(id);
+    public ResponseEntity<Void> deleteCommentById(@PathVariable Long commentId) {
+        service.deleteCommentById(commentId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Operation(
             summary = "Get comments for blogpost",
             description = "Returns a list of all comments created on a certain blogpost",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments on blogpost returned"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
     @GetMapping("/blog-posts/{id}/comments")
-    public List<CommentResponseDTO> getCommentsByPostId(@PathVariable Long id) {
-        return service.getCommentsByPostId(id);
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable Long postId) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getCommentsByPostId(postId));
     }
 
     @Operation(
             summary = "Create comment",
             description = "Creates a comment on the specified blog post ID",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the blogpost", required = true)
-            },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Comments created"),
+                    @ApiResponse(responseCode = "201", description = "Comments created"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
     @PostMapping("/blog-posts/{id}/comments")
-    public void createComment(@PathVariable Long id, @RequestBody CommentRequestDTO commentDTO) {
-        service.createComment(id, commentDTO);
+    public ResponseEntity<Void> createComment(@PathVariable Long postId, @RequestBody CommentRequestDTO commentDTO) {
+        service.createComment(postId, commentDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
             summary = "Get all comments by user",
             description = "Returns a list of all comments created by a certain user",
-            parameters = {
-                    @Parameter(name = "id", description = "ID of the user", required = true)
-            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments by user returned"),
                     @ApiResponse(responseCode = "404", description = "User not found")
             }
     )
     @GetMapping("/users/{id}/comments")
-    public List<CommentResponseDTO> getCommentsByAuthorId(@PathVariable Long id) {
-        return service.getCommentsByAuthorId(id);
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByAuthorId(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getCommentsByAuthorId(userId));
     }
 
 }
