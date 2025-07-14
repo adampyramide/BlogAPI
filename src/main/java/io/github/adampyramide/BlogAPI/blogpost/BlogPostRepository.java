@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
 
-    List<BlogPost> findAllByAuthor_Id(long userId);
+    List<BlogPost> findAllByAuthor_Id(Long userId);
 
 }

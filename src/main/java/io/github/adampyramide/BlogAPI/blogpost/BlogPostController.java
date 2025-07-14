@@ -49,7 +49,7 @@ public class BlogPostController {
             }
     )
     @GetMapping("/blog-posts/{id}")
-    public ResponseEntity<BlogPostResponseDTO> getBlogPostById(@PathVariable long id) {
+    public ResponseEntity<BlogPostResponseDTO> getBlogPostById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostById(id));
     }
 
@@ -78,7 +78,7 @@ public class BlogPostController {
             }
     )
     @PutMapping("/blog-posts/{id}")
-    public ResponseEntity<Void> editBlogPostById(@PathVariable long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> editBlogPostById(@PathVariable Long id, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
         service.editBlogPostById(id, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -95,7 +95,7 @@ public class BlogPostController {
             }
     )
     @DeleteMapping("/blog-posts/{id}")
-    public ResponseEntity<Void> deleteBlogPostById(@PathVariable long id) {
+    public ResponseEntity<Void> deleteBlogPostById(@PathVariable Long id) {
         service.deleteBlogPostById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -134,7 +134,7 @@ public class BlogPostController {
             }
     )
     @GetMapping("/user/{id}/posts")
-    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable long id) {
+    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostsByUserId(id));
     }
 
