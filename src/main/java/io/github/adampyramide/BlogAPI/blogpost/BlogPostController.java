@@ -45,7 +45,7 @@ public class BlogPostController {
                     @Parameter(name = "id", description = "ID of the blogpost", required = true)
             },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Blogpost")
+                    @ApiResponse(responseCode = "200", description = "Blogpost returned")
             }
     )
     @GetMapping("/blog-posts/{id}")
@@ -57,7 +57,7 @@ public class BlogPostController {
             summary = "Create blogpost",
             description = "Creates a blogpost",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Blogpost created")
+                    @ApiResponse(responseCode = "201", description = "Blogpost created")
             }
     )
     @PostMapping("/blog-posts")
@@ -90,7 +90,7 @@ public class BlogPostController {
                     @Parameter(name = "id", description = "ID of the blogpost", required = true)
             },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Blogpost deleted"),
+                    @ApiResponse(responseCode = "204", description = "Blogpost deleted"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
@@ -133,7 +133,7 @@ public class BlogPostController {
                     @ApiResponse(responseCode = "404", description = "User not found")
             }
     )
-    @GetMapping("/user/{id}/posts")
+    @GetMapping("/users/{id}/posts")
     public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostsByUserId(id));
     }
