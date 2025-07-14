@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Auth", description = "User authorization")
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -21,9 +22,8 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Create a new user and get token",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "User created and token returned")
+                    @ApiResponse(responseCode = "201", description = "User registered and token returned")
             }
     )
     @PostMapping("/register")
@@ -33,7 +33,6 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Get token for user",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Valid credentials passed and token returned"),
                     @ApiResponse(responseCode = "404", description = "Invalid credentials passed")

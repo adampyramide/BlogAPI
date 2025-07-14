@@ -27,11 +27,34 @@ public class CommentService {
         this.securityUtils = securityUtils;
     }
 
-    public CommentResponseDTO getComment(long id) {
+    public CommentResponseDTO getCommentById(long id) {
         return mapper.toResponseDTO(
                 repo.findById(id)
                         .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND))
         );
+    }
+
+    public void editCommentById(long id, CommentRequestDTO commentDTO) {
+        Comment comment = repo.findById(id)
+                .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
+
+        checkAuthorOrThrow(comment);
+        mapper.updateEntityWithDto(commentDTO, comment);
+        repo.save(comment);
+    }
+
+    public void deleteCommentById(long id) {
+        Comment comment = repo.findById(id)
+                .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
+
+        checkAuthorOrThrow(comment);
+        repo.deleteById(id);
+    }
+
+    public List<CommentResponseDTO> getCommentsByPostId(long postId) {
+        return repo.findAllByPostId(postId).stream()
+                .map(mapper::toResponseDTO)
+                .toList();
     }
 
     public void createComment(long postId, CommentRequestDTO commentDTO) {
@@ -44,29 +67,6 @@ public class CommentService {
 
         repo.save(comment);
 
-    }
-
-    public void editComment(long id, CommentRequestDTO commentDTO) {
-        Comment comment = repo.findById(id)
-                .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
-
-        checkAuthorOrThrow(comment);
-        mapper.updateEntityWithDto(commentDTO, comment);
-        repo.save(comment);
-    }
-
-    public void deleteComment(long id) {
-        Comment comment = repo.findById(id)
-                .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
-
-        checkAuthorOrThrow(comment);
-        repo.deleteById(id);
-    }
-
-    public List<CommentResponseDTO> getCommentsByPostId(long postId) {
-        return repo.findAllByPostId(postId).stream()
-                .map(mapper::toResponseDTO)
-                .toList();
     }
 
     public List<CommentResponseDTO> getCommentsByAuthorId(long userId) {
