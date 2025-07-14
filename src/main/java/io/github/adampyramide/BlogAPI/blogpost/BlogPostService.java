@@ -33,7 +33,7 @@ public class BlogPostService {
                 .toList();
     }
 
-    public BlogPostResponseDTO getBlogPostById(long id) {
+    public BlogPostResponseDTO getBlogPostById(Long id) {
         return mapper.toResponseDTO(
                 repo.findById(id)
                         .orElseThrow(() -> new CustomException("Blogpost not found", HttpStatus.NOT_FOUND))
@@ -49,7 +49,7 @@ public class BlogPostService {
         repo.save(blogPost);
     }
 
-    public void editBlogPostById(long id, BlogPostRequestDTO blogPostDTO) {
+    public void editBlogPostById(Long id, BlogPostRequestDTO blogPostDTO) {
         User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
@@ -58,7 +58,7 @@ public class BlogPostService {
         repo.save(blogPost);
     }
 
-    public void deleteBlogPostById(long id) {
+    public void deleteBlogPostById(Long id) {
         User user = securityUtils.getAuthenticatedUser();
         BlogPost blogPost = getBlogPostOrThrow(id);
         checkAuthorOrThrow(blogPost, user);
@@ -82,7 +82,7 @@ public class BlogPostService {
         repo.deleteAll(posts);
     }
 
-    public List<BlogPostResponseDTO> getBlogPostsByUserId(long userId) {
+    public List<BlogPostResponseDTO> getBlogPostsByUserId(Long userId) {
         if (!userRepository.existsById(userId))
             throw new CustomException("User not found", HttpStatus.NOT_FOUND);
 
@@ -91,7 +91,7 @@ public class BlogPostService {
                 .toList();
     }
 
-    private BlogPost getBlogPostOrThrow(long id) {
+    private BlogPost getBlogPostOrThrow(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new CustomException("Blogpost not found", HttpStatus.NOT_FOUND));
     }

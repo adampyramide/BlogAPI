@@ -34,7 +34,7 @@ public class CommentController {
             }
     )
     @GetMapping("comments/{id}")
-    public CommentResponseDTO getCommentById(@PathVariable long id) {
+    public CommentResponseDTO getCommentById(@PathVariable Long id) {
         return service.getCommentById(id);
     }
 
@@ -50,7 +50,7 @@ public class CommentController {
             }
     )
     @PutMapping("/comments/{id}")
-    public void editCommentById(@PathVariable long id, @RequestBody CommentRequestDTO commentDTO) {
+    public void editCommentById(@PathVariable Long id, @RequestBody CommentRequestDTO commentDTO) {
         service.editCommentById(id, commentDTO);
     }
 
@@ -66,7 +66,7 @@ public class CommentController {
             }
     )
     @DeleteMapping("/comments/{id}")
-    public void deleteCommentById(@PathVariable long id) {
+    public void deleteCommentById(@PathVariable Long id) {
         service.deleteCommentById(id);
     }
 
@@ -82,7 +82,7 @@ public class CommentController {
             }
     )
     @GetMapping("/blog-posts/{id}/comments")
-    public List<CommentResponseDTO> getCommentsByPostId(@PathVariable long id) {
+    public List<CommentResponseDTO> getCommentsByPostId(@PathVariable Long id) {
         return service.getCommentsByPostId(id);
     }
 
@@ -98,7 +98,7 @@ public class CommentController {
             }
     )
     @PostMapping("/blog-posts/{id}/comments")
-    public void createComment(@PathVariable long id, @RequestBody CommentRequestDTO commentDTO) {
+    public void createComment(@PathVariable Long id, @RequestBody CommentRequestDTO commentDTO) {
         service.createComment(id, commentDTO);
     }
 

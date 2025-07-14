@@ -27,14 +27,14 @@ public class CommentService {
         this.securityUtils = securityUtils;
     }
 
-    public CommentResponseDTO getCommentById(long id) {
+    public CommentResponseDTO getCommentById(Long id) {
         return mapper.toResponseDTO(
                 repo.findById(id)
                         .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND))
         );
     }
 
-    public void editCommentById(long id, CommentRequestDTO commentDTO) {
+    public void editCommentById(Long id, CommentRequestDTO commentDTO) {
         Comment comment = repo.findById(id)
                 .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
 
@@ -43,7 +43,7 @@ public class CommentService {
         repo.save(comment);
     }
 
-    public void deleteCommentById(long id) {
+    public void deleteCommentById(Long id) {
         Comment comment = repo.findById(id)
                 .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
 
@@ -51,13 +51,13 @@ public class CommentService {
         repo.deleteById(id);
     }
 
-    public List<CommentResponseDTO> getCommentsByPostId(long postId) {
+    public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
         return repo.findAllByPostId(postId).stream()
                 .map(mapper::toResponseDTO)
                 .toList();
     }
 
-    public void createComment(long postId, CommentRequestDTO commentDTO) {
+    public void createComment(Long postId, CommentRequestDTO commentDTO) {
         BlogPost post = postRepo.findById(postId)
                 .orElseThrow(() -> new CustomException("Post not found", HttpStatus.NOT_FOUND));
 
@@ -69,7 +69,7 @@ public class CommentService {
 
     }
 
-    public List<CommentResponseDTO> getCommentsByAuthorId(long userId) {
+    public List<CommentResponseDTO> getCommentsByAuthorId(Long userId) {
         return repo.findAllByAuthor_Id(userId).stream()
                 .map(mapper::toResponseDTO)
                 .toList();
