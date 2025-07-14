@@ -1,6 +1,7 @@
 package io.github.adampyramide.BlogAPI.user;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +26,7 @@ public class UserController {
             summary = "Get user by id",
             responses = {
                     @ApiResponse(responseCode = "200", description = "User returned"),
-                    @ApiResponse(responseCode = "404", description = "User not found")
+                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content())
             }
     )
     @GetMapping("/{id}")
