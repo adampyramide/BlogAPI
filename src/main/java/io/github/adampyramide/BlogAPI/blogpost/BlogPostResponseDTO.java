@@ -11,7 +11,7 @@ public record BlogPostResponseDTO(
         String title,
         String body,
         LocalDateTime createTime,
-        int likeCount,
-        int dislikeCount
+        long likeCount,
+        long dislikeCount
 
 ) {}
