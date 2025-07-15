@@ -28,6 +28,10 @@ public class BlogPostService {
         this.securityUtils = securityUtils;
     }
 
+    // ====================
+    // Public methods
+    // ====================
+
     public List<BlogPostResponseDTO> getBlogPosts() {
         return repo.findAll().stream()
                 .map(mapper::toResponseDTO)
@@ -101,9 +105,17 @@ public class BlogPostService {
                 .toList();
     }
 
+    // ====================
+    // Internal methods
+    // ====================
+
     public BlogPost getBlogPostEntityById(Long id) {
         return getBlogPostOrThrow(id);
     }
+
+    // ====================
+    // Private methods
+    // ====================
 
     private BlogPost getBlogPostOrThrow(Long id) {
         return repo.findById(id)
