@@ -15,6 +15,10 @@ public class UserService {
         this.mapper = mapper;
     }
 
+    // ====================
+    // Public methods
+    // ====================
+
     public PublicUserDTO getUserById(Long id) {
         return mapper.toPublicDTO(
                 repo.findById(id)

@@ -1,8 +1,5 @@
 package io.github.adampyramide.BlogAPI.comment;
 
-import io.github.adampyramide.BlogAPI.blogpost.BlogPost;
-import io.github.adampyramide.BlogAPI.blogpost.BlogPostRepository;
-import io.github.adampyramide.BlogAPI.blogpost.BlogPostResponseDTO;
 import io.github.adampyramide.BlogAPI.blogpost.BlogPostService;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
@@ -28,6 +25,10 @@ public class CommentService {
         this.blogPostService = blogPostService;
         this.securityUtils = securityUtils;
     }
+
+    // ====================
+    // Public methods
+    // ====================
 
     public CommentResponseDTO getCommentById(Long id) {
         return mapper.toResponseDTO(
@@ -79,6 +80,10 @@ public class CommentService {
                 .map(mapper::toResponseDTO)
                 .toList();
     }
+
+    // ====================
+    // Private methods
+    // ====================
 
     private Comment getCommentOrThrow(Long id) {
         return repo.findById(id)

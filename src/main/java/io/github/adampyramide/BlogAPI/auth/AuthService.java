@@ -31,6 +31,10 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    // ====================
+    // Public methods
+    // ====================
+
     public void registerUser(AuthUserDTO userDTO) {
         if (userRepo.existsByUsername(userDTO.username()))
             throw new CustomException("Username is already taken", HttpStatus.CONFLICT);
