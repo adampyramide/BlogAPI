@@ -10,6 +10,8 @@ public record BlogPostResponseDTO(
         PublicUserDTO author,
         String title,
         String body,
-        LocalDateTime createTime
+        LocalDateTime createTime,
+        int likeCount,
+        int dislikeCount
 
 ) {}
