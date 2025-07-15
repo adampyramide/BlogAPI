@@ -4,6 +4,7 @@ import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserRepository;
+import io.github.adampyramide.BlogAPI.user.UserService;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,14 @@ public class BlogPostService {
     private final BlogPostRepository repo;
     private final BlogPostMapper mapper;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final SecurityUtils securityUtils;
 
-    public BlogPostService(BlogPostRepository repo, BlogPostMapper blogPostMapper, UserRepository userRepository, SecurityUtils securityUtils) {
+    public BlogPostService(BlogPostRepository repo, BlogPostMapper blogPostMapper, UserService userService, SecurityUtils securityUtils) {
         this.repo = repo;
         this.mapper = blogPostMapper;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.securityUtils = securityUtils;
     }
 
@@ -97,8 +98,7 @@ public class BlogPostService {
     }
 
     public List<BlogPostResponseDTO> getBlogPostsByUserId(Long userId) {
-        if (!userRepository.existsById(userId))
-            throw new CustomException("User not found", HttpStatus.NOT_FOUND);
+        userService.getUserOrThrow(userId);
 
         return repo.findAllByAuthor_Id(userId).stream()
                 .map(mapper::toResponseDTO)
