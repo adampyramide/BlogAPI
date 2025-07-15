@@ -3,7 +3,6 @@ package io.github.adampyramide.BlogAPI.blogpost;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
-import io.github.adampyramide.BlogAPI.user.UserRepository;
 import io.github.adampyramide.BlogAPI.user.UserService;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
 import org.springframework.http.HttpStatus;
@@ -40,10 +39,7 @@ public class BlogPostService {
     }
 
     public BlogPostResponseDTO getBlogPostById(Long id) {
-        return mapper.toResponseDTO(
-                repo.findById(id)
-                        .orElseThrow(() -> new CustomException("Blogpost not found", HttpStatus.NOT_FOUND))
-        );
+        return mapper.toResponseDTO(getBlogPostOrThrow(id));
     }
 
     public void createBlogPost(BlogPostRequestDTO blogPostDTO) {
