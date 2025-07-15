@@ -20,10 +20,16 @@ public class UserService {
     // ====================
 
     public PublicUserDTO getUserById(Long id) {
-        return mapper.toPublicDTO(
-                repo.findById(id)
-                        .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND))
-        );
+        return mapper.toPublicDTO(getUserOrThrow(id));
+    }
+
+    // ====================
+    // Internal methods
+    // ====================
+
+    public User getUserOrThrow(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
     }
 
 }
