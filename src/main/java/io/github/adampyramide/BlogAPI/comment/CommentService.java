@@ -31,9 +31,19 @@ public class CommentService {
     // ====================
 
     public CommentResponseDTO getCommentById(Long id) {
-        return mapper.toResponseDTO(
-                getCommentOrThrow(id)
-        );
+        return toResponseDTO(getCommentOrThrow(id));
+    }
+
+    public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
+        return repo.findAllByPostId(postId).stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+
+    public List<CommentResponseDTO> getCommentsByAuthorId(Long userId) {
+        return repo.findAllByAuthor_Id(userId).stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
     public void editCommentById(Long id, CommentRequestDTO commentDTO) {
@@ -61,24 +71,12 @@ public class CommentService {
         repo.deleteById(id);
     }
 
-    public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
-        return repo.findAllByPostId(postId).stream()
-                .map(mapper::toResponseDTO)
-                .toList();
-    }
-
     public void createComment(Long postId, CommentRequestDTO commentDTO) {
         Comment comment = mapper.toEntity(commentDTO);
         comment.setAuthor(securityUtils.getAuthenticatedUser());
         comment.setPost(blogPostValidator.getByIdOrThrow(postId));
 
         repo.save(comment);
-    }
-
-    public List<CommentResponseDTO> getCommentsByAuthorId(Long userId) {
-        return repo.findAllByAuthor_Id(userId).stream()
-                .map(mapper::toResponseDTO)
-                .toList();
     }
 
     // ====================
@@ -89,5 +87,12 @@ public class CommentService {
         return repo.findById(id)
                 .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
     }
+
+    private CommentResponseDTO toResponseDTO(Comment comment) {
+        CommentResponseDTO dto = mapper.toResponseDTO(comment);
+        dto.setHasReplies(repo.existsByParentCommentId(comment.getId()));
+        return dto;
+    }
+
 
 }
