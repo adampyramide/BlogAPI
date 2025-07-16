@@ -32,7 +32,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "Comment not found", content = @Content())
             }
     )
-    @GetMapping("comments/{id}")
+    @GetMapping("comments/{commentId}")
     public ResponseEntity<CommentResponseDTO> getCommentById(@PathVariable Long commentId) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getCommentById(commentId));
     }
@@ -45,7 +45,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "Comment not found")
             }
     )
-    @PutMapping("/comments/{id}")
+    @PutMapping("/comments/{commentId}")
     public ResponseEntity<Void> editCommentById(@PathVariable Long commentId, @RequestBody CommentRequestDTO commentDTO) {
         service.editCommentById(commentId, commentDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -59,7 +59,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "Comment not found")
             }
     )
-    @DeleteMapping("/comments/{id}")
+    @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<Void> deleteCommentById(@PathVariable Long commentId) {
         service.deleteCommentById(commentId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -73,7 +73,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "Blogpost not found", content = @Content())
             }
     )
-    @GetMapping("/blog-posts/{id}/comments")
+    @GetMapping("/blog-posts/{postId}/comments")
     public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable Long postId) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getCommentsByPostId(postId));
     }
@@ -86,7 +86,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
-    @PostMapping("/blog-posts/{id}/comments")
+    @PostMapping("/blog-posts/{postId}/comments")
     public ResponseEntity<Void> createComment(@PathVariable Long postId, @RequestBody CommentRequestDTO commentDTO) {
         service.createComment(postId, commentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -100,7 +100,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "User not found", content = @Content())
             }
     )
-    @GetMapping("/users/{id}/comments")
+    @GetMapping("/users/{userId}/comments")
     public ResponseEntity<List<CommentResponseDTO>> getCommentsByAuthorId(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getCommentsByAuthorId(userId));
     }
