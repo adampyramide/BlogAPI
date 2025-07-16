@@ -12,4 +12,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByAuthor_Id(Long userId);
 
+    boolean existsByParentCommentId(Long parentCommentId);
+
 }
