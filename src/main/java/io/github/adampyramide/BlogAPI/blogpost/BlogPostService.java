@@ -1,6 +1,9 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
+import io.github.adampyramide.BlogAPI.comment.CommentService;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
+import io.github.adampyramide.BlogAPI.reaction.ReactionService;
+import io.github.adampyramide.BlogAPI.reaction.ReactionType;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserService;
@@ -15,16 +18,20 @@ import java.util.List;
 public class BlogPostService {
 
     private final BlogPostRepository repo;
+    private final BlogPostValidator validator;
     private final BlogPostMapper mapper;
 
     private final UserService userService;
+    private final ReactionService reactionService;
 
     private final SecurityUtils securityUtils;
 
-    public BlogPostService(BlogPostRepository repo, BlogPostMapper blogPostMapper, UserService userService, SecurityUtils securityUtils) {
+    public BlogPostService(BlogPostRepository repo, BlogPostValidator validator, BlogPostMapper mapper, UserService userService, ReactionService reactionService, SecurityUtils securityUtils) {
         this.repo = repo;
-        this.mapper = blogPostMapper;
+        this.validator = validator;
+        this.mapper = mapper;
         this.userService = userService;
+        this.reactionService = reactionService;
         this.securityUtils = securityUtils;
     }
 
@@ -39,7 +46,7 @@ public class BlogPostService {
     }
 
     public BlogPostResponseDTO getBlogPostById(Long id) {
-        return mapper.toResponseDTO(getBlogPostOrThrow(id));
+        return mapper.toResponseDTO(validator.getByIdOrThrow(id));
     }
 
     public void createBlogPost(BlogPostRequestDTO blogPostDTO) {
@@ -51,7 +58,7 @@ public class BlogPostService {
     }
 
     public void editBlogPostById(Long id, BlogPostRequestDTO blogPostDTO) {
-        BlogPost blogPost = getBlogPostOrThrow(id);
+        BlogPost blogPost = validator.getByIdOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(
                 blogPost.getAuthor(),
@@ -64,7 +71,7 @@ public class BlogPostService {
     }
 
     public void deleteBlogPostById(Long id) {
-        BlogPost blogPost = getBlogPostOrThrow(id);
+        BlogPost blogPost = validator.getByIdOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(
                 blogPost.getAuthor(),
@@ -99,23 +106,6 @@ public class BlogPostService {
         return repo.findAllByAuthor_Id(userId).stream()
                 .map(mapper::toResponseDTO)
                 .toList();
-    }
-
-    // ====================
-    // Internal methods
-    // ====================
-
-    public BlogPost getBlogPostEntityById(Long id) {
-        return getBlogPostOrThrow(id);
-    }
-
-    // ====================
-    // Private methods
-    // ====================
-
-    private BlogPost getBlogPostOrThrow(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new CustomException("Blogpost not found", HttpStatus.NOT_FOUND));
     }
 
 }

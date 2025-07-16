@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.comment;
 
-import io.github.adampyramide.BlogAPI.blogpost.BlogPostService;
+import io.github.adampyramide.BlogAPI.blogpost.BlogPostValidator;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
@@ -15,14 +15,14 @@ public class CommentService {
     private final CommentRepository repo;
     private final CommentMapper mapper;
 
-    private final BlogPostService blogPostService;
+    private final BlogPostValidator blogPostValidator;
 
     private final SecurityUtils securityUtils;
 
-    public CommentService(CommentRepository repo, CommentMapper mapper, BlogPostService blogPostService, SecurityUtils securityUtils) {
+    public CommentService(CommentRepository repo, CommentMapper mapper, BlogPostValidator blogPostValidator, SecurityUtils securityUtils) {
         this.repo = repo;
         this.mapper = mapper;
-        this.blogPostService = blogPostService;
+        this.blogPostValidator = blogPostValidator;
         this.securityUtils = securityUtils;
     }
 
@@ -70,7 +70,7 @@ public class CommentService {
     public void createComment(Long postId, CommentRequestDTO commentDTO) {
         Comment comment = mapper.toEntity(commentDTO);
         comment.setAuthor(securityUtils.getAuthenticatedUser());
-        comment.setPost(blogPostService.getBlogPostEntityById(postId));
+        comment.setPost(blogPostValidator.getByIdOrThrow(postId));
 
         repo.save(comment);
     }
