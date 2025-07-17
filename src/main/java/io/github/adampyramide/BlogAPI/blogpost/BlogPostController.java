@@ -119,7 +119,7 @@ public class BlogPostController {
             summary = "Get all blogposts by user",
             description = "Get all the blogposts created by the specified user",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "List of blogposts created by the user"),
+                    @ApiResponse(responseCode = "200", description = "List of blogposts created by the user returned"),
                     @ApiResponse(responseCode = "404", description = "User not found", content = @Content())
             }
     )
