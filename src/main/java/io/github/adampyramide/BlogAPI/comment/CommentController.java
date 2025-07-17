@@ -67,7 +67,7 @@ public class CommentController {
 
     @Operation(
             summary = "Get comments for blogpost",
-            description = "Returns a list of all comments created on a certain blogpost",
+            description = "Returns a list of all comments created on the specified blogpost",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments on blogpost returned"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found", content = @Content())
@@ -79,8 +79,8 @@ public class CommentController {
     }
 
     @Operation(
-            summary = "Create comment",
-            description = "Creates a comment on the specified blog post ID",
+            summary = "Create comment on blogpost",
+            description = "Creates a comment on the specified blogpost",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Comments created"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
@@ -94,7 +94,7 @@ public class CommentController {
 
     @Operation(
             summary = "Get all comments by user",
-            description = "Returns a list of all comments created by a certain user",
+            description = "Returns a list of all comments created by the specified user",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments by user returned"),
                     @ApiResponse(responseCode = "404", description = "User not found", content = @Content())
