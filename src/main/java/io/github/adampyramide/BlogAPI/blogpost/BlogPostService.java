@@ -100,7 +100,7 @@ public class BlogPostService {
         repo.deleteById(id);
     }
 
-    public void bulkDeletePostsByIds(List<Long> ids) {
+    public void bulkDeleteBlogPostsByIds(List<Long> ids) {
         List<BlogPost> blogPosts = repo.findAllById(ids);
 
         if (blogPosts.size() != ids.size())

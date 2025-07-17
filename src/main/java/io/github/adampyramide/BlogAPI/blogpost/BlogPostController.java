@@ -110,8 +110,8 @@ public class BlogPostController {
             }
     )
     @DeleteMapping("/blog-posts")
-    public ResponseEntity<Void> bulkDeleteBlogPosts(@RequestParam List<Long> ids) {
-        service.bulkDeletePostsByIds(ids);
+    public ResponseEntity<Void> bulkDeleteBlogPostsByIds(@RequestParam List<Long> ids) {
+        service.bulkDeleteBlogPostsByIds(ids);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
