@@ -33,6 +33,8 @@ public class ReactionService {
     // ====================
 
     public List<ReactionResponseDTO> getReactionsByPostId(Long postId, ReactionType reactionType) {
+        blogPostValidator.getByIdOrThrow(postId);
+
         List<Reaction> reactions;
 
         if (reactionType == null)
@@ -61,6 +63,8 @@ public class ReactionService {
     }
 
     public void deleteReactionByPostId(Long postId) {
+        blogPostValidator.getByIdOrThrow(postId);
+
         ReactionId reactionId = new ReactionId(
                 securityUtils.getAuthenticatedUser().getId(),
                 postId
