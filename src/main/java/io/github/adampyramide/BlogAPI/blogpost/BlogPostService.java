@@ -41,10 +41,21 @@ public class BlogPostService {
     // ====================
 
     public List<BlogPostResponseDTO> getBlogPosts() {
+        Map<Long, Map<ReactionType, Long>> reactionCounts = reactionService.getAllReactionCountsByPost();
+
         return repo.findAll().stream()
-                .map(mapper::toResponseDTO)
+                .map(post -> {
+                    BlogPostResponseDTO dto = mapper.toResponseDTO(post);
+                    Map<ReactionType, Long> counts = reactionCounts.getOrDefault(post.getId(), Map.of());
+
+                    dto.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
+                    dto.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
+
+                    return dto;
+                })
                 .toList();
     }
+
 
     public BlogPostResponseDTO getBlogPostById(Long id) {
         BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(validator.getByIdOrThrow(id));
