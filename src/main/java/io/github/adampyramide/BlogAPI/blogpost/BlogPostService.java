@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BlogPostService {
@@ -46,7 +47,13 @@ public class BlogPostService {
     }
 
     public BlogPostResponseDTO getBlogPostById(Long id) {
-        return mapper.toResponseDTO(validator.getByIdOrThrow(id));
+        BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(validator.getByIdOrThrow(id));
+
+        Map<ReactionType, Long> reactionCounts = reactionService.getReactionCountsByPostId(id);
+        blogPostDTO.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
+        blogPostDTO.setDislikeCount(reactionCounts.getOrDefault(ReactionType.DISLIKE, 0L));
+
+        return blogPostDTO;
     }
 
     public void createBlogPost(BlogPostRequestDTO blogPostDTO) {
