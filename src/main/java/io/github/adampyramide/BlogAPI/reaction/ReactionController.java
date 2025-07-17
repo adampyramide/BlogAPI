@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/blog-posts/{postId}/reactions")
 public class ReactionController {
 
-    private ReactionService service;
+    final private ReactionService service;
 
     public ReactionController(ReactionService service) {
         this.service = service;
@@ -34,8 +33,8 @@ public class ReactionController {
     }
 
     @Operation(
-            summary = "Add reaction",
-            description = "Adds a reaction (LIKE or DISLIKE) to a blog post by the current user. Overwrites any existing reaction.",
+            summary = "Add reaction to blogpost",
+            description = "Adds a reaction (LIKE or DISLIKE) to a blogpost by the current user. Overwrites users existing reaction if it exists.",
     responses = {
                     @ApiResponse(responseCode = "201", description = "Reaction added to blogpost"),
                     @ApiResponse(responseCode = "404", description = "Post not found", content = @Content())
@@ -48,7 +47,7 @@ public class ReactionController {
     }
 
     @Operation(
-            summary = "Remove reaction",
+            summary = "Remove reaction from blogpost",
             description = "Removes the current user's reaction (LIKE or DISLIKE) from the blog post.",
     responses = {
                     @ApiResponse(responseCode = "204", description = "Reaction removed from blogpost"),
