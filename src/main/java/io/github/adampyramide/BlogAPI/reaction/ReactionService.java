@@ -80,27 +80,28 @@ public class ReactionService {
     // Internal methods
     // ====================
 
-    public Map<Long, Map<ReactionType, Long>> getAllReactionCountsByPost() {
-        Map<Long, Map<ReactionType, Long>> result = new HashMap<>();
+    public Map<Long, Map<ReactionType, Long>> getReactionCountsForPostIds(List<Long> postIds) {
+        List<Object[]> results = repo.countReactionsGroupedByPostIds(postIds);
 
-        for (Object[] row : repo.countReactionsGroupedByPost()) {
+        Map<Long, Map<ReactionType, Long>> reactionMap = new HashMap<>();
+
+        for (Object[] row : results) {
             Long postId = (Long) row[0];
             ReactionType type = (ReactionType) row[1];
             Long count = (Long) row[2];
 
-            result
-                    .computeIfAbsent(postId, k -> new EnumMap<>(ReactionType.class))
+            reactionMap
+                    .computeIfAbsent(postId, k -> new HashMap<>())
                     .put(type, count);
         }
 
-        return result;
+        return reactionMap;
     }
-
 
     public Map<ReactionType, Long> getReactionCountsByPostId(Long postId) {
         Map<ReactionType, Long> counts = new EnumMap<>(ReactionType.class);
 
-        for (Object[] row : repo.countReactionsByPostIdGrouped(postId)) {
+        for (Object[] row : repo.countReactionsByPostId(postId)) {
             counts.put((ReactionType) row[0], (Long) row[1]);
         }
         for (ReactionType type : ReactionType.values()) {

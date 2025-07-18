@@ -10,31 +10,24 @@ import java.util.List;
 @Repository
 public interface ReactionRepository extends JpaRepository<Reaction, ReactionId> {
 
+    List<Reaction> findAllByPost_Id(Long postId);
+
+    List<Reaction> findAllByPost_IdAndReactionType(Long postId, ReactionType reactionType);
+
     @Query("""
         SELECT r.reactionType, COUNT(r)
         FROM Reaction r
         WHERE r.post.id = :postId
         GROUP BY r.reactionType
     """)
-    List<Object[]> countReactionsByPostIdGrouped(@Param("postId") Long postId);
+    List<Object[]> countReactionsByPostId(@Param("postId") Long postId);
 
-//    @Query("""
-//        SELECT r.post.id, r.reactionType, COUNT(r)
-//        FROM Reaction r
-//        WHERE r.post.id IN :postIds
-//        GROUP BY r.post.id, r.reactionType
-//    """)
-//    List<Object[]> countReactionsGroupedByPost();
     @Query("""
-            SELECT r.post.id, r.reactionType, COUNT(r)
-            FROM Reaction r
-            GROUP BY r.post.id, r.reactionType
-        """)
-    List<Object[]> countReactionsGroupedByPost();
-
-    List<Reaction> findAllByPost_Id(Long postId);
-
-    List<Reaction> findAllByPost_IdAndReactionType(Long postId, ReactionType reactionType);
-
+        SELECT r.post.id, r.reactionType, COUNT(r)
+        FROM Reaction r
+        WHERE r.post.id IN :postIds
+        GROUP BY r.post.id, r.reactionType
+    """)
+    List<Object[]> countReactionsGroupedByPostIds(@Param("postIds") List<Long> postIds);
 
 }

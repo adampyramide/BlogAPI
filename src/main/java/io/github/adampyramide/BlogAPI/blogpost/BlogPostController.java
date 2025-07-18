@@ -8,6 +8,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +39,10 @@ public class BlogPostController {
             }
     )
     @GetMapping("/blog-posts")
-    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPosts() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPosts());
+    public ResponseEntity<Page<BlogPostResponseDTO>> getBlogPosts(
+            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.getBlogPosts(pageable));
     }
 
     @Operation(
@@ -62,7 +68,7 @@ public class BlogPostController {
     )
     @GetMapping("/blog-posts/{postId}")
     public ResponseEntity<BlogPostResponseDTO> getBlogPostById(@PathVariable Long postId) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostById(postId));
+        return ResponseEntity.ok(service.getBlogPostById(postId));
     }
 
     @Operation(
@@ -125,7 +131,7 @@ public class BlogPostController {
     )
     @GetMapping("/users/{userId}/posts")
     public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getBlogPostsByUserId(userId));
+        return ResponseEntity.ok(service.getBlogPostsByUserId(userId));
     }
 
 }
