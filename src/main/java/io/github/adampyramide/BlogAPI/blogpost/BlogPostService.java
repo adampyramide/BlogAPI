@@ -42,28 +42,7 @@ public class BlogPostService {
     // ====================
 
     public Page<BlogPostResponseDTO> getBlogPosts(Pageable pageable) {
-        Page<BlogPost> page = repo.findAll(pageable);
-
-        List<Long> postIds = page.getContent().stream()
-                .map(BlogPost::getId)
-                .toList();
-
-        Long userId = securityUtils.getAuthenticatedUser().getId();
-        Map<Long, ReactionType> userReactions = reactionService.getUserReactionTypesForPosts(userId, postIds);
-        Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
-
-        return page.map(post -> {
-                    BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(post);
-                    Long postId = post.getId();
-
-                    blogPostDTO.setUserReaction(userReactions.get(postId));
-
-                    Map<ReactionType, Long> counts = reactionsCounts.getOrDefault(postId, Map.of());
-                    blogPostDTO.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
-                    blogPostDTO.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
-
-                    return blogPostDTO;
-                });
+        return mapBlogPosts(repo.findAll(pageable));
     }
 
     public BlogPostResponseDTO getBlogPostById(Long id) {
@@ -135,7 +114,34 @@ public class BlogPostService {
     public Page<BlogPostResponseDTO> getBlogPostsByUserId(Long userId, Pageable pageable) {
         userService.getUserOrThrow(userId);
 
-        return repo.findAllByAuthor_Id(userId, pageable).map(mapper::toResponseDTO);
+        return mapBlogPosts(repo.findAllByAuthor_Id(userId, pageable));
+    }
+
+    // ====================
+    // Private methods
+    // ====================
+
+    private Page<BlogPostResponseDTO> mapBlogPosts(Page<BlogPost> page) {
+        List<Long> postIds = page.getContent().stream()
+                .map(BlogPost::getId)
+                .toList();
+
+        Long userId = securityUtils.getAuthenticatedUser().getId();
+        Map<Long, ReactionType> userReactions = reactionService.getUserReactionTypesForPosts(userId, postIds);
+        Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
+
+        return page.map(post -> {
+            BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(post);
+            Long postId = post.getId();
+
+            blogPostDTO.setUserReaction(userReactions.get(postId));
+
+            Map<ReactionType, Long> counts = reactionsCounts.getOrDefault(postId, Map.of());
+            blogPostDTO.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
+            blogPostDTO.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
+
+            return blogPostDTO;
+        });
     }
 
 }
