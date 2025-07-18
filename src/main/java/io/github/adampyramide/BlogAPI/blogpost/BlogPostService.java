@@ -8,6 +8,8 @@ import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserService;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -40,20 +42,23 @@ public class BlogPostService {
     // Public methods
     // ====================
 
-    public List<BlogPostResponseDTO> getBlogPosts() {
-        Map<Long, Map<ReactionType, Long>> reactionCounts = reactionService.getAllReactionCountsByPost();
+    public Page<BlogPostResponseDTO> getBlogPosts(Pageable pageable) {
+        Page<BlogPost> page = repo.findAll(pageable);
 
-        return repo.findAll().stream()
-                .map(post -> {
+        List<Long> postIds = page.getContent().stream()
+                .map(BlogPost::getId)
+                .toList();
+
+        Map<Long, Map<ReactionType, Long>> reactionCounts = reactionService.getReactionCountsForPostIds(postIds);
+
+        return page.map(post -> {
                     BlogPostResponseDTO dto = mapper.toResponseDTO(post);
                     Map<ReactionType, Long> counts = reactionCounts.getOrDefault(post.getId(), Map.of());
-
                     dto.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
                     dto.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
 
                     return dto;
-                })
-                .toList();
+                });
     }
 
 
