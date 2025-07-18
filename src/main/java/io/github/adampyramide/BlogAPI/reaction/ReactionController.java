@@ -35,7 +35,8 @@ public class ReactionController {
     public ResponseEntity<Page<ReactionResponseDTO>> getReactionsByPostId(
             @PathVariable Long postId,
             @RequestParam(required = false) ReactionType reactionType,
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            //POSSIBLY CHANGE SORT TO A CREATIONTIME
+            @PageableDefault(size = 10, sort = "id.authorId", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(service.getReactionsByPostId(postId, reactionType, pageable));
     }
