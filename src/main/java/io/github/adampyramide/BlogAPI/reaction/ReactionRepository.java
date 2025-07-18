@@ -1,5 +1,7 @@
 package io.github.adampyramide.BlogAPI.reaction;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,9 +12,9 @@ import java.util.List;
 @Repository
 public interface ReactionRepository extends JpaRepository<Reaction, ReactionId> {
 
-    List<Reaction> findAllByPost_Id(Long postId);
+    Page<Reaction> findAllByPost_Id(Long postId, Pageable pageable);
 
-    List<Reaction> findAllByPost_IdAndReactionType(Long postId, ReactionType reactionType);
+    Page<Reaction> findAllByPost_IdAndReactionType(Long postId, ReactionType reactionType, Pageable pageable);
 
     List<Reaction> findByAuthorIdAndPostIdIn(Long userId, List<Long> postIds);
 

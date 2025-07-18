@@ -3,6 +3,10 @@ package io.github.adampyramide.BlogAPI.reaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +32,12 @@ public class ReactionController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<ReactionResponseDTO>> getReactionsByPostId(@PathVariable Long postId, @RequestParam(required = false) ReactionType reactionType) {
-        return ResponseEntity.ok(service.getReactionsByPostId(postId, reactionType));
+    public ResponseEntity<Page<ReactionResponseDTO>> getReactionsByPostId(
+            @PathVariable Long postId,
+            @RequestParam(required = false) ReactionType reactionType,
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.getReactionsByPostId(postId, reactionType, pageable));
     }
 
     @Operation(

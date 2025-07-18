@@ -4,6 +4,8 @@ import io.github.adampyramide.BlogAPI.blogpost.BlogPostValidator;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,19 +32,17 @@ public class ReactionService {
     // Public methods
     // ====================
 
-    public List<ReactionResponseDTO> getReactionsByPostId(Long postId, ReactionType reactionType) {
+    public Page<ReactionResponseDTO> getReactionsByPostId(Long postId, ReactionType reactionType, Pageable pageable) {
         blogPostValidator.getByIdOrThrow(postId);
 
-        List<Reaction> reactions;
+        Page<Reaction> reactions;
 
         if (reactionType == null)
-            reactions = repo.findAllByPost_Id(postId);
+            reactions = repo.findAllByPost_Id(postId, pageable);
         else
-            reactions = repo.findAllByPost_IdAndReactionType(postId, reactionType);
+            reactions = repo.findAllByPost_IdAndReactionType(postId, reactionType, pageable);
 
-        return reactions.stream()
-                .map(mapper::toResponseDTO)
-                .toList();
+        return reactions.map(mapper::toResponseDTO);
     }
 
     public void addReactionByPostId(Long postId, ReactionRequestDTO reactionDTO) {
