@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface ReactionRepository extends JpaRepository<Reaction, ReactionId> {
 
-    List<Reaction> findByAuthorIdAndPostIdIn(Long userId, List<Long> postIds);
-
     List<Reaction> findAllByPost_Id(Long postId);
 
     List<Reaction> findAllByPost_IdAndReactionType(Long postId, ReactionType reactionType);
+
+    List<Reaction> findByAuthorIdAndPostIdIn(Long userId, List<Long> postIds);
 
     @Query("""
         SELECT r.reactionType, COUNT(r)
