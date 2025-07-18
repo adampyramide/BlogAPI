@@ -132,12 +132,10 @@ public class BlogPostService {
         repo.deleteAll(blogPosts);
     }
 
-    public List<BlogPostResponseDTO> getBlogPostsByUserId(Long userId) {
+    public Page<BlogPostResponseDTO> getBlogPostsByUserId(Long userId, Pageable pageable) {
         userService.getUserOrThrow(userId);
 
-        return repo.findAllByAuthor_Id(userId).stream()
-                .map(mapper::toResponseDTO)
-                .toList();
+        return repo.findAllByAuthor_Id(userId, pageable).map(mapper::toResponseDTO);
     }
 
 }
