@@ -1,6 +1,5 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
-import io.github.adampyramide.BlogAPI.comment.CommentService;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.reaction.ReactionService;
 import io.github.adampyramide.BlogAPI.reaction.ReactionType;
@@ -49,21 +48,31 @@ public class BlogPostService {
                 .map(BlogPost::getId)
                 .toList();
 
-        Map<Long, Map<ReactionType, Long>> reactionCounts = reactionService.getReactionCountsForPostIds(postIds);
+        Long userId = securityUtils.getAuthenticatedUser().getId();
+        Map<Long, ReactionType> userReactions = reactionService.getUserReactionTypesForPosts(userId, postIds);
+        Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
 
         return page.map(post -> {
-                    BlogPostResponseDTO dto = mapper.toResponseDTO(post);
-                    Map<ReactionType, Long> counts = reactionCounts.getOrDefault(post.getId(), Map.of());
-                    dto.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
-                    dto.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
+                    BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(post);
+                    Long postId = post.getId();
 
-                    return dto;
+                    blogPostDTO.setUserReaction(userReactions.get(postId));
+
+                    Map<ReactionType, Long> counts = reactionsCounts.getOrDefault(postId, Map.of());
+                    blogPostDTO.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
+                    blogPostDTO.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
+
+                    return blogPostDTO;
                 });
     }
 
-
     public BlogPostResponseDTO getBlogPostById(Long id) {
         BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(validator.getByIdOrThrow(id));
+
+        blogPostDTO.setUserReaction(reactionService.getUserReactionTypeForPost(
+                securityUtils.getAuthenticatedUser().getId(),
+                id
+        ));
 
         Map<ReactionType, Long> reactionCounts = reactionService.getReactionCountsByPostId(id);
         blogPostDTO.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
