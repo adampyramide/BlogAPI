@@ -20,8 +20,12 @@ Not available yet, but I'm planning on deploying this API live to be tested (and
 - Postman
 
 ## Features
-- User registration with password hashing
-- User login with JWT authentication
-- Get/Create/Edit/Delete blog posts which have authors (user).
-- Get all posts made by a certain user only.
-- Get user data with user id.
+- Secure user registration with password hashing 
+- User authentication using JWT tokens 
+- Full CRUD operations for blog posts (Create, Read, Update, Delete)
+- Paginated retrieval of all blog posts 
+- Paginated retrieval of blog posts authored by a specific user 
+- Full CRUD operations for comments on blog posts, including bulk deletion 
+- Paginated retrieval of comments on a specific blog post 
+- Paginated retrieval of comments made by a specific user 
+- Fetch user profile data by user ID
