@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface ReactionRepository extends JpaRepository<Reaction, ReactionId> {
 
+    List<Reaction> findByAuthorIdAndPostIdIn(Long userId, List<Long> postIds);
+
     List<Reaction> findAllByPost_Id(Long postId);
 
     List<Reaction> findAllByPost_IdAndReactionType(Long postId, ReactionType reactionType);
@@ -29,5 +31,4 @@ public interface ReactionRepository extends JpaRepository<Reaction, ReactionId> 
         GROUP BY r.post.id, r.reactionType
     """)
     List<Object[]> countReactionsGroupedByPostIds(@Param("postIds") List<Long> postIds);
-
 }

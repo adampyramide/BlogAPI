@@ -7,10 +7,8 @@ import io.github.adampyramide.BlogAPI.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReactionService {
@@ -79,6 +77,23 @@ public class ReactionService {
     // ====================
     // Internal methods
     // ====================
+
+    public ReactionType getUserReactionTypeForPost(Long userId, Long postId) {
+        ReactionId reactionId = new ReactionId(userId, postId);
+
+        return repo.findById(reactionId)
+                .map(Reaction::getReactionType)
+                .orElse(null);
+    }
+
+    public Map<Long, ReactionType> getUserReactionTypesForPosts(Long userId, List<Long> postIds) {
+        List<Reaction> reactions = repo.findByAuthorIdAndPostIdIn(userId, postIds);
+
+        return reactions.stream().collect(Collectors.toMap(
+                reaction -> reaction.getPost().getId(),
+                Reaction::getReactionType
+        ));
+    }
 
     public Map<Long, Map<ReactionType, Long>> getReactionCountsForPostIds(List<Long> postIds) {
         List<Object[]> results = repo.countReactionsGroupedByPostIds(postIds);
