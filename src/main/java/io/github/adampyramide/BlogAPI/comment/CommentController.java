@@ -5,6 +5,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,8 +78,11 @@ public class CommentController {
             }
     )
     @GetMapping("/blog-posts/{postId}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable Long postId) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getCommentsByPostId(postId));
+    public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPostId(
+            @PathVariable Long postId,
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.getCommentsByPostId(postId, pageable));
     }
 
     @Operation(
@@ -101,8 +108,11 @@ public class CommentController {
             }
     )
     @GetMapping("/users/{userId}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> getCommentsByAuthorId(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getCommentsByAuthorId(userId));
+    public ResponseEntity<Page<CommentResponseDTO>> getCommentsByAuthorId(
+            @PathVariable Long userId,
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.getCommentsByAuthorId(userId, pageable));
     }
 
 }

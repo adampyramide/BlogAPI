@@ -4,6 +4,8 @@ import io.github.adampyramide.BlogAPI.blogpost.BlogPostValidator;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -34,16 +36,12 @@ public class CommentService {
         return toResponseDTO(getCommentOrThrow(id));
     }
 
-    public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
-        return repo.findAllByPostId(postId).stream()
-                .map(this::toResponseDTO)
-                .toList();
+    public Page<CommentResponseDTO> getCommentsByPostId(Long postId, Pageable pageable) {
+        return repo.findAllByPostId(postId, pageable).map(this::toResponseDTO);
     }
 
-    public List<CommentResponseDTO> getCommentsByAuthorId(Long userId) {
-        return repo.findAllByAuthor_Id(userId).stream()
-                .map(this::toResponseDTO)
-                .toList();
+    public Page<CommentResponseDTO> getCommentsByAuthorId(Long userId, Pageable pageable) {
+        return repo.findAllByAuthor_Id(userId, pageable).map(this::toResponseDTO);
     }
 
     public void editCommentById(Long id, CommentRequestDTO commentDTO) {
