@@ -130,8 +130,11 @@ public class BlogPostController {
             }
     )
     @GetMapping("/users/{userId}/posts")
-    public ResponseEntity<List<BlogPostResponseDTO>> getBlogPostsByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(service.getBlogPostsByUserId(userId));
+    public ResponseEntity<Page<BlogPostResponseDTO>> getBlogPostsByUserId(
+            @PathVariable Long userId,
+            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.getBlogPostsByUserId(userId, pageable));
     }
 
 }
