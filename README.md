@@ -8,7 +8,15 @@ API documentation for this project is available via Swagger UI.
 https://adampyramide.github.io/BlogAPI/.
 
 ## Try the API
-Not available yet, but I'm planning on deploying this API live to be tested (and possibly consumed by a frontend in the future).
+Hosted on render.com, expect windup time as I use the free host plan.
+
+baseUrl: https://blogapi-vzsx.onrender.com/
+
+Import this into Postman: [docs/api-docs.json](docs/api-docs.json)
+
+Create an environment with "baseUrl" and "authToken"
+
+
 
 ## Utilized technologies
 **Project**
