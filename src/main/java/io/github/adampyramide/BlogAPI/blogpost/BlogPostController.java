@@ -33,7 +33,7 @@ public class BlogPostController {
 
     @Operation(
             summary = "Get all blogposts",
-            description = "Returns a list of all blogposts",
+            description = "Returns a paginated list of all blogposts. Sorted by creation time descending.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "List of all blogposts")
             }
@@ -123,7 +123,7 @@ public class BlogPostController {
 
     @Operation(
             summary = "Get all blogposts by user",
-            description = "Get all the blogposts created by the specified user",
+            description = "Returns a paginated list of blogposts created by the specified user. Sorted by creation time descending.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "List of blogposts created by the user returned"),
                     @ApiResponse(responseCode = "404", description = "User not found", content = @Content())

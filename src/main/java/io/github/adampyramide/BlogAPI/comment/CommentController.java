@@ -71,7 +71,7 @@ public class CommentController {
 
     @Operation(
             summary = "Get comments for blogpost",
-            description = "Returns a list of all comments created on the specified blogpost",
+            description = "Returns a paginated list of comments for the specified blogpost. Sorted by comment ID descending.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments on blogpost returned"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found", content = @Content())
@@ -101,7 +101,7 @@ public class CommentController {
 
     @Operation(
             summary = "Get all comments by user",
-            description = "Returns a list of all comments created by the specified user",
+            description = "Returns a paginated list of comments made by the specified user. Sorted by comment ID descending.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comments by user returned"),
                     @ApiResponse(responseCode = "404", description = "User not found", content = @Content())

@@ -25,7 +25,7 @@ public class ReactionController {
 
     @Operation(
             summary = "Get reactions for blogpost",
-            description = "Returns a list of users and their reaction type for the specified blogpost. Optional filter by reaction type (LIKE or DISLIKE).",
+            description = "Returns a paginated list of reactions (users and their reaction type) for the specified blogpost. Optional filter by reaction type (LIKE or DISLIKE). Sorted by author ID descending.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Users and their reaction type returned"),
                     @ApiResponse(responseCode = "404", description = "Post not found", content = @Content())
