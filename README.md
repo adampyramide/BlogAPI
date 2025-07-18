@@ -16,8 +16,6 @@ Import this into Postman: [docs/api-docs.json](docs/api-docs.json)
 
 Create an environment with "baseUrl" and "authToken"
 
-
-
 ## Utilized technologies
 **Project**
 - Java (Maven)
