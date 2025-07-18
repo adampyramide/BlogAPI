@@ -12,7 +12,8 @@ Not available yet, but I'm planning on deploying this API live to be tested (and
 
 ## Utilized technologies
 **Project**
-- Spring Boot (Maven)
+- Java (Maven)
+- Spring Boot
 - MySQL
 
 **Development**
