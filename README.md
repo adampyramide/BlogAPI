@@ -2,19 +2,27 @@
 A personal project I built to learn more about backend web development and show my experience and knowledge.
 
 ## API Documentation
-API documentation for this project is available via Swagger UI.
-
-**View the API docs here:**
+Interactive API documentation is available via Swagger UI:
 https://adampyramide.github.io/BlogAPI/.
 
 ## Try the API
-Hosted on render.com, expect windup time as I use the free host plan.
+You can test the Blog REST API using tools like Postman or curl. Hosted on render.com, **expect windup time on first request.**
 
-baseUrl: https://blogapi-vzsx.onrender.com/
+**Base URL**
 
-Import this into Postman: [docs/api-docs.json](docs/api-docs.json)
+All requests should use the following base URL:
+https://blogapi-vzsx.onrender.com
 
-Create an environment with "baseUrl" and "authToken"
+**Importing Endpoints**
+
+You can import all API endpoints using the OpenAPI document:
+[docs/api-docs.json](docs/api-docs.json)
+
+**Authentication**
+
+Some routes require a JWT token for authentication. You can get a token by registering or logging in. These return a JWT token. You’ll need to include this token in the Authorization header for any protected routes.
+
+Refer to API documentation for the register and login endpoints.
 
 ## Utilized technologies
 **Project**
