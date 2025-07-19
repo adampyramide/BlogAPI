@@ -1,5 +1,5 @@
 # Blog API
-A personal project I built to learn more about backend web development and show my experience and knowledge.
+A personal project I built to deepen my backend web development skills and demonstrate my experience.
 
 ## API Documentation
 Interactive API documentation is available via Swagger UI:
