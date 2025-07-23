@@ -44,13 +44,13 @@ public class AuthService {
 
         userRepo.save(user);
 
-        return loginUser(userDTO);
+        return jwtService.generateToken(userDTO.username());
     }
 
 
     public String loginUser(AuthUserDTO userDTO) {
         try {
-            Authentication authentication = authManager.authenticate(
+            authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.username(), userDTO.password())
             );
 
