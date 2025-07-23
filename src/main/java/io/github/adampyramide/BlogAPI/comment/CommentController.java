@@ -79,7 +79,7 @@ public class CommentController {
     @GetMapping("/blog-posts/{postId}/comments")
     public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPostId(
             @PathVariable Long postId,
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(service.getCommentsByPostId(postId, pageable));
     }
@@ -109,7 +109,7 @@ public class CommentController {
     @GetMapping("/users/{userId}/comments")
     public ResponseEntity<Page<CommentResponseDTO>> getCommentsByAuthorId(
             @PathVariable Long userId,
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(service.getCommentsByAuthorId(userId, pageable));
     }
