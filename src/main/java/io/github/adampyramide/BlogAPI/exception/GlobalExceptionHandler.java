@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final ZoneId zoneId = ZoneId.of("Z");;
+
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Object> handleApiRequestException(CustomException e) {
         HttpStatus httpStatus = e.getHttpStatus();
@@ -24,7 +26,7 @@ public class GlobalExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 e.getMessage(),
                 httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                ZonedDateTime.now(zoneId)
         );
 
         return new ResponseEntity<>(exceptionResponse, httpStatus);
@@ -45,7 +47,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("timestamp", ZonedDateTime.now(ZoneId.of("Z")));
+        responseBody.put("timestamp", ZonedDateTime.now(zoneId));
         responseBody.put("status", HttpStatus.BAD_REQUEST.value());
         responseBody.put("errors", errors);
 
