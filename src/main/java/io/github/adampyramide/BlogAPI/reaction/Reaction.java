@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -27,6 +30,9 @@ public class Reaction {
     @MapsId("postId")
     @JoinColumn(name = "post_id")
     private BlogPost post;
+
+    @CreationTimestamp
+    private LocalDateTime createTime;
 
     @Enumerated(EnumType.STRING)
     private ReactionType reactionType;
