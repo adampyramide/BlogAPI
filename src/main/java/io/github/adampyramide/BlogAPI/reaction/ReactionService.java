@@ -52,10 +52,12 @@ public class ReactionService {
                 postId
         );
 
-        Reaction reaction = mapper.toEntity(reactionDTO);
-        reaction.setId(reactionId);
-        reaction.setAuthor(user);
-        reaction.setPost(blogPostFetcher.getByIdOrThrow(postId));
+        Reaction reaction = Reaction.builder()
+                .id(reactionId)
+                .author(user)
+                .post(blogPostFetcher.getByIdOrThrow(postId))
+                .reactionType(reactionDTO.reactionType())
+                .build();
 
         repo.save(reaction);
     }
