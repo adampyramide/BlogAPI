@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,9 @@ public class BlogPost {
 
     private String title;
     private String body;
+
+    @Column(updatable = false)
+    @CreationTimestamp
     private LocalDateTime createTime;
 
 }
