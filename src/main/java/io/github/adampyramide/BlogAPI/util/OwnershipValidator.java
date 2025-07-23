@@ -9,7 +9,7 @@ public class OwnershipValidator {
     public static void authorizeAuthor(User author, User currentUser, String resourceName) {
         if (!author.getId().equals(currentUser.getId())) {
             throw new CustomException(
-                    "You are not authorized to modify this " + resourceName.toLowerCase(), HttpStatus.UNAUTHORIZED
+                    "You are not authorized to modify this " + resourceName, HttpStatus.FORBIDDEN
             );
         }
     }
