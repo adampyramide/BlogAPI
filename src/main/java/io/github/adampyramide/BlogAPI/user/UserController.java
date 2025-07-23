@@ -23,6 +23,19 @@ public class UserController {
     }
 
     @Operation(
+            summary = "Delete user by session",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "User deleted"),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            }
+    )
+    @DeleteMapping
+    public ResponseEntity<PublicUserDTO> deleteUser() {
+        service.deleteUser();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Operation(
             summary = "Get user by id",
             responses = {
                     @ApiResponse(responseCode = "200", description = "User returned"),
