@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 public class BlogPostService {
 
     private final BlogPostRepository repo;
-    private final BlogPostValidator validator;
+    private final BlogPostFetcher validator;
     private final BlogPostMapper mapper;
 
     private final UserService userService;
@@ -28,7 +27,7 @@ public class BlogPostService {
 
     private final SecurityUtils securityUtils;
 
-    public BlogPostService(BlogPostRepository repo, BlogPostValidator validator, BlogPostMapper mapper, UserService userService, ReactionService reactionService, SecurityUtils securityUtils) {
+    public BlogPostService(BlogPostRepository repo, BlogPostFetcher validator, BlogPostMapper mapper, UserService userService, ReactionService reactionService, SecurityUtils securityUtils) {
         this.repo = repo;
         this.validator = validator;
         this.mapper = mapper;

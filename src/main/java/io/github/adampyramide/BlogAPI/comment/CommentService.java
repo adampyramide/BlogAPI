@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.comment;
 
-import io.github.adampyramide.BlogAPI.blogpost.BlogPostValidator;
+import io.github.adampyramide.BlogAPI.blogpost.BlogPostFetcher;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
@@ -9,22 +9,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class CommentService {
 
     private final CommentRepository repo;
     private final CommentMapper mapper;
 
-    private final BlogPostValidator blogPostValidator;
+    private final BlogPostFetcher blogPostFetcher;
 
     private final SecurityUtils securityUtils;
 
-    public CommentService(CommentRepository repo, CommentMapper mapper, BlogPostValidator blogPostValidator, SecurityUtils securityUtils) {
+    public CommentService(CommentRepository repo, CommentMapper mapper, BlogPostFetcher blogPostFetcher, SecurityUtils securityUtils) {
         this.repo = repo;
         this.mapper = mapper;
-        this.blogPostValidator = blogPostValidator;
+        this.blogPostFetcher = blogPostFetcher;
         this.securityUtils = securityUtils;
     }
 
@@ -72,7 +70,7 @@ public class CommentService {
     public void createComment(Long postId, CommentRequestDTO commentDTO) {
         Comment comment = mapper.toEntity(commentDTO);
         comment.setAuthor(securityUtils.getAuthenticatedUser());
-        comment.setPost(blogPostValidator.getByIdOrThrow(postId));
+        comment.setPost(blogPostFetcher.getByIdOrThrow(postId));
 
         repo.save(comment);
     }

@@ -5,11 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BlogPostValidator {
+public class BlogPostFetcher {
 
     private final BlogPostRepository repo;
 
-    public BlogPostValidator(BlogPostRepository repo) {
+    public BlogPostFetcher(BlogPostRepository repo) {
         this.repo = repo;
     }
 

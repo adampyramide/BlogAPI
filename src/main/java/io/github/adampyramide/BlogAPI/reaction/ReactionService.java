@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.reaction;
 
-import io.github.adampyramide.BlogAPI.blogpost.BlogPostValidator;
+import io.github.adampyramide.BlogAPI.blogpost.BlogPostFetcher;
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
@@ -18,13 +18,13 @@ public class ReactionService {
     ReactionRepository repo;
     ReactionMapper mapper;
 
-    BlogPostValidator blogPostValidator;
+    BlogPostFetcher blogPostFetcher;
     SecurityUtils securityUtils;
 
-    public ReactionService(ReactionRepository repo, ReactionMapper mapper, BlogPostValidator blogPostValidator, SecurityUtils securityUtils) {
+    public ReactionService(ReactionRepository repo, ReactionMapper mapper, BlogPostFetcher blogPostFetcher, SecurityUtils securityUtils) {
         this.repo = repo;
         this.mapper = mapper;
-        this.blogPostValidator = blogPostValidator;
+        this.blogPostFetcher = blogPostFetcher;
         this.securityUtils = securityUtils;
     }
 
@@ -33,7 +33,7 @@ public class ReactionService {
     // ====================
 
     public Page<ReactionResponseDTO> getReactionsByPostId(Long postId, ReactionType reactionType, Pageable pageable) {
-        blogPostValidator.getByIdOrThrow(postId);
+        blogPostFetcher.getByIdOrThrow(postId);
 
         Page<Reaction> reactions;
 
@@ -55,13 +55,13 @@ public class ReactionService {
         Reaction reaction = mapper.toEntity(reactionDTO);
         reaction.setId(reactionId);
         reaction.setAuthor(user);
-        reaction.setPost(blogPostValidator.getByIdOrThrow(postId));
+        reaction.setPost(blogPostFetcher.getByIdOrThrow(postId));
 
         repo.save(reaction);
     }
 
     public void deleteReactionByPostId(Long postId) {
-        blogPostValidator.getByIdOrThrow(postId);
+        blogPostFetcher.getByIdOrThrow(postId);
 
         ReactionId reactionId = new ReactionId(
                 securityUtils.getAuthenticatedUser().getId(),
