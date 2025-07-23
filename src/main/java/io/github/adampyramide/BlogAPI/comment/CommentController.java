@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,8 +13,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "Comments")
 @SecurityRequirement(name = "bearerAuth")
@@ -50,7 +49,7 @@ public class CommentController {
             }
     )
     @PutMapping("/comments/{commentId}")
-    public ResponseEntity<Void> editCommentById(@PathVariable Long commentId, @RequestBody CommentRequestDTO commentDTO) {
+    public ResponseEntity<Void> editCommentById(@PathVariable Long commentId, @Valid @RequestBody CommentRequestDTO commentDTO) {
         service.editCommentById(commentId, commentDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -94,7 +93,7 @@ public class CommentController {
             }
     )
     @PostMapping("/blog-posts/{postId}/comments")
-    public ResponseEntity<Void> createComment(@PathVariable Long postId, @RequestBody CommentRequestDTO commentDTO) {
+    public ResponseEntity<Void> createComment(@PathVariable Long postId, @Valid @RequestBody CommentRequestDTO commentDTO) {
         service.createComment(postId, commentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
