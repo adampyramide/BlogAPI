@@ -94,8 +94,15 @@ public class BlogPostService {
     public void bulkDeleteBlogPostsByIds(List<Long> ids) {
         List<BlogPost> blogPosts = repo.findAllById(ids);
 
-        if (blogPosts.size() != ids.size())
+        if (blogPosts.isEmpty())
             throw new CustomException("Zero posts found", HttpStatus.NOT_FOUND);
+
+        List<Long> foundPostIds = blogPosts.stream()
+                .map(BlogPost::getId)
+                .toList();
+        List<Long> missingPostIds = ids.stream()
+                .filter(id -> !foundPostIds.contains(id))
+                .toList();
 
         User authenticatedUser = securityUtils.getAuthenticatedUser();
         for (BlogPost blogPost : blogPosts) {
@@ -107,6 +114,10 @@ public class BlogPostService {
         }
 
         repo.deleteAll(blogPosts);
+
+        if (!missingPostIds.isEmpty())
+            throw new CustomException("Some blogposts were not found: " + missingPostIds, HttpStatus.NOT_FOUND);
+
     }
 
     public Page<BlogPostResponseDTO> getBlogPostsByUserId(Long userId, Pageable pageable) {
