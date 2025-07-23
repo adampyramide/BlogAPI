@@ -1,3 +1,5 @@
+jwt:
+  secret: c+jqXZacYwx5Nbli37gaEoBllWoqdC76B7j0/NLvX2w=
 server:
   port: ${PORT:8080}
 spring:
@@ -7,7 +9,12 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
+#    url: jdbc:postgresql://localhost:5432/blog_db #local
+#    username: postgres #local
+#    password: root #local
+#    driver-class-name: org.postgresql.Driver #local
   jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect #local
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: false #local: set to false for deploy
