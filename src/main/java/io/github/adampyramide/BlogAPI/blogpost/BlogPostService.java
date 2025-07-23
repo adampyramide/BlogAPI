@@ -63,7 +63,6 @@ public class BlogPostService {
     public void createBlogPost(BlogPostRequestDTO blogPostDTO) {
         BlogPost blogPost = mapper.toEntity(blogPostDTO);
         blogPost.setAuthor(securityUtils.getAuthenticatedUser());
-        blogPost.setCreateTime(LocalDateTime.now());
 
         repo.save(blogPost);
     }
