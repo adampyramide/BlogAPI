@@ -79,7 +79,7 @@ public class BlogPostController {
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
-    @PutMapping("/blog-posts/{postId}")
+    @PatchMapping("/blog-posts/{postId}")
     public ResponseEntity<Void> editBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
         service.editBlogPostById(postId, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
