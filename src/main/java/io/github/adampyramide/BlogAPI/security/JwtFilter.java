@@ -19,11 +19,12 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     JwtService jwtService;
-    ApplicationContext appContext;
+    MyUserDetailsService userDetailsService;
 
-    public JwtFilter(JwtService jwtService, ApplicationContext appContext) {
+
+    public JwtFilter(JwtService jwtService, MyUserDetailsService userDetailsService) {
         this.jwtService = jwtService;
-        this.appContext = appContext;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = appContext.getBean(MyUserDetailsService.class).loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
