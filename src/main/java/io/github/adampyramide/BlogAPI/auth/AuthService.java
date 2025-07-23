@@ -35,7 +35,7 @@ public class AuthService {
     // Public methods
     // ====================
 
-    public void registerUser(AuthUserDTO userDTO) {
+    public String registerUser(AuthUserDTO userDTO) {
         if (userRepo.existsByUsername(userDTO.username()))
             throw new CustomException("Username is already taken", HttpStatus.CONFLICT);
 
@@ -43,6 +43,8 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(userDTO.password()));
 
         userRepo.save(user);
+
+        return loginUser(userDTO);
     }
 
 
