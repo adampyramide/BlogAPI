@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class ReactionService {
 
-    ReactionRepository repo;
-    ReactionMapper mapper;
+    private final ReactionRepository repo;
+    private final ReactionMapper mapper;
 
-    BlogPostFetcher blogPostFetcher;
-    SecurityUtils securityUtils;
+    private final BlogPostFetcher blogPostFetcher;
+    private final SecurityUtils securityUtils;
 
     public ReactionService(ReactionRepository repo, ReactionMapper mapper, BlogPostFetcher blogPostFetcher, SecurityUtils securityUtils) {
         this.repo = repo;
