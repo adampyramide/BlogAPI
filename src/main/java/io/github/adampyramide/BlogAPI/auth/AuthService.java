@@ -21,14 +21,14 @@ public class AuthService {
 
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
-
-    public AuthService(UserRepository userRepo, UserMapper userMapper, AuthenticationManager authManager, JwtService jwtService) {
+    public AuthService(UserRepository userRepo, UserMapper userMapper, AuthenticationManager authManager, JwtService jwtService, BCryptPasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.userMapper = userMapper;
         this.authManager = authManager;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // ====================
