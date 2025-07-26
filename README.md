@@ -24,16 +24,13 @@ Import this OpenAPI document into tools like Postman or Insomnia:
 **[docs/api-docs.json](docs/api-docs.json)**
 
 ### 🔐 Authentication
-
 Some endpoints require a JWT token.
-
 1. Register or log in to receive a token.
 2. Include the token in your request headers: ```Authorization: Bearer YOUR_TOKEN_HERE```
 
 Refer to the API docs for details on the login and registration endpoints.
 
 ## ⚙️ Features
-
 ### ✅ Secure User Authentication
 - Register and login with username and password
 - Passwords securely hashed
@@ -75,6 +72,5 @@ Refer to the API docs for details on the login and registration endpoints.
 - Postman
 
 ## 📄 License
-
 Licensed under the [MIT License](LICENSE).  
 © 2025 Adam El Zahiri
