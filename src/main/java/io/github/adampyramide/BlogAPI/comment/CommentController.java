@@ -36,7 +36,7 @@ public class CommentController {
             }
     )
     @GetMapping("comments/{commentId}")
-    public ResponseEntity<CommentResponseDTO> getCommentById(@PathVariable Long commentId) {
+    public ResponseEntity<CommentResponse> getCommentById(@PathVariable Long commentId) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getCommentById(commentId));
     }
 
@@ -49,7 +49,7 @@ public class CommentController {
             }
     )
     @PutMapping("/comments/{commentId}")
-    public ResponseEntity<Void> editCommentById(@PathVariable Long commentId, @Valid @RequestBody CommentRequestDTO commentDTO) {
+    public ResponseEntity<Void> editCommentById(@PathVariable Long commentId, @Valid @RequestBody CommentRequest commentDTO) {
         service.editCommentById(commentId, commentDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -77,7 +77,7 @@ public class CommentController {
             }
     )
     @GetMapping("/blog-posts/{postId}/comments")
-    public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPostId(
+    public ResponseEntity<Page<CommentResponse>> getCommentsByPostId(
             @PathVariable Long postId,
             @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {
@@ -93,7 +93,7 @@ public class CommentController {
             }
     )
     @PostMapping("/blog-posts/{postId}/comments")
-    public ResponseEntity<Void> createComment(@PathVariable Long postId, @Valid @RequestBody CommentRequestDTO commentDTO) {
+    public ResponseEntity<Void> createComment(@PathVariable Long postId, @Valid @RequestBody CommentRequest commentDTO) {
         service.createComment(postId, commentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -107,7 +107,7 @@ public class CommentController {
             }
     )
     @GetMapping("/users/{userId}/comments")
-    public ResponseEntity<Page<CommentResponseDTO>> getCommentsByAuthorId(
+    public ResponseEntity<Page<CommentResponse>> getCommentsByAuthorId(
             @PathVariable Long userId,
             @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {

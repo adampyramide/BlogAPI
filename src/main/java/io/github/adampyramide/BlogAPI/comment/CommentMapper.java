@@ -7,13 +7,13 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    Comment toEntity(CommentRequestDTO requestDTO);
+    Comment toEntity(CommentRequest requestDTO);
 
     @Mapping(source = "post.id", target = "postId")
     @Mapping(source = "author", target = "author")
     @Mapping(source = "parentComment.id", target = "parentCommentId")
-    CommentResponseDTO toResponseDTO(Comment entity);
+    CommentResponse toResponseDTO(Comment entity);
 
-    void updateEntityWithDto(CommentRequestDTO dto, @MappingTarget Comment entity);
+    void updateEntityWithDto(CommentRequest dto, @MappingTarget Comment entity);
 
 }

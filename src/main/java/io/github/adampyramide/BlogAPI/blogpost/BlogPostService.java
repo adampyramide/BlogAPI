@@ -40,12 +40,12 @@ public class BlogPostService {
     // Public methods
     // ====================
 
-    public Page<BlogPostResponseDTO> getBlogPosts(Pageable pageable) {
+    public Page<BlogPostResponse> getBlogPosts(Pageable pageable) {
         return mapBlogPosts(repo.findAll(pageable));
     }
 
-    public BlogPostResponseDTO getBlogPostById(Long id) {
-        BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(validator.getByIdOrThrow(id));
+    public BlogPostResponse getBlogPostById(Long id) {
+        BlogPostResponse blogPostDTO = mapper.toResponseDTO(validator.getByIdOrThrow(id));
 
         blogPostDTO.setUserReaction(reactionService.getUserReactionTypeForPost(
                 securityUtils.getAuthenticatedUser().getId(),
@@ -59,14 +59,14 @@ public class BlogPostService {
         return blogPostDTO;
     }
 
-    public void createBlogPost(BlogPostRequestDTO blogPostDTO) {
+    public void createBlogPost(BlogPostRequest blogPostDTO) {
         BlogPost blogPost = mapper.toEntity(blogPostDTO);
         blogPost.setAuthor(securityUtils.getAuthenticatedUser());
 
         repo.save(blogPost);
     }
 
-    public void editBlogPostById(Long id, BlogPostRequestDTO blogPostDTO) {
+    public void editBlogPostById(Long id, BlogPostRequest blogPostDTO) {
         BlogPost blogPost = validator.getByIdOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(
@@ -120,7 +120,7 @@ public class BlogPostService {
 
     }
 
-    public Page<BlogPostResponseDTO> getBlogPostsByUserId(Long userId, Pageable pageable) {
+    public Page<BlogPostResponse> getBlogPostsByUserId(Long userId, Pageable pageable) {
         userService.getUserOrThrow(userId);
 
         return mapBlogPosts(repo.findAllByAuthor_Id(userId, pageable));
@@ -130,7 +130,7 @@ public class BlogPostService {
     // Private methods
     // ====================
 
-    private Page<BlogPostResponseDTO> mapBlogPosts(Page<BlogPost> page) {
+    private Page<BlogPostResponse> mapBlogPosts(Page<BlogPost> page) {
         List<Long> postIds = page.getContent().stream()
                 .map(BlogPost::getId)
                 .toList();
@@ -140,7 +140,7 @@ public class BlogPostService {
         Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
 
         return page.map(post -> {
-            BlogPostResponseDTO blogPostDTO = mapper.toResponseDTO(post);
+            BlogPostResponse blogPostDTO = mapper.toResponseDTO(post);
             Long postId = post.getId();
 
             blogPostDTO.setUserReaction(userReactions.get(postId));

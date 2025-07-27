@@ -1,6 +1,5 @@
 package io.github.adampyramide.BlogAPI.auth;
 
-import io.github.adampyramide.BlogAPI.user.AuthUserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,7 +27,7 @@ public class AuthController {
             }
     )
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDTO> registerUser(@Valid @RequestBody AuthUserDTO userDTO) {
+    public ResponseEntity<AuthResponse> registerUser(@Valid @RequestBody AuthRequest userDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.registerUser(userDTO));
     }
 
@@ -39,7 +38,7 @@ public class AuthController {
             }
     )
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> loginUser(@Valid @RequestBody AuthUserDTO userDTO) {
+    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody AuthRequest userDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(service.loginUser(userDTO));
     }
 

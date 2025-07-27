@@ -25,12 +25,11 @@ public class UserController {
     @Operation(
             summary = "Delete user by session",
             responses = {
-                    @ApiResponse(responseCode = "204", description = "User deleted"),
-                    @ApiResponse(responseCode = "404", description = "User not found")
+                    @ApiResponse(responseCode = "204", description = "User deleted")
             }
     )
     @DeleteMapping("/me")
-    public ResponseEntity<PublicUserDTO> deleteUser() {
+    public ResponseEntity<PublicUserResponse> deleteUser() {
         service.deleteUser();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -43,7 +42,7 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<PublicUserDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<PublicUserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getUserById(id));
     }
 

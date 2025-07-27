@@ -32,7 +32,7 @@ public class ReactionService {
     // Public methods
     // ====================
 
-    public Page<ReactionResponseDTO> getReactionsByPostId(Long postId, ReactionType reactionType, Pageable pageable) {
+    public Page<ReactionResponse> getReactionsByPostId(Long postId, ReactionType reactionType, Pageable pageable) {
         blogPostFetcher.getByIdOrThrow(postId);
 
         Page<Reaction> reactions;
@@ -45,7 +45,7 @@ public class ReactionService {
         return reactions.map(mapper::toResponseDTO);
     }
 
-    public void addReactionByPostId(Long postId, ReactionRequestDTO reactionDTO) {
+    public void addReactionByPostId(Long postId, ReactionRequest reactionDTO) {
         User user = securityUtils.getAuthenticatedUser();
         ReactionId reactionId = new ReactionId(
                 user.getId(),

@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.reaction;
 
-public record ReactionRequestDTO (
+public record ReactionRequest(
 
         ReactionType reactionType
 

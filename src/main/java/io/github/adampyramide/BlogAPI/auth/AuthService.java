@@ -2,7 +2,6 @@ package io.github.adampyramide.BlogAPI.auth;
 
 import io.github.adampyramide.BlogAPI.exception.CustomException;
 import io.github.adampyramide.BlogAPI.security.JwtService;
-import io.github.adampyramide.BlogAPI.user.AuthUserDTO;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserMapper;
 import io.github.adampyramide.BlogAPI.user.UserRepository;
@@ -34,7 +33,7 @@ public class AuthService {
     // Public methods
     // ====================
 
-    public AuthResponseDTO registerUser(AuthUserDTO userDTO) {
+    public AuthResponse registerUser(AuthRequest userDTO) {
         if (userRepo.existsByUsername(userDTO.username()))
             throw new CustomException("Username is already taken", HttpStatus.CONFLICT);
 
@@ -47,7 +46,7 @@ public class AuthService {
     }
 
 
-    public AuthResponseDTO loginUser(AuthUserDTO userDTO) {
+    public AuthResponse loginUser(AuthRequest userDTO) {
         try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.username(), userDTO.password())
@@ -64,8 +63,8 @@ public class AuthService {
     // Private methods
     // ====================
 
-    private AuthResponseDTO getAuthResponse(AuthUserDTO userDTO) {
-        return new AuthResponseDTO(jwtService.generateToken(userDTO.username()));
+    private AuthResponse getAuthResponse(AuthRequest userDTO) {
+        return new AuthResponse(jwtService.generateToken(userDTO.username()));
     }
 
 }

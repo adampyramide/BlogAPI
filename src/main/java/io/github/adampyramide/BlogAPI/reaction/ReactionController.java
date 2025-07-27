@@ -35,7 +35,7 @@ public class ReactionController {
             }
     )
     @GetMapping
-    public ResponseEntity<Page<ReactionResponseDTO>> getReactionsByPostId(
+    public ResponseEntity<Page<ReactionResponse>> getReactionsByPostId(
             @PathVariable Long postId,
             @RequestParam(required = false) ReactionType reactionType,
             //POSSIBLY CHANGE SORT TO A CREATIONTIME
@@ -53,7 +53,7 @@ public class ReactionController {
             }
     )
     @PostMapping
-    public ResponseEntity<Void> addReactionByPostId(@PathVariable Long postId, @RequestBody ReactionRequestDTO reactionDTO) {
+    public ResponseEntity<Void> addReactionByPostId(@PathVariable Long postId, @RequestBody ReactionRequest reactionDTO) {
         service.addReactionByPostId(postId, reactionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

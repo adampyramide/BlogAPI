@@ -3,7 +3,7 @@ package io.github.adampyramide.BlogAPI.blogpost;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record BlogPostRequestDTO(
+public record BlogPostRequest(
 
         @NotBlank(message = "Title must not be blank")
         @Size(max = 255, message = "Title cannot exceed 255 characters")

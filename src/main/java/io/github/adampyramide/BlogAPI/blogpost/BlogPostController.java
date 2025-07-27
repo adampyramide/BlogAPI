@@ -39,7 +39,7 @@ public class BlogPostController {
             }
     )
     @GetMapping("/blog-posts")
-    public ResponseEntity<Page<BlogPostResponseDTO>> getBlogPosts(
+    public ResponseEntity<Page<BlogPostResponse>> getBlogPosts(
             @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(service.getBlogPosts(pageable));
@@ -53,7 +53,7 @@ public class BlogPostController {
             }
     )
     @PostMapping("/blog-posts")
-    public ResponseEntity<Void> createBlogPost(@Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> createBlogPost(@Valid @RequestBody BlogPostRequest blogPostDTO) {
         service.createBlogPost(blogPostDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -67,7 +67,7 @@ public class BlogPostController {
             }
     )
     @GetMapping("/blog-posts/{postId}")
-    public ResponseEntity<BlogPostResponseDTO> getBlogPostById(@PathVariable Long postId) {
+    public ResponseEntity<BlogPostResponse> getBlogPostById(@PathVariable Long postId) {
         return ResponseEntity.ok(service.getBlogPostById(postId));
     }
 
@@ -80,7 +80,7 @@ public class BlogPostController {
             }
     )
     @PatchMapping("/blog-posts/{postId}")
-    public ResponseEntity<Void> editBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequestDTO blogPostDTO) {
+    public ResponseEntity<Void> editBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequest blogPostDTO) {
         service.editBlogPostById(postId, blogPostDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -130,7 +130,7 @@ public class BlogPostController {
             }
     )
     @GetMapping("/users/{userId}/posts")
-    public ResponseEntity<Page<BlogPostResponseDTO>> getBlogPostsByUserId(
+    public ResponseEntity<Page<BlogPostResponse>> getBlogPostsByUserId(
             @PathVariable Long userId,
             @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {

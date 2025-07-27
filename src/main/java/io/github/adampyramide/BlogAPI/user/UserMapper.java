@@ -1,5 +1,6 @@
 package io.github.adampyramide.BlogAPI.user;
 
+import io.github.adampyramide.BlogAPI.auth.AuthRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -7,8 +8,8 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
-    User authDTOToEntity(AuthUserDTO dto);
+    User authDTOToEntity(AuthRequest dto);
 
-    PublicUserDTO toPublicDTO(User user);
+    PublicUserResponse toPublicDTO(User user);
 
 }

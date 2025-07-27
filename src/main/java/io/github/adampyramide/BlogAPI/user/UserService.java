@@ -28,7 +28,7 @@ public class UserService {
         repo.delete(user);
     }
 
-    public PublicUserDTO getUserById(Long id) {
+    public PublicUserResponse getUserById(Long id) {
         return mapper.toPublicDTO(getUserOrThrow(id));
     }
 
