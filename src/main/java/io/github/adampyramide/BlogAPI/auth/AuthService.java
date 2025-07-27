@@ -35,7 +35,7 @@ public class AuthService {
     // Public methods
     // ====================
 
-    public String registerUser(AuthUserDTO userDTO) {
+    public AuthResponse registerUser(AuthUserDTO userDTO) {
         if (userRepo.existsByUsername(userDTO.username()))
             throw new CustomException("Username is already taken", HttpStatus.CONFLICT);
 
@@ -44,21 +44,29 @@ public class AuthService {
 
         userRepo.save(user);
 
-        return jwtService.generateToken(userDTO.username());
+        return getAuthResponse(userDTO);
     }
 
 
-    public String loginUser(AuthUserDTO userDTO) {
+    public AuthResponse loginUser(AuthUserDTO userDTO) {
         try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.username(), userDTO.password())
             );
 
-            return jwtService.generateToken(userDTO.username());
+            return getAuthResponse(userDTO);
         }
         catch (Exception e) {
             throw new CustomException("Incorrect username or password", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    // ====================
+    // Private methods
+    // ====================
+
+    private AuthResponse getAuthResponse(AuthUserDTO userDTO) {
+        return new AuthResponse(jwtService.generateToken(userDTO.username()));
     }
 
 }
