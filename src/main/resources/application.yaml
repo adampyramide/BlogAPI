@@ -1,20 +1,15 @@
 jwt:
-  secret: c+jqXZacYwx5Nbli37gaEoBllWoqdC76B7j0/NLvX2w=
+  secret: ${JWT_SECRET}
 server:
   port: ${PORT:8080}
 spring:
   application:
     name: BlogAPI
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-#    url: jdbc:postgresql://localhost:5432/blog_db #local
-#    username: postgres #local
-#    password: root #local
-#    driver-class-name: org.postgresql.Driver #local
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      idle-timeout: 30000
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect #local
-    hibernate:
-      ddl-auto: update
-    show-sql: false #local: set to false for deploy
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

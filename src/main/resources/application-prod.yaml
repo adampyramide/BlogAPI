@@ -1,0 +1,20 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  sql:
+    init:
+      mode: always
+  flyway:
+    clean-disabled: true
+logging:
+  level:
+    root: WARN
