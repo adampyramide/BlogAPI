@@ -1,10 +1,9 @@
 # Blog API
 ### What this project is
 A RESTful Blog API built with Java 17 and Spring Boot. It follows REST conventions and best practices, and includes features such as blog posts, comments, and reactions (likes/dislikes), among others. User authentication is implemented using JWT tokens.
-### Why I built this project
-I built this project to learn and demonstrate my ability to design APIs suitable for real-world applications.
 
-It is the first REST API I’ve built entirely independently — without tutorials or external guidance.
+### Why I built this project
+I built this project to learn and demonstrate my ability to design APIs suitable for real-world applications. It is the first REST API I’ve built entirely independently — without tutorials or external guidance.
 
 ## API Documentation
 **[API Documentation](https://adampyramide.github.io/BlogAPI/)** is available via Swagger UI.
