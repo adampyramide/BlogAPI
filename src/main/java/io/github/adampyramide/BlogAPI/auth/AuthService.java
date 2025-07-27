@@ -33,26 +33,26 @@ public class AuthService {
     // Public methods
     // ====================
 
-    public AuthResponse registerUser(AuthRequest userDTO) {
-        if (userRepo.existsByUsername(userDTO.username()))
+    public AuthResponse registerUser(AuthRequest authRequest) {
+        if (userRepo.existsByUsername(authRequest.username()))
             throw new CustomException("Username is already taken", HttpStatus.CONFLICT);
 
-        User user = userMapper.authDTOToEntity(userDTO);
-        user.setPassword(passwordEncoder.encode(userDTO.password()));
+        User user = userMapper.authDTOToEntity(authRequest);
+        user.setPassword(passwordEncoder.encode(authRequest.password()));
 
         userRepo.save(user);
 
-        return getAuthResponse(userDTO);
+        return getAuthResponse(authRequest);
     }
 
 
-    public AuthResponse loginUser(AuthRequest userDTO) {
+    public AuthResponse loginUser(AuthRequest authRequest) {
         try {
             authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userDTO.username(), userDTO.password())
+                    new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password())
             );
 
-            return getAuthResponse(userDTO);
+            return getAuthResponse(authRequest);
         }
         catch (Exception e) {
             throw new CustomException("Incorrect username or password", HttpStatus.UNAUTHORIZED);
@@ -63,8 +63,8 @@ public class AuthService {
     // Private methods
     // ====================
 
-    private AuthResponse getAuthResponse(AuthRequest userDTO) {
-        return new AuthResponse(jwtService.generateToken(userDTO.username()));
+    private AuthResponse getAuthResponse(AuthRequest authRequest) {
+        return new AuthResponse(jwtService.generateToken(authRequest.username()));
     }
 
 }
