@@ -31,18 +31,18 @@ public class CommentService {
     // ====================
 
     public CommentResponse getCommentById(Long id) {
-        return toResponseDTO(getCommentOrThrow(id));
+        return toResponse(getCommentOrThrow(id));
     }
 
     public Page<CommentResponse> getCommentsByPostId(Long postId, Pageable pageable) {
-        return repo.findAllByPostId(postId, pageable).map(this::toResponseDTO);
+        return repo.findAllByPostId(postId, pageable).map(this::toResponse);
     }
 
     public Page<CommentResponse> getCommentsByAuthorId(Long userId, Pageable pageable) {
-        return repo.findAllByAuthor_Id(userId, pageable).map(this::toResponseDTO);
+        return repo.findAllByAuthor_Id(userId, pageable).map(this::toResponse);
     }
 
-    public void editCommentById(Long id, CommentRequest commentDTO) {
+    public void editCommentById(Long id, CommentRequest commentRequest) {
         Comment comment = getCommentOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(
@@ -51,7 +51,7 @@ public class CommentService {
                 "comment"
         );
 
-        mapper.updateEntityWithDto(commentDTO, comment);
+        mapper.updateEntity(commentRequest, comment);
         repo.save(comment);
     }
 
@@ -67,8 +67,8 @@ public class CommentService {
         repo.deleteById(id);
     }
 
-    public void createComment(Long postId, CommentRequest commentDTO) {
-        Comment comment = mapper.toEntity(commentDTO);
+    public void createComment(Long postId, CommentRequest commentRequest) {
+        Comment comment = mapper.toEntity(commentRequest);
         comment.setAuthor(securityUtils.getAuthenticatedUser());
         comment.setPost(blogPostFetcher.getByIdOrThrow(postId));
 
@@ -84,10 +84,10 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
     }
 
-    private CommentResponse toResponseDTO(Comment comment) {
-        CommentResponse dto = mapper.toResponseDTO(comment);
-        dto.setHasReplies(repo.existsByParentCommentId(comment.getId()));
-        return dto;
+    private CommentResponse toResponse(Comment comment) {
+        CommentResponse commentResponse = mapper.toResponse(comment);
+        commentResponse.setHasReplies(repo.existsByParentCommentId(comment.getId()));
+        return commentResponse;
     }
 
 

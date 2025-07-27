@@ -12,8 +12,8 @@ public interface CommentMapper {
     @Mapping(source = "post.id", target = "postId")
     @Mapping(source = "author", target = "author")
     @Mapping(source = "parentComment.id", target = "parentCommentId")
-    CommentResponse toResponseDTO(Comment entity);
+    CommentResponse toResponse(Comment entity);
 
-    void updateEntityWithDto(CommentRequest dto, @MappingTarget Comment entity);
+    void updateEntity(CommentRequest dto, @MappingTarget Comment entity);
 
 }
