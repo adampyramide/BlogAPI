@@ -72,16 +72,16 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Edit blogpost",
-            description = "Edits a blogpost with the specified ID",
+            summary = "Update blogpost",
+            description = "Update a blogpost with the specified ID",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Blogpost edited"),
                     @ApiResponse(responseCode = "404", description = "Blogpost not found")
             }
     )
     @PatchMapping("/blog-posts/{postId}")
-    public ResponseEntity<Void> editBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequest blogPostRequest) {
-        service.editBlogPostById(postId, blogPostRequest);
+    public ResponseEntity<Void> updateBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequest blogPostRequest) {
+        service.updateBlogPostById(postId, blogPostRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

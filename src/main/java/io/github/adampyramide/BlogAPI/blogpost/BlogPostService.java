@@ -66,7 +66,7 @@ public class BlogPostService {
         repo.save(blogPost);
     }
 
-    public void editBlogPostById(Long id, BlogPostRequest blogPostRequest) {
+    public void updateBlogPostById(Long id, BlogPostRequest blogPostRequest) {
         BlogPost blogPost = validator.getByIdOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(
