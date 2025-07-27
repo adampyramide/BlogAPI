@@ -42,10 +42,10 @@ public class ReactionService {
         else
             reactions = repo.findAllByPost_IdAndReactionType(postId, reactionType, pageable);
 
-        return reactions.map(mapper::toResponseDTO);
+        return reactions.map(mapper::toResponse);
     }
 
-    public void addReactionByPostId(Long postId, ReactionRequest reactionDTO) {
+    public void addReactionByPostId(Long postId, ReactionRequest reactionRequest) {
         User user = securityUtils.getAuthenticatedUser();
         ReactionId reactionId = new ReactionId(
                 user.getId(),
@@ -56,7 +56,7 @@ public class ReactionService {
                 .id(reactionId)
                 .author(user)
                 .post(blogPostFetcher.getByIdOrThrow(postId))
-                .reactionType(reactionDTO.reactionType())
+                .reactionType(reactionRequest.reactionType())
                 .build();
 
         repo.save(reaction);

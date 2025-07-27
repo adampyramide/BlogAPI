@@ -38,7 +38,6 @@ public class ReactionController {
     public ResponseEntity<Page<ReactionResponse>> getReactionsByPostId(
             @PathVariable Long postId,
             @RequestParam(required = false) ReactionType reactionType,
-            //POSSIBLY CHANGE SORT TO A CREATIONTIME
             @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(service.getReactionsByPostId(postId, reactionType, pageable));
@@ -53,8 +52,8 @@ public class ReactionController {
             }
     )
     @PostMapping
-    public ResponseEntity<Void> addReactionByPostId(@PathVariable Long postId, @RequestBody ReactionRequest reactionDTO) {
-        service.addReactionByPostId(postId, reactionDTO);
+    public ResponseEntity<Void> addReactionByPostId(@PathVariable Long postId, @RequestBody ReactionRequest reactionRequest) {
+        service.addReactionByPostId(postId, reactionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
