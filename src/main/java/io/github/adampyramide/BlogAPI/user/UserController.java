@@ -29,7 +29,7 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "User not found")
             }
     )
-    @DeleteMapping
+    @DeleteMapping("/me")
     public ResponseEntity<PublicUserDTO> deleteUser() {
         service.deleteUser();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
