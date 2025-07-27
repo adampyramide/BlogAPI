@@ -1,10 +1,8 @@
 # Blog API
 ### What this project is
-RESTful Blog API built with Java 17 and Spring Boot. The API follows REST conventions and best practices.
-It supports full CRUD functionality for blog posts, comments, reactions (likes/dislikes), and secure user authentication using JWT tokens.
-
+A RESTful Blog API built with Java 17 and Spring Boot. It follows REST conventions and best practices, and includes features such as blog posts, comments, and reactions (likes/dislikes), among others. User authentication is implemented using JWT tokens.
 ### Why I built this project
-I built this to learn backend web development and demonstrate my ability to design APIs that would be fit for real-world products.
+I built this project to learn and demonstrate my ability to design APIs suitable for real-world applications.
 
 It is the first REST API I’ve built entirely independently — without tutorials or external guidance.
 
