@@ -9,7 +9,6 @@ import io.github.adampyramide.BlogAPI.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class AuthService {
     // Public methods
     // ====================
 
-    public AuthResponse registerUser(AuthUserDTO userDTO) {
+    public AuthResponseDTO registerUser(AuthUserDTO userDTO) {
         if (userRepo.existsByUsername(userDTO.username()))
             throw new CustomException("Username is already taken", HttpStatus.CONFLICT);
 
@@ -48,7 +47,7 @@ public class AuthService {
     }
 
 
-    public AuthResponse loginUser(AuthUserDTO userDTO) {
+    public AuthResponseDTO loginUser(AuthUserDTO userDTO) {
         try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.username(), userDTO.password())
@@ -65,8 +64,8 @@ public class AuthService {
     // Private methods
     // ====================
 
-    private AuthResponse getAuthResponse(AuthUserDTO userDTO) {
-        return new AuthResponse(jwtService.generateToken(userDTO.username()));
+    private AuthResponseDTO getAuthResponse(AuthUserDTO userDTO) {
+        return new AuthResponseDTO(jwtService.generateToken(userDTO.username()));
     }
 
 }

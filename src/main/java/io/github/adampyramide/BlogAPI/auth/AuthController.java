@@ -28,7 +28,7 @@ public class AuthController {
             }
     )
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> registerUser(@Valid @RequestBody AuthUserDTO userDTO) {
+    public ResponseEntity<AuthResponseDTO> registerUser(@Valid @RequestBody AuthUserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.registerUser(userDTO));
     }
 
@@ -39,7 +39,7 @@ public class AuthController {
             }
     )
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody AuthUserDTO userDTO) {
+    public ResponseEntity<AuthResponseDTO> loginUser(@Valid @RequestBody AuthUserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(service.loginUser(userDTO));
     }
 
