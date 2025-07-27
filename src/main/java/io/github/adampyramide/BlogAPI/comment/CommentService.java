@@ -42,7 +42,7 @@ public class CommentService {
         return repo.findAllByAuthor_Id(userId, pageable).map(this::toResponse);
     }
 
-    public void editCommentById(Long id, CommentRequest commentRequest) {
+    public void updateCommentById(Long id, CommentRequest commentRequest) {
         Comment comment = getCommentOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(

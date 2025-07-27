@@ -41,7 +41,7 @@ public class CommentController {
     }
 
     @Operation(
-            summary = "Edit comment",
+            summary = "Update comment",
             description = "Edits a comment with the specified ID",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comment edited"),
@@ -49,8 +49,8 @@ public class CommentController {
             }
     )
     @PutMapping("/comments/{commentId}")
-    public ResponseEntity<Void> editCommentById(@PathVariable Long commentId, @Valid @RequestBody CommentRequest commentRequest) {
-        service.editCommentById(commentId, commentRequest);
+    public ResponseEntity<Void> updateCommentById(@PathVariable Long commentId, @Valid @RequestBody CommentRequest commentRequest) {
+        service.updateCommentById(commentId, commentRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
