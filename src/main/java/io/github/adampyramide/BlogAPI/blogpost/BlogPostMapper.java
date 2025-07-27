@@ -11,13 +11,13 @@ public interface BlogPostMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "author", ignore = true)
-    BlogPost toEntity(BlogPostRequest dto);
+    BlogPost toEntity(BlogPostRequest request);
 
-    BlogPostResponse toResponseDTO(BlogPost blogPost);
+    BlogPostResponse toResponse(BlogPost entity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "author", ignore = true)
-    void updateEntityWithDto(BlogPostRequest dto, @MappingTarget BlogPost entity);
+    void updateEntity(BlogPostRequest request, @MappingTarget BlogPost entity);
 
 }

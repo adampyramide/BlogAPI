@@ -45,28 +45,28 @@ public class BlogPostService {
     }
 
     public BlogPostResponse getBlogPostById(Long id) {
-        BlogPostResponse blogPostDTO = mapper.toResponseDTO(validator.getByIdOrThrow(id));
+        BlogPostResponse blogPostResponse = mapper.toResponse(validator.getByIdOrThrow(id));
 
-        blogPostDTO.setUserReaction(reactionService.getUserReactionTypeForPost(
+        blogPostResponse.setUserReaction(reactionService.getUserReactionTypeForPost(
                 securityUtils.getAuthenticatedUser().getId(),
                 id
         ));
 
         Map<ReactionType, Long> reactionCounts = reactionService.getReactionCountsByPostId(id);
-        blogPostDTO.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
-        blogPostDTO.setDislikeCount(reactionCounts.getOrDefault(ReactionType.DISLIKE, 0L));
+        blogPostResponse.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
+        blogPostResponse.setDislikeCount(reactionCounts.getOrDefault(ReactionType.DISLIKE, 0L));
 
-        return blogPostDTO;
+        return blogPostResponse;
     }
 
-    public void createBlogPost(BlogPostRequest blogPostDTO) {
-        BlogPost blogPost = mapper.toEntity(blogPostDTO);
+    public void createBlogPost(BlogPostRequest blogPostRequest) {
+        BlogPost blogPost = mapper.toEntity(blogPostRequest);
         blogPost.setAuthor(securityUtils.getAuthenticatedUser());
 
         repo.save(blogPost);
     }
 
-    public void editBlogPostById(Long id, BlogPostRequest blogPostDTO) {
+    public void editBlogPostById(Long id, BlogPostRequest blogPostRequest) {
         BlogPost blogPost = validator.getByIdOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(
@@ -75,7 +75,7 @@ public class BlogPostService {
                 "blogpost"
         );
 
-        mapper.updateEntityWithDto(blogPostDTO, blogPost);
+        mapper.updateEntity(blogPostRequest, blogPost);
         repo.save(blogPost);
     }
 
@@ -140,16 +140,16 @@ public class BlogPostService {
         Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
 
         return page.map(post -> {
-            BlogPostResponse blogPostDTO = mapper.toResponseDTO(post);
+            BlogPostResponse blogPostResponse = mapper.toResponse(post);
             Long postId = post.getId();
 
-            blogPostDTO.setUserReaction(userReactions.get(postId));
+            blogPostResponse.setUserReaction(userReactions.get(postId));
 
             Map<ReactionType, Long> counts = reactionsCounts.getOrDefault(postId, Map.of());
-            blogPostDTO.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
-            blogPostDTO.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
+            blogPostResponse.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
+            blogPostResponse.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
 
-            return blogPostDTO;
+            return blogPostResponse;
         });
     }
 

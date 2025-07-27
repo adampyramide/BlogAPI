@@ -53,8 +53,8 @@ public class BlogPostController {
             }
     )
     @PostMapping("/blog-posts")
-    public ResponseEntity<Void> createBlogPost(@Valid @RequestBody BlogPostRequest blogPostDTO) {
-        service.createBlogPost(blogPostDTO);
+    public ResponseEntity<Void> createBlogPost(@Valid @RequestBody BlogPostRequest blogPostRequest) {
+        service.createBlogPost(blogPostRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -80,8 +80,8 @@ public class BlogPostController {
             }
     )
     @PatchMapping("/blog-posts/{postId}")
-    public ResponseEntity<Void> editBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequest blogPostDTO) {
-        service.editBlogPostById(postId, blogPostDTO);
+    public ResponseEntity<Void> editBlogPostById(@PathVariable Long postId, @Valid @RequestBody BlogPostRequest blogPostRequest) {
+        service.editBlogPostById(postId, blogPostRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
