@@ -30,6 +30,6 @@ public class BlogPost {
 
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDateTime createTime;
+    private LocalDateTime createdAt;
 
 }

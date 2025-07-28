@@ -35,7 +35,7 @@ public class Comment {
     private User author;
 
     @CreationTimestamp
-    private LocalDateTime createTime;
+    private LocalDateTime createdAt;
 
     private String body;
 }
