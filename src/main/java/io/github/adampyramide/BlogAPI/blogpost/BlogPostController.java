@@ -40,7 +40,7 @@ public class BlogPostController {
     )
     @GetMapping("/blog-posts")
     public ResponseEntity<Page<BlogPostResponse>> getBlogPosts(
-            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(service.getBlogPosts(pageable));
     }
@@ -132,7 +132,7 @@ public class BlogPostController {
     @GetMapping("/users/{userId}/posts")
     public ResponseEntity<Page<BlogPostResponse>> getBlogPostsByUserId(
             @PathVariable Long userId,
-            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(service.getBlogPostsByUserId(userId, pageable));
     }
