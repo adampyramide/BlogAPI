@@ -31,4 +31,7 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column
+    private String description;
+
 }
