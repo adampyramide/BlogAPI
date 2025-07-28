@@ -7,6 +7,7 @@ import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserService;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -59,14 +60,14 @@ public class BlogPostService {
         return blogPostResponse;
     }
 
-    public void createBlogPost(BlogPostRequest blogPostRequest) {
+    public void createBlogPost(CreateBlogPostRequest blogPostRequest) {
         BlogPost blogPost = mapper.toEntity(blogPostRequest);
         blogPost.setAuthor(securityUtils.getAuthenticatedUser());
 
         repo.save(blogPost);
     }
 
-    public void updateBlogPostById(Long id, BlogPostRequest blogPostRequest) {
+    public void updateBlogPostById(Long id, UpdateBlogPostRequest blogPostRequest) {
         BlogPost blogPost = validator.getByIdOrThrow(id);
 
         OwnershipValidator.authorizeAuthor(
