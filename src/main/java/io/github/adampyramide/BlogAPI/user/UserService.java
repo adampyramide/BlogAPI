@@ -28,6 +28,13 @@ public class UserService {
         repo.delete(user);
     }
 
+    public void updateUser(UpdateUserRequest userRequest) {
+        User user = securityUtils.getAuthenticatedUser();
+
+        mapper.updateEntity(userRequest, user);
+        repo.save(user);
+    }
+
     public PublicUserResponse getUserById(Long id) {
         return mapper.toPublicDTO(getUserOrThrow(id));
     }

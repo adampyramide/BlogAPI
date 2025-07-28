@@ -35,6 +35,18 @@ public class UserController {
     }
 
     @Operation(
+            summary = "Update user information by session",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User information updated")
+            }
+    )
+    @PatchMapping("/me")
+    public ResponseEntity<PublicUserResponse> updateUser(@RequestBody UpdateUserRequest userRequest) {
+        service.updateUser(userRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Operation(
             summary = "Get user by id",
             responses = {
                     @ApiResponse(responseCode = "200", description = "User returned"),
