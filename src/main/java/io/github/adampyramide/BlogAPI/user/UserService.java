@@ -13,8 +13,8 @@ public class UserService {
 
     private final SecurityUtils securityUtils;
 
-    public UserService(UserRepository userRepo, UserMapper mapper, SecurityUtils securityUtils) {
-        this.repo = userRepo;
+    public UserService(UserRepository repo, UserMapper mapper, SecurityUtils securityUtils) {
+        this.repo = repo;
         this.mapper = mapper;
         this.securityUtils = securityUtils;
     }
