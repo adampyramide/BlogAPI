@@ -12,14 +12,14 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface BlogPostMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "author", ignore = true)
     BlogPost toEntity(CreateBlogPostRequest request);
 
     BlogPostResponse toResponse(BlogPost entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "author", ignore = true)
     void updateEntity(UpdateBlogPostRequest request, @MappingTarget BlogPost entity);
 
