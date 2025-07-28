@@ -16,7 +16,6 @@ public class CommentService {
     private final CommentMapper mapper;
 
     private final BlogPostFetcher blogPostFetcher;
-
     private final SecurityUtils securityUtils;
 
     public CommentService(CommentRepository repo, CommentMapper mapper, BlogPostFetcher blogPostFetcher, SecurityUtils securityUtils) {
