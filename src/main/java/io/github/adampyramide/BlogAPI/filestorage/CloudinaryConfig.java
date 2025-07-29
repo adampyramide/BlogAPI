@@ -1,4 +1,4 @@
-package io.github.adampyramide.BlogAPI.config;
+package io.github.adampyramide.BlogAPI.filestorage;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
