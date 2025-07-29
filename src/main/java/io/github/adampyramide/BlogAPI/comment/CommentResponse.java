@@ -14,8 +14,8 @@ public class CommentResponse {
 
     private Long id;
     private Long postId;
-    private Long parentCommentId;
     private PublicUserResponse author;
+    private Long parentCommentId;
     private String body;
     private boolean hasReplies;
 

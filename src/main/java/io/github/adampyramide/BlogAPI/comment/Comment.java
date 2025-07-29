@@ -27,12 +27,12 @@ public class Comment {
     private BlogPost post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private User author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
