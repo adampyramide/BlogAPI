@@ -87,8 +87,9 @@ public class BlogPostService {
     public void bulkDeleteBlogPostsByIds(List<Long> ids) {
         List<BlogPost> blogPosts = repo.findAllById(ids);
 
-        if (blogPosts.isEmpty())
+        if (blogPosts.isEmpty()) {
             throw new CustomException("Zero posts found", HttpStatus.NOT_FOUND);
+        }
 
         List<Long> foundPostIds = blogPosts.stream()
                 .map(BlogPost::getId)
@@ -108,8 +109,9 @@ public class BlogPostService {
 
         repo.deleteAll(blogPosts);
 
-        if (!missingPostIds.isEmpty())
+        if (!missingPostIds.isEmpty()) {
             throw new CustomException("Some blogposts were not found: " + missingPostIds, HttpStatus.NOT_FOUND);
+        }
 
     }
 

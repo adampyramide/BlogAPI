@@ -32,10 +32,12 @@ public class ReactionService {
 
         Page<Reaction> reactions;
 
-        if (reactionType == null)
+        if (reactionType == null) {
             reactions = repo.findAllByPost_Id(postId, pageable);
-        else
+        }
+        else {
             reactions = repo.findAllByPost_IdAndReactionType(postId, reactionType, pageable);
+        }
 
         return reactions.map(mapper::toResponse);
     }
@@ -65,8 +67,9 @@ public class ReactionService {
                 postId
         );
 
-        if (!repo.existsById(reactionId))
+        if (!repo.existsById(reactionId)) {
             throw new CustomException("Reaction not found", HttpStatus.NOT_FOUND);
+        }
 
         repo.deleteById(reactionId);
     }
