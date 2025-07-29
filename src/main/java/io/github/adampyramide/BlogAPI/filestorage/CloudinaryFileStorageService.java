@@ -14,7 +14,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CloudinaryFileStorageService implements FileStorageService {
 
-
     private final Cloudinary cloudinary;
 
     @Override

@@ -2,33 +2,25 @@ package io.github.adampyramide.BlogAPI.filestorage;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @Configuration
+@RequiredArgsConstructor
 public class CloudinaryConfig {
 
-    private final String cloudName;
-    private final String apiKey;
-    private final String apiSecret;
-
-    public CloudinaryConfig(
-            @Value("${cloudinary.cloud-name}") String cloudName,
-            @Value("${cloudinary.api-key}") String apiKey,
-            @Value("${cloudinary.api-secret}") String apiSecret
-    ) {
-        this.cloudName = cloudName;
-        this.apiKey = apiKey;
-        this.apiSecret = apiSecret;
-    }
+    private final CloudinaryProperties properties;
 
     @Bean
     public Cloudinary cloudinary() {
-        return new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", cloudName,
-                "api_key", apiKey,
-                "api_secret", apiSecret
+        return new Cloudinary(Map.of(
+                "cloud_name", properties.getCloudName(),
+                "api_key", properties.getApiKey(),
+                "api_secret", properties.getApiSecret()
         ));
     }
 }
