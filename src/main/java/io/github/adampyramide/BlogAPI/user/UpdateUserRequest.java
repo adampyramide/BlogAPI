@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 public record UpdateUserRequest(
 
         String username,
-//        MultipartFile profilePicture,
+        MultipartFile profilePicture,
         String description
 
 ) {}

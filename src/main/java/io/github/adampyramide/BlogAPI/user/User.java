@@ -34,4 +34,7 @@ public class User {
     @Column
     private String description;
 
+    @Column
+    private String profilePictureUrl;
+
 }

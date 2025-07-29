@@ -1,6 +1,7 @@
 package io.github.adampyramide.BlogAPI.user;
 
 import io.github.adampyramide.BlogAPI.exception.CustomException;
+import io.github.adampyramide.BlogAPI.filestorage.CloudinaryFileStorageService;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,18 @@ public class UserService {
     private final UserMapper mapper;
 
     private final SecurityUtils securityUtils;
+    private final CloudinaryFileStorageService fileStorageService;
 
-    public UserService(UserRepository repo, UserMapper mapper, SecurityUtils securityUtils) {
+    public UserService(
+            UserRepository repo,
+            UserMapper mapper,
+            SecurityUtils securityUtils,
+            CloudinaryFileStorageService fileStorageService
+    ) {
         this.repo = repo;
         this.mapper = mapper;
         this.securityUtils = securityUtils;
+        this.fileStorageService = fileStorageService;
     }
 
     // ====================
@@ -32,6 +40,12 @@ public class UserService {
         User user = securityUtils.getAuthenticatedUser();
 
         mapper.updateEntity(userRequest, user);
+
+        if (userRequest.profilePicture() != null && !userRequest.profilePicture().isEmpty()) {
+            String profilePictureUrl = fileStorageService.save(userRequest.profilePicture(), "profile-pictures");
+            user.setProfilePictureUrl(profilePictureUrl);
+        }
+
         repo.save(user);
     }
 
