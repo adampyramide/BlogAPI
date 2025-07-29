@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,13 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/blog-posts/{postId}/reactions")
+@RequiredArgsConstructor
 public class ReactionController {
 
     final private ReactionService service;
-
-    public ReactionController(ReactionService service) {
-        this.service = service;
-    }
 
     @Operation(
             summary = "Get reactions for blogpost",

@@ -8,6 +8,7 @@ import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserService;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class BlogPostService {
 
     private final BlogPostRepository repo;
@@ -27,15 +29,6 @@ public class BlogPostService {
     private final ReactionService reactionService;
 
     private final SecurityUtils securityUtils;
-
-    public BlogPostService(BlogPostRepository repo, BlogPostFetcher validator, BlogPostMapper mapper, UserService userService, ReactionService reactionService, SecurityUtils securityUtils) {
-        this.repo = repo;
-        this.validator = validator;
-        this.mapper = mapper;
-        this.userService = userService;
-        this.reactionService = reactionService;
-        this.securityUtils = securityUtils;
-    }
 
     // ====================
     // Public methods
