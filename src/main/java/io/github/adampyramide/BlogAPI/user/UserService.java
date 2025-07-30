@@ -1,7 +1,9 @@
 package io.github.adampyramide.BlogAPI.user;
 
-import io.github.adampyramide.BlogAPI.exception.CustomException;
+import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.filestorage.CloudinaryFileStorageService;
+import io.github.adampyramide.BlogAPI.filestorage.FileValidationRule;
+import io.github.adampyramide.BlogAPI.filestorage.MimeTypeRules;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ public class UserService {
 
     private final SecurityUtils securityUtils;
     private final CloudinaryFileStorageService fileStorageService;
+
+    private final FileValidationRule fileValidationRule = MimeTypeRules.IMAGE_ONLY;
 
     // ====================
     // Public methods
@@ -32,7 +36,11 @@ public class UserService {
         mapper.updateEntity(userRequest, user);
 
         if (userRequest.profilePicture() != null && !userRequest.profilePicture().isEmpty()) {
-            String profilePictureUrl = fileStorageService.save(userRequest.profilePicture(), "profile-pictures");
+            String profilePictureUrl = fileStorageService.save(
+                    userRequest.profilePicture(),
+                    "profile-pictures",
+                    fileValidationRule
+            );
             user.setProfilePictureUrl(profilePictureUrl);
         }
 
@@ -49,7 +57,11 @@ public class UserService {
 
     public User getUserOrThrow(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ApiException(
+                        HttpStatus.NOT_FOUND,
+                        "USER_NOT_FOUND",
+                        "User with ID " + id + " not found."
+                ));
     }
 
 }

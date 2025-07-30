@@ -30,10 +30,10 @@ public class BlogPostController {
     private final BlogPostService service;
 
     @Operation(
-            summary = "Get all blogposts",
-            description = "Returns a paginated list of all blogposts. Sorted by creation time descending.",
+            summary = "Get all blog posts",
+            description = "Returns a paginated list of all blog posts. Sorted by creation time descending.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "List of all blogposts")
+                    @ApiResponse(responseCode = "200", description = "List of all blog posts")
             }
     )
     @GetMapping("/blog-posts")
@@ -44,10 +44,10 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Create blogpost",
-            description = "Creates a blogpost",
+            summary = "Create blog post",
+            description = "Creates a blog post",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Blogpost created")
+                    @ApiResponse(responseCode = "201", description = "Blog post created")
             }
     )
     @PostMapping("/blog-posts")
@@ -57,11 +57,11 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Get blogpost",
-            description = "Returns a blogpost with the specified ID",
+            summary = "Get blog post",
+            description = "Returns a blog post with the specified ID",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Blogpost returned"),
-                    @ApiResponse(responseCode = "404", description = "Blogpost not found", content = @Content())
+                    @ApiResponse(responseCode = "200", description = "Blog post returned"),
+                    @ApiResponse(responseCode = "404", description = "Blog post not found", content = @Content())
             }
     )
     @GetMapping("/blog-posts/{postId}")
@@ -70,11 +70,11 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Update blogpost",
-            description = "Update a blogpost with the specified ID",
+            summary = "Update blog post",
+            description = "Update a blog post with the specified ID",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Blogpost edited"),
-                    @ApiResponse(responseCode = "404", description = "Blogpost not found")
+                    @ApiResponse(responseCode = "200", description = "Blog post edited"),
+                    @ApiResponse(responseCode = "404", description = "Blog post not found")
             }
     )
     @PatchMapping("/blog-posts/{postId}")
@@ -84,11 +84,11 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Delete blogpost",
-            description = "Deletes a blogpost with the specified ID",
+            summary = "Delete blog post",
+            description = "Deletes a blog post with the specified ID",
             responses = {
-                    @ApiResponse(responseCode = "204", description = "Blogpost deleted"),
-                    @ApiResponse(responseCode = "404", description = "Blogpost not found")
+                    @ApiResponse(responseCode = "204", description = "Blog post deleted"),
+                    @ApiResponse(responseCode = "404", description = "Blog post not found")
             }
     )
     @DeleteMapping("/blog-posts/{postId}")
@@ -98,19 +98,19 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Bulk delete blogposts",
-            description = "Deletes multiple blogposts with the specified IDs",
+            summary = "Bulk delete blog posts",
+            description = "Deletes multiple blog posts with the specified IDs",
             parameters = {
                     @Parameter(
                             name = "ids",
-                            description = "Comma-separated list of blogpost IDs",
+                            description = "Comma-separated list of blog post IDs",
                             required = true,
                             in = ParameterIn.QUERY
                     )
             },
             responses = {
-                    @ApiResponse(responseCode = "204", description = "All blogposts deleted"),
-                    @ApiResponse(responseCode = "404", description = "One or more blogposts not found")
+                    @ApiResponse(responseCode = "204", description = "All blog posts deleted"),
+                    @ApiResponse(responseCode = "404", description = "One or more blog posts not found")
             }
     )
     @DeleteMapping("/blog-posts")
@@ -120,10 +120,10 @@ public class BlogPostController {
     }
 
     @Operation(
-            summary = "Get all blogposts by user",
-            description = "Returns a paginated list of blogposts created by the specified user. Sorted by creation time descending.",
+            summary = "Get all blog posts by user",
+            description = "Returns a paginated list of blog posts created by the specified user. Sorted by creation time descending.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "List of blogposts created by the user returned"),
+                    @ApiResponse(responseCode = "200", description = "List of blog posts created by the user returned"),
                     @ApiResponse(responseCode = "404", description = "User not found", content = @Content())
             }
     )
