@@ -25,8 +25,8 @@ public class ReactionController {
     final private ReactionService service;
 
     @Operation(
-            summary = "Get reactions for blogpost",
-            description = "Returns a paginated list of reactions (users and their reaction type) for the specified blogpost. Optional filter by reaction type (LIKE or DISLIKE). Sorted by author ID descending.",
+            summary = "Get reactions for blog post",
+            description = "Returns a paginated list of reactions (users and their reaction type) for the specified blog post. Optional filter by reaction type (LIKE or DISLIKE). Sorted by author ID descending.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Users and their reaction type returned"),
                     @ApiResponse(responseCode = "404", description = "Post not found", content = @Content())
@@ -42,10 +42,10 @@ public class ReactionController {
     }
 
     @Operation(
-            summary = "Add reaction to blogpost",
-            description = "Adds a reaction (LIKE or DISLIKE) to a blogpost by the current user. Overwrites users existing reaction if it exists.",
+            summary = "Add reaction to blog post",
+            description = "Adds a reaction (LIKE or DISLIKE) to a blog post by the current user. Overwrites users existing reaction if it exists.",
     responses = {
-                    @ApiResponse(responseCode = "201", description = "Reaction added to blogpost"),
+                    @ApiResponse(responseCode = "201", description = "Reaction added to blog post"),
                     @ApiResponse(responseCode = "404", description = "Post not found", content = @Content())
             }
     )
@@ -56,10 +56,10 @@ public class ReactionController {
     }
 
     @Operation(
-            summary = "Remove reaction from blogpost",
+            summary = "Remove reaction from blog post",
             description = "Removes the current user's reaction (LIKE or DISLIKE) from the blog post.",
     responses = {
-                    @ApiResponse(responseCode = "204", description = "Reaction removed from blogpost"),
+                    @ApiResponse(responseCode = "204", description = "Reaction removed from blog post"),
                     @ApiResponse(responseCode = "404", description = "Post not found", content = @Content())
             }
     )
