@@ -35,6 +35,6 @@ public class User {
     private String description;
 
     @Column
-    private String profilePictureId;
+    private String avatarId;
 
 }
