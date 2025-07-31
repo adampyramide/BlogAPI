@@ -17,7 +17,7 @@ public class BlogPostQueryService {
                 .orElseThrow(() -> new ApiException(
                         HttpStatus.NOT_FOUND,
                         "BLOGPOST_NOT_FOUND",
-                        "Blog post with ID %s not found".formatted(id)
+                        "Blog post with ID %s not found.".formatted(id)
                 ));
     }
 
