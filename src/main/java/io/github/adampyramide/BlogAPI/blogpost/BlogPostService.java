@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
-import io.github.adampyramide.BlogAPI.exception.CustomException;
+import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.reaction.ReactionService;
 import io.github.adampyramide.BlogAPI.reaction.ReactionType;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
@@ -87,16 +87,20 @@ public class BlogPostService {
     public void bulkDeleteBlogPostsByIds(List<Long> ids) {
         List<BlogPost> blogPosts = repo.findAllById(ids);
 
-        if (blogPosts.isEmpty()) {
-            throw new CustomException("Zero posts found", HttpStatus.NOT_FOUND);
-        }
-
         List<Long> foundPostIds = blogPosts.stream()
                 .map(BlogPost::getId)
                 .toList();
         List<Long> missingPostIds = ids.stream()
                 .filter(id -> !foundPostIds.contains(id))
                 .toList();
+
+        if (!missingPostIds.isEmpty()) {
+            throw new ApiException(
+                    HttpStatus.NOT_FOUND,
+                    "BLOGPOSTS_NOT_FOUND",
+                    "Blogposts not found with IDs: " + missingPostIds
+            );
+        }
 
         User authenticatedUser = securityUtils.getAuthenticatedUser();
         for (BlogPost blogPost : blogPosts) {
@@ -109,15 +113,10 @@ public class BlogPostService {
 
         repo.deleteAll(blogPosts);
 
-        if (!missingPostIds.isEmpty()) {
-            throw new CustomException("Some blogposts were not found: " + missingPostIds, HttpStatus.NOT_FOUND);
-        }
-
     }
 
     public Page<BlogPostResponse> getBlogPostsByUserId(Long userId, Pageable pageable) {
         userService.getUserOrThrow(userId);
-
         return mapBlogPosts(repo.findAllByAuthor_Id(userId, pageable));
     }
 
