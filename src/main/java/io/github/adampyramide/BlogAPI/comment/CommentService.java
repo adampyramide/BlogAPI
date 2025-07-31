@@ -1,7 +1,7 @@
 package io.github.adampyramide.BlogAPI.comment;
 
 import io.github.adampyramide.BlogAPI.blogpost.BlogPostFetcher;
-import io.github.adampyramide.BlogAPI.exception.CustomException;
+import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +75,11 @@ public class CommentService {
 
     private Comment getCommentOrThrow(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new CustomException("Comment not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ApiException(
+                        HttpStatus.NOT_FOUND,
+                        "COMMENT_NOT_FOUND",
+                        "Comment with ID %s not found".formatted(id)
+                ));
     }
 
     private CommentResponse toResponse(Comment comment) {

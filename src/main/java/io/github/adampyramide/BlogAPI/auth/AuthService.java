@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.auth;
 
-import io.github.adampyramide.BlogAPI.exception.CustomException;
+import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.security.JwtService;
 import io.github.adampyramide.BlogAPI.user.User;
 import io.github.adampyramide.BlogAPI.user.UserMapper;
@@ -35,7 +35,11 @@ public class AuthService {
 
     public AuthResponse registerUser(AuthRequest authRequest) {
         if (userRepo.existsByUsername(authRequest.username()))
-            throw new CustomException("Username is already taken", HttpStatus.CONFLICT);
+            throw new ApiException(
+                    HttpStatus.CONFLICT,
+                    "USERNAME_TAKEN",
+                    "Username '%s' is already taken.".formatted(authRequest.username())
+            );
 
         User user = userMapper.authDTOToEntity(authRequest);
         user.setPassword(passwordEncoder.encode(authRequest.password()));
@@ -55,7 +59,11 @@ public class AuthService {
             return getAuthResponse(authRequest);
         }
         catch (Exception e) {
-            throw new CustomException("Incorrect username or password", HttpStatus.UNAUTHORIZED);
+            throw new ApiException(
+                    HttpStatus.UNAUTHORIZED,
+                    "INVALID_CREDENTIALS",
+                    "Invalid username or password."
+            );
         }
     }
 
