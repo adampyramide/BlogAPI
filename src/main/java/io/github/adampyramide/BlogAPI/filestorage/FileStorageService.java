@@ -4,7 +4,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService  {
 
-    FileUploadResult save(MultipartFile file, String folder, FileValidationRule validationRule);
+    String getUrl(String fileId, FileValidationRule validationRule);
+
+    FileUploadResult save(MultipartFile file, FileValidationRule validationRule, String folder);
+    FileUploadResult save(MultipartFile file, FileValidationRule validationRule, String folder, String key);
+
     void delete(String fileId);
 
 }
