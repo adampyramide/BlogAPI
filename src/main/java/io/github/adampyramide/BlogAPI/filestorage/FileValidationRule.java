@@ -7,7 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public record FileValidationRule (
-        List<String> allowedMimeTypes, long maxSizeBytes
+        List<String> allowedMimeTypes,
+        long maxSizeBytes,
+        String fileCategory
 ) {
     public void validate(MultipartFile file) {
         String mimeType = file.getContentType();
