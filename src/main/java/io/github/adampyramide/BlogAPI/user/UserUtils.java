@@ -8,9 +8,9 @@ public class UserUtils {
     /**
      * Validates whether the current user is the owner of a resource. If not, it will throw an API exception.
      *
-     * @param author        the user who owns the resource
-     * @param user   the user performing the action
-     * @param resourceName  a readable name for the resource (e.g., "comment", "blogpost")
+     * @param author the user who owns the resource
+     * @param user the user performing the action
+     * @param resourceName a readable name for the resource (e.g., "comment", "blogpost")
      * @throws ApiException if the current user is not the author
      */
     public static void validateOwnership(User author, User user, String resourceName) {
