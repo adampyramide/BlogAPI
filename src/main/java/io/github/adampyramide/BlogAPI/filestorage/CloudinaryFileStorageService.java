@@ -2,8 +2,9 @@ package io.github.adampyramide.BlogAPI.filestorage;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import jakarta.annotation.Resource;
+import io.github.adampyramide.BlogAPI.error.ApiException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,30 +16,64 @@ import java.util.Map;
 public class CloudinaryFileStorageService implements FileStorageService {
 
     private final Cloudinary cloudinary;
+    private final CloudinaryProperties properties;
 
     @Override
-    public String save(MultipartFile file, String folder) {
+    public String getUrl(String publicId, FileValidationRule validationRule) {
+        return
+                "https://res.cloudinary.com/" + properties.getCloudName() + "/" + validationRule.fileCategory() + "/upload/" + publicId;
+    }
+
+    @Override
+    public FileUploadResult save(MultipartFile file, FileValidationRule validationRule, String folder, String key) {
+        validationRule.validate(file);
+
         try {
-            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+            @SuppressWarnings("unchecked")
+            Map<String, Object> uploadOptions = ObjectUtils.asMap(
                     "folder", folder
-            ));
-            return (String) uploadResult.get("secure_url");
+            );
+
+            if (key != null && !key.isBlank()) {
+                uploadOptions.put("public_id", key);
+                uploadOptions.put("overwrite", true);
+            }
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    uploadOptions
+            );
+
+            return new FileUploadResult(
+                    (String) uploadResult.get("secure_url"),
+                    (String) uploadResult.get("public_id")
+            );
         } catch (IOException e) {
-            throw new RuntimeException("File upload failed", e);
+            throw new ApiException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "CLOUD_UPLOAD_FAILED",
+                    "Failed to upload file to cloudinary."
+            );
         }
+    }
+
+    @Override
+    public FileUploadResult save(MultipartFile file, FileValidationRule validationRule, String folder) {
+        return save(file, validationRule, folder, null);
     }
 
     @Override
     public void delete(String publicId) {
         try {
-            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            cloudinary.uploader().destroy(publicId, Map.of());
         } catch (IOException e) {
-            throw new RuntimeException("File deletion failed", e);
+            throw new ApiException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "CLOUD_DELETE_FAILED",
+                    "Failed to delete file from cloudinary."
+            );
         }
     }
 
-    @Override
-    public Resource load(String fileUrl) {
-        return null;
-    }
 }
