@@ -1,9 +1,10 @@
 package io.github.adampyramide.BlogAPI.comment;
 
-import io.github.adampyramide.BlogAPI.blogpost.BlogPostFetcher;
+import io.github.adampyramide.BlogAPI.blogpost.BlogPostQueryService;
 import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
-import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
+import io.github.adampyramide.BlogAPI.user.UserAssembler;
+import io.github.adampyramide.BlogAPI.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,8 @@ public class CommentService {
     private final CommentRepository repo;
     private final CommentMapper mapper;
 
-    private final BlogPostFetcher blogPostFetcher;
+    private final UserAssembler userAssembler;
+    private final BlogPostQueryService blogPostQueryService;
     private final SecurityUtils securityUtils;
 
     // ====================
@@ -39,7 +41,7 @@ public class CommentService {
     public void updateCommentById(Long id, CommentRequest commentRequest) {
         Comment comment = getCommentOrThrow(id);
 
-        OwnershipValidator.authorizeAuthor(
+        UserUtils.validateOwnership(
                 comment.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
                 "comment"
@@ -52,7 +54,7 @@ public class CommentService {
     public void deleteCommentById(Long id) {
         Comment comment = getCommentOrThrow(id);
 
-        OwnershipValidator.authorizeAuthor(
+        UserUtils.validateOwnership(
                 comment.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
                 "comment"
@@ -64,7 +66,7 @@ public class CommentService {
     public void createComment(Long postId, CommentRequest commentRequest) {
         Comment comment = mapper.toEntity(commentRequest);
         comment.setAuthor(securityUtils.getAuthenticatedUser());
-        comment.setPost(blogPostFetcher.getByIdOrThrow(postId));
+        comment.setPost(blogPostQueryService.getByIdOrThrow(postId));
 
         repo.save(comment);
     }
@@ -85,8 +87,8 @@ public class CommentService {
     private CommentResponse toResponse(Comment comment) {
         CommentResponse commentResponse = mapper.toResponse(comment);
         commentResponse.setHasReplies(repo.existsByParentCommentId(comment.getId()));
+        userAssembler.enrichUserResponse(comment.getAuthor(), commentResponse.getAuthor());
         return commentResponse;
     }
-
 
 }
