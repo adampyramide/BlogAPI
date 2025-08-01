@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.reaction;
 
-import io.github.adampyramide.BlogAPI.blogpost.BlogPostFetcher;
+import io.github.adampyramide.BlogAPI.blogpost.BlogPostQueryService;
 import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
@@ -20,7 +20,7 @@ public class ReactionService {
     private final ReactionRepository repo;
     private final ReactionMapper mapper;
 
-    private final BlogPostFetcher blogPostFetcher;
+    private final BlogPostQueryService blogPostQueryService;
     private final SecurityUtils securityUtils;
 
     // ====================
@@ -28,7 +28,7 @@ public class ReactionService {
     // ====================
 
     public Page<ReactionResponse> getReactionsByPostId(Long postId, ReactionType reactionType, Pageable pageable) {
-        blogPostFetcher.getByIdOrThrow(postId);
+        blogPostQueryService.getByIdOrThrow(postId);
 
         Page<Reaction> reactions;
 
@@ -52,7 +52,7 @@ public class ReactionService {
         Reaction reaction = Reaction.builder()
                 .id(reactionId)
                 .author(user)
-                .post(blogPostFetcher.getByIdOrThrow(postId))
+                .post(blogPostQueryService.getByIdOrThrow(postId))
                 .reactionType(reactionRequest.reactionType())
                 .build();
 
@@ -60,7 +60,7 @@ public class ReactionService {
     }
 
     public void deleteReactionByPostId(Long postId) {
-        blogPostFetcher.getByIdOrThrow(postId);
+        blogPostQueryService.getByIdOrThrow(postId);
 
         Long userId = securityUtils.getAuthenticatedUser().getId();
         ReactionId reactionId = new ReactionId(
