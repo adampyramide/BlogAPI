@@ -5,8 +5,9 @@ import io.github.adampyramide.BlogAPI.reaction.ReactionService;
 import io.github.adampyramide.BlogAPI.reaction.ReactionType;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
-import io.github.adampyramide.BlogAPI.user.UserService;
-import io.github.adampyramide.BlogAPI.util.OwnershipValidator;
+import io.github.adampyramide.BlogAPI.user.UserAssembler;
+import io.github.adampyramide.BlogAPI.user.UserQueryService;
+import io.github.adampyramide.BlogAPI.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +22,13 @@ import java.util.Map;
 public class BlogPostService {
 
     private final BlogPostRepository repo;
-    private final BlogPostFetcher validator;
+    private final BlogPostQueryService queryService;
     private final BlogPostMapper mapper;
 
-    private final UserService userService;
-    private final ReactionService reactionService;
+    private final UserAssembler userAssembler;
+    private final UserQueryService userQueryService;
 
+    private final ReactionService reactionService;
     private final SecurityUtils securityUtils;
 
     // ====================
@@ -38,7 +40,7 @@ public class BlogPostService {
     }
 
     public BlogPostResponse getBlogPostById(Long id) {
-        BlogPostResponse blogPostResponse = mapper.toResponse(validator.getByIdOrThrow(id));
+        BlogPostResponse blogPostResponse = mapper.toResponse(queryService.getByIdOrThrow(id));
 
         blogPostResponse.setUserReaction(reactionService.getUserReactionTypeForPost(
                 securityUtils.getAuthenticatedUser().getId(),
@@ -60,9 +62,9 @@ public class BlogPostService {
     }
 
     public void updateBlogPostById(Long id, UpdateBlogPostRequest blogPostRequest) {
-        BlogPost blogPost = validator.getByIdOrThrow(id);
+        BlogPost blogPost = queryService.getByIdOrThrow(id);
 
-        OwnershipValidator.authorizeAuthor(
+        UserUtils.validateOwnership(
                 blogPost.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
                 "blogpost"
@@ -73,9 +75,10 @@ public class BlogPostService {
     }
 
     public void deleteBlogPostById(Long id) {
-        BlogPost blogPost = validator.getByIdOrThrow(id);
 
-        OwnershipValidator.authorizeAuthor(
+        BlogPost blogPost = queryService.getByIdOrThrow(id);
+
+        UserUtils.validateOwnership(
                 blogPost.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
                 "blogpost"
@@ -104,7 +107,7 @@ public class BlogPostService {
 
         User authenticatedUser = securityUtils.getAuthenticatedUser();
         for (BlogPost blogPost : blogPosts) {
-            OwnershipValidator.authorizeAuthor(
+            UserUtils.validateOwnership(
                     blogPost.getAuthor(),
                     authenticatedUser,
                     "blogpost"
@@ -116,7 +119,7 @@ public class BlogPostService {
     }
 
     public Page<BlogPostResponse> getBlogPostsByUserId(Long userId, Pageable pageable) {
-        userService.getUserOrThrow(userId);
+        userQueryService.getUserOrThrow(userId);
         return mapBlogPosts(repo.findAllByAuthor_Id(userId, pageable));
     }
 
@@ -142,6 +145,8 @@ public class BlogPostService {
             Map<ReactionType, Long> counts = reactionsCounts.getOrDefault(postId, Map.of());
             blogPostResponse.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
             blogPostResponse.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
+
+            userAssembler.enrichUserResponse(post.getAuthor(), blogPostResponse.getAuthor());
 
             return blogPostResponse;
         });
