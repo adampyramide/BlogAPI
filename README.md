@@ -1,6 +1,6 @@
 # Blog API
 ### What this project is
-A RESTful Blog API built with Java 17, Spring Boot, Hibernate and PostgreSQL. Includes features such as blog posts, comments, and reactions (likes/dislikes), among others. User authentication is implemented using JWT tokens.
+A RESTful Blog API built with Java 17, Spring Boot and PostgreSQL. Includes features such as blog posts, comments, and reactions (likes/dislikes), among others. User authentication is implemented using JWT tokens.
 
 ### Why I built this project
 I built this project to learn and demonstrate my ability to design APIs. It’s the first REST API I’ve built entirely on my own — without following tutorials or guides. I independently researched and implemented each feature as needed.
