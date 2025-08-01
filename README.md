@@ -1,6 +1,6 @@
 # Blog API
 ### What this project is
-A RESTful Blog API built with Java 17 and Spring Boot. Includes features such as blog posts, comments, and reactions (likes/dislikes), among others. User authentication is implemented using JWT tokens.
+A RESTful Blog API built with Java 17, Spring Boot, Hibernate and PostgreSQL. Includes features such as blog posts, comments, and reactions (likes/dislikes), among others. User authentication is implemented using JWT tokens.
 
 ### Why I built this project
 I built this project to learn and demonstrate my ability to design APIs. It’s the first REST API I’ve built entirely on my own — without following tutorials or guides. I independently researched and implemented each feature as needed.
@@ -25,6 +25,21 @@ Some endpoints require a JWT token.
 2. Include the token in your request headers: ```Authorization: Bearer YOUR_TOKEN_HERE```
 
 Refer to the API docs for details on the login and registration endpoints.
+
+## Technologies Used
+- Java 17
+- Spring Boot
+    - Spring Security
+    - Hibernate
+    - MapStruct
+    - Lombok
+- Maven
+- PostgreSQL
+- Cloudinary
+- OpenAPI
+- Docker
+- Postman
+- IntelliJ IDEA
 
 ## Features
 ### Secure User Authentication
@@ -58,14 +73,6 @@ Refer to the API docs for details on the login and registration endpoints.
 ### Pagination & Sorting
 - Consistent support for `page`, `size`, and `sort` query params
 - Responses include total count, page number, total pages, etc.
-
-## Technologies Used
-- Java 17
-- Spring Boot
-- PostgreSQL
-- Maven
-- IntelliJ IDEA
-- Postman
 
 ## License
 Licensed under the [MIT License](LICENSE).  
