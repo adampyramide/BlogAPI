@@ -38,6 +38,8 @@ public class BlogPostAssembler {
         blogPostResponse.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
         blogPostResponse.setDislikeCount(reactionCounts.getOrDefault(ReactionType.DISLIKE, 0L));
 
+        userAssembler.enrichUserResponse(blogPost.getAuthor(), blogPostResponse.getAuthor());
+
         return blogPostResponse;
     }
 
@@ -50,9 +52,9 @@ public class BlogPostAssembler {
         Map<Long, ReactionType> userReactions = reactionService.getUserReactionTypesForPosts(userId, postIds);
         Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
 
-        return page.map(post -> {
-            BlogPostResponse blogPostResponse = mapper.toResponse(post);
-            Long postId = post.getId();
+        return page.map(blogPost -> {
+            BlogPostResponse blogPostResponse = mapper.toResponse(blogPost);
+            Long postId = blogPost.getId();
 
             blogPostResponse.setUserReaction(userReactions.get(postId));
 
@@ -60,7 +62,7 @@ public class BlogPostAssembler {
             blogPostResponse.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
             blogPostResponse.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
 
-            userAssembler.enrichUserResponse(post.getAuthor(), blogPostResponse.getAuthor());
+            userAssembler.enrichUserResponse(blogPost.getAuthor(), blogPostResponse.getAuthor());
 
             return blogPostResponse;
         });
