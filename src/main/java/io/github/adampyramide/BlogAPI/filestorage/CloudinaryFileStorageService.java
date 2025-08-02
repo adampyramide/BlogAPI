@@ -20,8 +20,11 @@ public class CloudinaryFileStorageService implements FileStorageService {
 
     @Override
     public String getUrl(String publicId, FileValidationRule validationRule) {
-        return
-                "https://res.cloudinary.com/" + properties.getCloudName() + "/" + validationRule.fileCategory() + "/upload/" + publicId;
+        if (publicId == null || publicId.isBlank()) {
+            return null;
+        }
+
+        return "https://res.cloudinary.com/" + properties.getCloudName() + "/" + validationRule.fileCategory() + "/upload/" + publicId;
     }
 
     @Override
