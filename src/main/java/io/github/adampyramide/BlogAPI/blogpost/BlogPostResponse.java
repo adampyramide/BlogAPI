@@ -19,7 +19,7 @@ public class BlogPostResponse {
     private PublicUserResponse author;
     private String title;
     private String body;
-    private LocalDateTime createTime;
+    private LocalDateTime createdAt;
     private long likeCount;
     private long dislikeCount;
     private ReactionType userReaction;
