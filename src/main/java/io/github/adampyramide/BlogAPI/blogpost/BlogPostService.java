@@ -22,13 +22,11 @@ import java.util.Map;
 public class BlogPostService {
 
     private final BlogPostRepository repo;
+    private final BlogPostAssembler assembler;
     private final BlogPostQueryService queryService;
     private final BlogPostMapper mapper;
 
-    private final UserAssembler userAssembler;
     private final UserQueryService userQueryService;
-
-    private final ReactionService reactionService;
     private final SecurityUtils securityUtils;
 
     // ====================
@@ -36,32 +34,23 @@ public class BlogPostService {
     // ====================
 
     public Page<BlogPostResponse> getBlogPosts(Pageable pageable) {
-        return mapBlogPosts(repo.findAll(pageable));
+        return assembler.mapToBlogPostResponses(repo.findAll(pageable));
     }
 
     public BlogPostResponse getBlogPostById(Long id) {
-        BlogPostResponse blogPostResponse = mapper.toResponse(queryService.getByIdOrThrow(id));
-
-        blogPostResponse.setUserReaction(reactionService.getUserReactionTypeForPost(
-                securityUtils.getAuthenticatedUser().getId(),
-                id
-        ));
-
-        Map<ReactionType, Long> reactionCounts = reactionService.getReactionCountsByPostId(id);
-        blogPostResponse.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
-        blogPostResponse.setDislikeCount(reactionCounts.getOrDefault(ReactionType.DISLIKE, 0L));
-
-        return blogPostResponse;
+        return assembler.mapToBlogPostResponse(queryService.getByIdOrThrow(id));
     }
 
-    public void createBlogPost(CreateBlogPostRequest blogPostRequest) {
+    public BlogPostResponse createBlogPost(CreateBlogPostRequest blogPostRequest) {
         BlogPost blogPost = mapper.toEntity(blogPostRequest);
         blogPost.setAuthor(securityUtils.getAuthenticatedUser());
 
         repo.save(blogPost);
+
+        return assembler.mapToBlogPostResponse(blogPost);
     }
 
-    public void updateBlogPostById(Long id, UpdateBlogPostRequest blogPostRequest) {
+    public BlogPostResponse updateBlogPostById(Long id, UpdateBlogPostRequest blogPostRequest) {
         BlogPost blogPost = queryService.getByIdOrThrow(id);
 
         UserUtils.validateOwnership(
@@ -72,6 +61,8 @@ public class BlogPostService {
 
         mapper.updateEntity(blogPostRequest, blogPost);
         repo.save(blogPost);
+
+        return assembler.mapToBlogPostResponse(blogPost);
     }
 
     public void deleteBlogPostById(Long id) {
@@ -120,36 +111,7 @@ public class BlogPostService {
 
     public Page<BlogPostResponse> getBlogPostsByUserId(Long userId, Pageable pageable) {
         userQueryService.getUserOrThrow(userId);
-        return mapBlogPosts(repo.findAllByAuthor_Id(userId, pageable));
-    }
-
-    // ====================
-    // Private methods
-    // ====================
-
-    private Page<BlogPostResponse> mapBlogPosts(Page<BlogPost> page) {
-        List<Long> postIds = page.getContent().stream()
-                .map(BlogPost::getId)
-                .toList();
-
-        Long userId = securityUtils.getAuthenticatedUser().getId();
-        Map<Long, ReactionType> userReactions = reactionService.getUserReactionTypesForPosts(userId, postIds);
-        Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
-
-        return page.map(post -> {
-            BlogPostResponse blogPostResponse = mapper.toResponse(post);
-            Long postId = post.getId();
-
-            blogPostResponse.setUserReaction(userReactions.get(postId));
-
-            Map<ReactionType, Long> counts = reactionsCounts.getOrDefault(postId, Map.of());
-            blogPostResponse.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
-            blogPostResponse.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
-
-            userAssembler.enrichUserResponse(post.getAuthor(), blogPostResponse.getAuthor());
-
-            return blogPostResponse;
-        });
+        return assembler.mapToBlogPostResponses(repo.findAllByAuthor_Id(userId, pageable));
     }
 
 }
