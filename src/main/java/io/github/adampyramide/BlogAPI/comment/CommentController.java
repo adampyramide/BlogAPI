@@ -47,9 +47,10 @@ public class CommentController {
             }
     )
     @PutMapping("/comments/{commentId}")
-    public ResponseEntity<Void> updateCommentById(@PathVariable Long commentId, @Valid @RequestBody CommentRequest commentRequest) {
-        service.updateCommentById(commentId, commentRequest);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<CommentResponse> updateCommentById(@PathVariable Long commentId, @Valid @RequestBody CommentRequest commentRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                service.updateCommentById(commentId, commentRequest)
+        );
     }
 
     @Operation(
@@ -91,9 +92,10 @@ public class CommentController {
             }
     )
     @PostMapping("/blog-posts/{postId}/comments")
-    public ResponseEntity<Void> createComment(@PathVariable Long postId, @Valid @RequestBody CommentRequest commentRequest) {
-        service.createComment(postId, commentRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<CommentResponse> createComment(@PathVariable Long postId, @Valid @RequestBody CommentRequest commentRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                service.createComment(postId, commentRequest)
+        );
     }
 
     @Operation(

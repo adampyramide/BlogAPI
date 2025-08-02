@@ -38,7 +38,7 @@ public class CommentService {
         return repo.findAllByAuthor_Id(userId, pageable).map(this::toResponse);
     }
 
-    public void updateCommentById(Long id, CommentRequest commentRequest) {
+    public CommentResponse updateCommentById(Long id, CommentRequest commentRequest) {
         Comment comment = getCommentOrThrow(id);
 
         UserUtils.validateOwnership(
@@ -49,6 +49,18 @@ public class CommentService {
 
         mapper.updateEntity(commentRequest, comment);
         repo.save(comment);
+
+        return toResponse(comment);
+    }
+
+    public CommentResponse createComment(Long postId, CommentRequest commentRequest) {
+        Comment comment = mapper.toEntity(commentRequest);
+        comment.setAuthor(securityUtils.getAuthenticatedUser());
+        comment.setPost(blogPostQueryService.getByIdOrThrow(postId));
+
+        repo.save(comment);
+
+        return toResponse(comment);
     }
 
     public void deleteCommentById(Long id) {
@@ -61,14 +73,6 @@ public class CommentService {
         );
 
         repo.deleteById(id);
-    }
-
-    public void createComment(Long postId, CommentRequest commentRequest) {
-        Comment comment = mapper.toEntity(commentRequest);
-        comment.setAuthor(securityUtils.getAuthenticatedUser());
-        comment.setPost(blogPostQueryService.getByIdOrThrow(postId));
-
-        repo.save(comment);
     }
 
     // ====================
