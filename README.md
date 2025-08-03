@@ -4,7 +4,7 @@ RESTful API built with Java 17, Spring Boot & PostgreSQL. Features blog posts, c
 Built independently to showcase my API design skills — no tutorials, just self-driven research and implementation.
 
 ### Design Decisions
-See **[docs/adr](docs/adr)** for details on the technical and architectural decisions made.
+See **[docs/adr](adr)** for details on the technical and architectural decisions made.
 
 ### API Documentation
 **[API Documentation](https://adampyramide.github.io/BlogAPI/)** is available via Swagger UI.
@@ -18,7 +18,7 @@ All requests should use this base URL:
 
 ### Importing Endpoints
 Import this OpenAPI document into tools like Postman or Insomnia:
-**[docs/openapi/api-docs.json](docs/openapi/api-docs.json)**
+**[docs/openapi/api-docs.json](docs/api-docs.json)**
 
 ### Authentication
 Some endpoints require a JWT token.
