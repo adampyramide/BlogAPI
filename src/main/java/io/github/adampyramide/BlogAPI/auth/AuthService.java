@@ -41,7 +41,7 @@ public class AuthService {
                     "Username '%s' is already taken.".formatted(authRequest.username())
             );
 
-        User user = userMapper.authDTOToEntity(authRequest);
+        User user = userMapper.toEntity(authRequest);
         user.setPassword(passwordEncoder.encode(authRequest.password()));
 
         userRepo.save(user);
