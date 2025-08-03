@@ -6,6 +6,8 @@ import io.github.adampyramide.BlogAPI.filestorage.FileUploadResult;
 import io.github.adampyramide.BlogAPI.filestorage.FileValidationRule;
 import io.github.adampyramide.BlogAPI.filestorage.MimeTypeRules;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
+import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
+import io.github.adampyramide.BlogAPI.user.dto.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

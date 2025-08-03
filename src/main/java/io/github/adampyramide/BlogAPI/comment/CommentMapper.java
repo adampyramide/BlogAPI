@@ -1,5 +1,7 @@
 package io.github.adampyramide.BlogAPI.comment;
 
+import io.github.adampyramide.BlogAPI.comment.dto.CommentRequest;
+import io.github.adampyramide.BlogAPI.comment.dto.CommentResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

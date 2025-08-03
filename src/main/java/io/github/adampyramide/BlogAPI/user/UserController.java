@@ -1,5 +1,7 @@
 package io.github.adampyramide.BlogAPI.user;
 
+import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
+import io.github.adampyramide.BlogAPI.user.dto.UpdateUserRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

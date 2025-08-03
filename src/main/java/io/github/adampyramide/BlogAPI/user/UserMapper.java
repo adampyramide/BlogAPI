@@ -1,6 +1,8 @@
 package io.github.adampyramide.BlogAPI.user;
 
 import io.github.adampyramide.BlogAPI.auth.AuthRequest;
+import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
+import io.github.adampyramide.BlogAPI.user.dto.UpdateUserRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

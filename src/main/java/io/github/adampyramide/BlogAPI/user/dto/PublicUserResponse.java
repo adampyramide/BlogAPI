@@ -1,4 +1,4 @@
-package io.github.adampyramide.BlogAPI.user;
+package io.github.adampyramide.BlogAPI.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

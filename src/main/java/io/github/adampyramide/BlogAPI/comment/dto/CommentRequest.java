@@ -1,4 +1,4 @@
-package io.github.adampyramide.BlogAPI.comment;
+package io.github.adampyramide.BlogAPI.comment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

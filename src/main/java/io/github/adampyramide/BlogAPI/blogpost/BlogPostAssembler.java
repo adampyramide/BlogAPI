@@ -1,5 +1,6 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
+import io.github.adampyramide.BlogAPI.blogpost.dto.BlogPostResponse;
 import io.github.adampyramide.BlogAPI.reaction.ReactionService;
 import io.github.adampyramide.BlogAPI.reaction.ReactionType;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;

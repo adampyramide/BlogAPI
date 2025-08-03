@@ -1,11 +1,11 @@
 package io.github.adampyramide.BlogAPI.blogpost;
 
+import io.github.adampyramide.BlogAPI.blogpost.dto.BlogPostResponse;
+import io.github.adampyramide.BlogAPI.blogpost.dto.CreateBlogPostRequest;
+import io.github.adampyramide.BlogAPI.blogpost.dto.UpdateBlogPostRequest;
 import io.github.adampyramide.BlogAPI.error.ApiException;
-import io.github.adampyramide.BlogAPI.reaction.ReactionService;
-import io.github.adampyramide.BlogAPI.reaction.ReactionType;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
-import io.github.adampyramide.BlogAPI.user.UserAssembler;
 import io.github.adampyramide.BlogAPI.user.UserQueryService;
 import io.github.adampyramide.BlogAPI.user.UserUtils;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

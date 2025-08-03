@@ -4,6 +4,7 @@ import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.filestorage.CloudinaryFileStorageService;
 import io.github.adampyramide.BlogAPI.filestorage.FileValidationRule;
 import io.github.adampyramide.BlogAPI.filestorage.MimeTypeRules;
+import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

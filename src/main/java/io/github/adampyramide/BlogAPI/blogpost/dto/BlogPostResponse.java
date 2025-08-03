@@ -1,7 +1,7 @@
-package io.github.adampyramide.BlogAPI.blogpost;
+package io.github.adampyramide.BlogAPI.blogpost.dto;
 
 import io.github.adampyramide.BlogAPI.reaction.ReactionType;
-import io.github.adampyramide.BlogAPI.user.PublicUserResponse;
+import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

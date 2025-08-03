@@ -2,6 +2,8 @@ package io.github.adampyramide.BlogAPI.reaction;
 
 import io.github.adampyramide.BlogAPI.blogpost.BlogPostQueryService;
 import io.github.adampyramide.BlogAPI.error.ApiException;
+import io.github.adampyramide.BlogAPI.reaction.dto.ReactionRequest;
+import io.github.adampyramide.BlogAPI.reaction.dto.ReactionResponse;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.User;
 import lombok.RequiredArgsConstructor;

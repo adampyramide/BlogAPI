@@ -1,6 +1,8 @@
 package io.github.adampyramide.BlogAPI.comment;
 
 import io.github.adampyramide.BlogAPI.blogpost.BlogPostQueryService;
+import io.github.adampyramide.BlogAPI.comment.dto.CommentRequest;
+import io.github.adampyramide.BlogAPI.comment.dto.CommentResponse;
 import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.UserAssembler;
