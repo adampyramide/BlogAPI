@@ -2,6 +2,7 @@ package io.github.adampyramide.BlogAPI.comment;
 
 import io.github.adampyramide.BlogAPI.comment.dto.CommentRequest;
 import io.github.adampyramide.BlogAPI.comment.dto.CommentResponse;
+import io.github.adampyramide.BlogAPI.user.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -9,7 +10,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
         componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = UserMapper.class
 )
 public interface CommentMapper {
 
