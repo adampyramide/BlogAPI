@@ -30,7 +30,7 @@ public class UserController {
             }
     )
     @DeleteMapping("/me")
-    public ResponseEntity<UserPreviewResponse> deleteUser() {
+    public ResponseEntity<Void> deleteUser() {
         service.deleteUser();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
