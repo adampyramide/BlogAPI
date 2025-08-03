@@ -11,7 +11,7 @@ public class UserQueryService {
 
     private final UserRepository repo;
 
-    public User getUserOrThrow(Long id) {
+    public User getByIdOrThrow(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ApiException(
                         HttpStatus.NOT_FOUND,
