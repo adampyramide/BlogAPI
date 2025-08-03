@@ -33,7 +33,6 @@ public class ReactionService {
         blogPostQueryService.getByIdOrThrow(postId);
 
         Page<Reaction> reactions;
-
         if (reactionType == null) {
             reactions = repo.findAllByPostId(postId, pageable);
         }
@@ -107,7 +106,6 @@ public class ReactionService {
         List<Object[]> results = repo.countReactionsGroupedByPostIds(postIds);
 
         Map<Long, Map<ReactionType, Long>> reactionMap = new HashMap<>();
-
         for (Object[] row : results) {
             Long postId = (Long) row[0];
             ReactionType type = (ReactionType) row[1];
@@ -123,7 +121,6 @@ public class ReactionService {
 
     public Map<ReactionType, Long> getReactionCountsByPostId(Long postId) {
         Map<ReactionType, Long> counts = new EnumMap<>(ReactionType.class);
-
         for (Object[] row : repo.countReactionsByPostId(postId)) {
             counts.put((ReactionType) row[0], (Long) row[1]);
         }
