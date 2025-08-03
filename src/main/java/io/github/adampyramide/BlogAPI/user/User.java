@@ -32,9 +32,9 @@ public class User {
     private LocalDateTime createdAt;
 
     @Column
-    private String description;
+    private String avatarId;
 
     @Column
-    private String avatarId;
+    private String description;
 
 }
