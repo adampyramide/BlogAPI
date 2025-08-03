@@ -3,6 +3,7 @@ package io.github.adampyramide.BlogAPI.blogpost;
 import io.github.adampyramide.BlogAPI.blogpost.dto.BlogPostResponse;
 import io.github.adampyramide.BlogAPI.blogpost.dto.CreateBlogPostRequest;
 import io.github.adampyramide.BlogAPI.blogpost.dto.UpdateBlogPostRequest;
+import io.github.adampyramide.BlogAPI.user.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -10,7 +11,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
         componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = UserMapper.class
 )
 public interface BlogPostMapper {
 

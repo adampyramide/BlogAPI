@@ -4,7 +4,6 @@ import io.github.adampyramide.BlogAPI.blogpost.dto.BlogPostResponse;
 import io.github.adampyramide.BlogAPI.reaction.ReactionService;
 import io.github.adampyramide.BlogAPI.reaction.ReactionType;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
-import io.github.adampyramide.BlogAPI.user.UserAssembler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ public class BlogPostAssembler {
     private final BlogPostMapper mapper;
 
     private final ReactionService reactionService;
-    private final UserAssembler userAssembler;
     private final SecurityUtils securityUtils;
 
     // ====================
@@ -30,17 +28,16 @@ public class BlogPostAssembler {
         BlogPostResponse blogPostResponse = mapper.toResponse(blogPost);
         long BlogPostId = blogPostResponse.getId();
 
-        blogPostResponse.setUserReaction(reactionService.getUserReactionTypeForPost(
-                securityUtils.getAuthenticatedUser().getId(),
-                BlogPostId
-        ));
+        blogPostResponse.setUserReaction(
+                reactionService.getUserReactionTypeForPost(
+                        securityUtils.getAuthenticatedUser().getId(),
+                        BlogPostId
+                )
+        );
 
         Map<ReactionType, Long> reactionCounts = reactionService.getReactionCountsByPostId(BlogPostId);
         blogPostResponse.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
         blogPostResponse.setDislikeCount(reactionCounts.getOrDefault(ReactionType.DISLIKE, 0L));
-
-        userAssembler.enrichUserResponse(blogPost.getAuthor(), blogPostResponse.getAuthor());
-
         return blogPostResponse;
     }
 
@@ -62,8 +59,6 @@ public class BlogPostAssembler {
             Map<ReactionType, Long> counts = reactionsCounts.getOrDefault(postId, Map.of());
             blogPostResponse.setLikeCount(counts.getOrDefault(ReactionType.LIKE, 0L));
             blogPostResponse.setDislikeCount(counts.getOrDefault(ReactionType.DISLIKE, 0L));
-
-            userAssembler.enrichUserResponse(blogPost.getAuthor(), blogPostResponse.getAuthor());
 
             return blogPostResponse;
         });

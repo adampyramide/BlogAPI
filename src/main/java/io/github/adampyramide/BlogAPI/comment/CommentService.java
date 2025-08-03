@@ -5,7 +5,6 @@ import io.github.adampyramide.BlogAPI.comment.dto.CommentRequest;
 import io.github.adampyramide.BlogAPI.comment.dto.CommentResponse;
 import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
-import io.github.adampyramide.BlogAPI.user.UserAssembler;
 import io.github.adampyramide.BlogAPI.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,6 @@ public class CommentService {
     private final CommentRepository repo;
     private final CommentMapper mapper;
 
-    private final UserAssembler userAssembler;
     private final BlogPostQueryService blogPostQueryService;
     private final SecurityUtils securityUtils;
 
@@ -37,7 +35,7 @@ public class CommentService {
     }
 
     public Page<CommentResponse> getCommentsByAuthorId(Long userId, Pageable pageable) {
-        return repo.findAllByAuthor_Id(userId, pageable).map(this::toResponse);
+        return repo.findAllByAuthorId(userId, pageable).map(this::toResponse);
     }
 
     public CommentResponse updateCommentById(Long id, CommentRequest commentRequest) {
@@ -93,7 +91,6 @@ public class CommentService {
     private CommentResponse toResponse(Comment comment) {
         CommentResponse commentResponse = mapper.toResponse(comment);
         commentResponse.setHasReplies(repo.existsByParentCommentId(comment.getId()));
-        userAssembler.enrichUserResponse(comment.getAuthor(), commentResponse.getAuthor());
         return commentResponse;
     }
 
