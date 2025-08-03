@@ -31,7 +31,7 @@ public class UserAssembler {
      */
     public UserPreviewResponse getUserResponseById(Long id) {
         User user = queryService.getUserOrThrow(id);
-        return enrichUserResponse(user, mapper.toPublicDTO(user));
+        return enrichUserResponse(user, mapper.toUserPreviewResponse(user));
     }
 
     /**
