@@ -2,6 +2,7 @@ package io.github.adampyramide.BlogAPI.user;
 
 import io.github.adampyramide.BlogAPI.user.dto.UserPreviewResponse;
 import io.github.adampyramide.BlogAPI.user.dto.UpdateUserRequest;
+import io.github.adampyramide.BlogAPI.user.dto.UserProfileResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,7 +56,7 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<UserPreviewResponse> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getUserById(id));
     }
 
