@@ -18,7 +18,7 @@ All requests should use this base URL:
 
 ### Importing Endpoints
 Import this OpenAPI document into tools like Postman or Insomnia:
-**[docs/api-docs.json](docs/api-docs.json)**
+**[docs/openapi/api-docs.json](docs/openapi/api-docs.json)**
 
 ### Authentication
 Some endpoints require a JWT token.
