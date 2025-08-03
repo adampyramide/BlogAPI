@@ -1,3 +1,10 @@
+jwt:
+  secret: aSecret
+cloudinary:
+  cloud-name: aCloudName
+  api-key: anApiKey
+  api-secret: anApiSecret
+
 application:
   name: test-environment
 
