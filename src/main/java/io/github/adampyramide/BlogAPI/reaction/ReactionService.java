@@ -35,10 +35,10 @@ public class ReactionService {
         Page<Reaction> reactions;
 
         if (reactionType == null) {
-            reactions = repo.findAllByPost_Id(postId, pageable);
+            reactions = repo.findAllByPostId(postId, pageable);
         }
         else {
-            reactions = repo.findAllByPost_IdAndReactionType(postId, reactionType, pageable);
+            reactions = repo.findAllByPostIdAndReactionType(postId, reactionType, pageable);
         }
 
         return reactions.map(mapper::toResponse);

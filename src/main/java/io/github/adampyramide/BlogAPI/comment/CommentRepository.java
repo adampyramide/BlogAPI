@@ -12,7 +12,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Page<Comment> findAllByPostId(Long postId, Pageable pageable);
 
-    Page<Comment> findAllByAuthor_Id(Long userId, Pageable pageable);
+    Page<Comment> findAllByAuthorId(Long userId, Pageable pageable);
 
     boolean existsByParentCommentId(Long parentCommentId);
 

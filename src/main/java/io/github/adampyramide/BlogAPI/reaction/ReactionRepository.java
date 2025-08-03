@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface ReactionRepository extends JpaRepository<Reaction, ReactionId> {
 
-    Page<Reaction> findAllByPost_Id(Long postId, Pageable pageable);
+    Page<Reaction> findAllByPostId(Long postId, Pageable pageable);
 
-    Page<Reaction> findAllByPost_IdAndReactionType(Long postId, ReactionType reactionType, Pageable pageable);
+    Page<Reaction> findAllByPostIdAndReactionType(Long postId, ReactionType reactionType, Pageable pageable);
 
     List<Reaction> findByAuthorIdAndPostIdIn(Long userId, List<Long> postIds);
 

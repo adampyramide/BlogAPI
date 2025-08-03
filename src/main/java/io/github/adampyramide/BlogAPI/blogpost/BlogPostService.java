@@ -105,12 +105,11 @@ public class BlogPostService {
         }
 
         repo.deleteAll(blogPosts);
-
     }
 
     public Page<BlogPostResponse> getBlogPostsByUserId(Long userId, Pageable pageable) {
-        userQueryService.getUserOrThrow(userId);
-        return assembler.mapToBlogPostResponses(repo.findAllByAuthor_Id(userId, pageable));
+        userQueryService.getByIdOrThrow(userId);
+        return assembler.mapToBlogPostResponses(repo.findAllByAuthorId(userId, pageable));
     }
 
 }

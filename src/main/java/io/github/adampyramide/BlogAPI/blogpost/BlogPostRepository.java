@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
 
     @EntityGraph(attributePaths = {"author"})
-    Page<BlogPost> findAllByAuthor_Id(Long userId, Pageable pageable);
+    Page<BlogPost> findAllByAuthorId(Long userId, Pageable pageable);
 
 }
