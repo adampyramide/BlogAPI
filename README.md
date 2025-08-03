@@ -1,18 +1,19 @@
 # Blog API
-### What this project is
-A RESTful Blog API built with Java 17, Spring Boot and PostgreSQL. Includes features such as blog posts, comments, and reactions (likes/dislikes), among others. User authentication is implemented using JWT tokens.
+RESTful API built with Java 17, Spring Boot & PostgreSQL. Features blog posts, comments, reactions, etc.
 
-### Why I built this project
-I built this project to learn and demonstrate my ability to design APIs. It’s the first REST API I’ve built entirely on my own — without following tutorials or guides. I independently researched and implemented each feature as needed.
+Built independently to showcase my API design skills — no tutorials, just self-driven research and implementation.
 
-## API Documentation
+### Design Decisions
+See **[Design Decisions](DESIGN_DECISIONS.md)** for details on the technical and architectural decisions made.
+
+### API Documentation
 **[API Documentation](https://adampyramide.github.io/BlogAPI/)** is available via Swagger UI.
 
 ## Try the API
-The API is hosted on Render — please note it may take a few seconds to respond to the first request due to server spin-up.
+The API is hosted on Render — please note it may take a few seconds to respond to the first request due to server cold start.
 
 ### Base URL
-All requests should use the following base URL:
+All requests should use this base URL:
 **https://blogapi-vzsx.onrender.com/api/**
 
 ### Importing Endpoints
