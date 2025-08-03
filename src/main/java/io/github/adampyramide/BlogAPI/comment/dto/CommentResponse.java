@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.comment.dto;
 
-import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
+import io.github.adampyramide.BlogAPI.user.dto.UserPreviewResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ public class CommentResponse {
 
     private Long id;
     private Long postId;
-    private PublicUserResponse author;
+    private UserPreviewResponse author;
     private Long parentCommentId;
     private String body;
     private boolean hasReplies;

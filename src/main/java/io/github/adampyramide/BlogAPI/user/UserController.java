@@ -1,6 +1,6 @@
 package io.github.adampyramide.BlogAPI.user;
 
-import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
+import io.github.adampyramide.BlogAPI.user.dto.UserPreviewResponse;
 import io.github.adampyramide.BlogAPI.user.dto.UpdateUserRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,7 +30,7 @@ public class UserController {
             }
     )
     @DeleteMapping("/me")
-    public ResponseEntity<PublicUserResponse> deleteUser() {
+    public ResponseEntity<UserPreviewResponse> deleteUser() {
         service.deleteUser();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -42,7 +42,7 @@ public class UserController {
             }
     )
     @PatchMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PublicUserResponse> updateUser(@ModelAttribute UpdateUserRequest userRequest) {
+    public ResponseEntity<UserPreviewResponse> updateUser(@ModelAttribute UpdateUserRequest userRequest) {
         service.updateUser(userRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -55,7 +55,7 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<PublicUserResponse> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserPreviewResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getUserById(id));
     }
 

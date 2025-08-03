@@ -4,7 +4,7 @@ import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.filestorage.CloudinaryFileStorageService;
 import io.github.adampyramide.BlogAPI.filestorage.FileValidationRule;
 import io.github.adampyramide.BlogAPI.filestorage.MimeTypeRules;
-import io.github.adampyramide.BlogAPI.user.dto.PublicUserResponse;
+import io.github.adampyramide.BlogAPI.user.dto.UserPreviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +29,7 @@ public class UserAssembler {
      * @param id user ID
      * @throws ApiException if no user found with ID
      */
-    public PublicUserResponse getUserResponseById(Long id) {
+    public UserPreviewResponse getUserResponseById(Long id) {
         User user = queryService.getUserOrThrow(id);
         return enrichUserResponse(user, mapper.toPublicDTO(user));
     }
@@ -40,7 +40,7 @@ public class UserAssembler {
      * @param user the user entity
      * @param userResponse the userResponse DTO
      */
-    public PublicUserResponse enrichUserResponse(User user, PublicUserResponse userResponse) {
+    public UserPreviewResponse enrichUserResponse(User user, UserPreviewResponse userResponse) {
         userResponse.setAvatarUrl(fileStorageService.getUrl(user.getAvatarId(), fileValidationRule));
         return userResponse;
     }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PublicUserResponse {
+public class UserPreviewResponse {
 
     private Long id;
     private String username;
