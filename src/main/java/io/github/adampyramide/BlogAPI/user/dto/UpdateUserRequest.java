@@ -1,5 +1,6 @@
 package io.github.adampyramide.BlogAPI.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.adampyramide.BlogAPI.user.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Past;
@@ -24,6 +25,7 @@ public record UpdateUserRequest(
         String description,
 
         @Past(message = "Date of birt must be in the past")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate dateOfBirth,
 
         Gender gender
