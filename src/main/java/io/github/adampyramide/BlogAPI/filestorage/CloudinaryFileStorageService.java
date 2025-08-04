@@ -49,8 +49,8 @@ public class CloudinaryFileStorageService implements FileStorageService {
             );
 
             return new FileUploadResult(
-                    (String) uploadResult.get("secure_url"),
-                    (String) uploadResult.get("public_id")
+                    (String) uploadResult.get("public_id"),
+                    (String) uploadResult.get("secure_url")
             );
         } catch (IOException e) {
             throw new ApiException(
