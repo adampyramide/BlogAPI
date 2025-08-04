@@ -7,11 +7,14 @@ import io.github.adampyramide.BlogAPI.filestorage.FileValidationRule;
 import io.github.adampyramide.BlogAPI.filestorage.MimeTypeRules;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.dto.UpdateUserRequest;
+import io.github.adampyramide.BlogAPI.user.dto.UserPreviewResponse;
 import io.github.adampyramide.BlogAPI.user.dto.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -35,14 +38,40 @@ public class UserService {
         repo.delete(user);
     }
 
-    public void updateUser(UpdateUserRequest userRequest) {
+    public UserProfileResponse updateUser(UpdateUserRequest userRequest) {
         User user = securityUtils.getAuthenticatedUser();
         mapper.updateEntity(userRequest, user);
 
-        handleAvatarUpdate(user,
-                userRequest.avatarImage(),
-                userRequest.removeAvatar()
+        validateDateOfBirth(userRequest.dateOfBirth());
+
+        repo.save(user);
+
+        return mapper.toUserProfileResponse(user);
+    }
+
+    public UserPreviewResponse updateUserAvatar(MultipartFile avatarImage) {
+        User user = securityUtils.getAuthenticatedUser();
+        FileUploadResult fileUploadResult = fileStorageService.save(
+                avatarImage,
+                fileValidationRule,
+                "profile-pictures",
+                user.getId().toString()
         );
+        user.setAvatarId(fileUploadResult.id());
+
+        repo.save(user);
+
+        return mapper.toUserPreviewResponse(user);
+    }
+
+    public void deleteUserAvatar() {
+        User user = securityUtils.getAuthenticatedUser();
+        String avatarId = user.getAvatarId();
+        if (avatarId == null) {
+            return;
+        }
+        fileStorageService.delete(avatarId);
+        user.setAvatarId(null);
 
         repo.save(user);
     }
@@ -55,47 +84,21 @@ public class UserService {
     // Private methods
     // ====================
 
-    /**
-     * Handles avatar updates for a user.
-     * <p>
-     * Based on the provided flags, this will either remove the existing avatar,
-     * upload a new one, or do nothing. Uploading a new avatar automatically
-     * replaces any existing avatar image.
-     * </p>
-     *
-     * @param user the user whose avatar is being updated
-     * @param avatarImage the new avatar image to upload (nullable)
-     * @param removeAvatar true if the current avatar should be removed
-     * @throws ApiException if both upload and removal are requested in the same call
-     */
-    private void handleAvatarUpdate(User user, MultipartFile avatarImage, Boolean removeAvatar) {
-        boolean wantsToRemove = Boolean.TRUE.equals(removeAvatar);
-        boolean wantsToUpload = avatarImage != null && !avatarImage.isEmpty();
+    private void validateDateOfBirth(LocalDate dateOfBirth) {
+        if (dateOfBirth == null) {
+            return;
+        }
 
-        if (wantsToRemove && wantsToUpload) {
-            throw  new ApiException(
+        LocalDate today = LocalDate.now();
+        LocalDate minDate = today.minusYears(150);
+        LocalDate maxDate = today;
+
+        if (dateOfBirth.isBefore(minDate)) {
+            throw new ApiException(
                     HttpStatus.BAD_REQUEST,
-                    "AVATAR_UPDATE_CONFLICT",
-                    "Cannot request both avatar removal and upload in the same request. " +
-                            "Note: uploading a new avatar automatically replaces the existing one."
+                    "INVALID_DATE_OF_BIRTH",
+                    "Date of birth is too old. Requested date of birth: " + dateOfBirth
             );
-        }
-
-        String oldAvatarId = user.getAvatarId();
-        if (wantsToRemove && oldAvatarId != null) {
-            fileStorageService.delete(oldAvatarId);
-            user.setAvatarId(null);
-        }
-
-        if (wantsToUpload) {
-            FileUploadResult fileUploadResult = fileStorageService.save(
-                    avatarImage,
-                    fileValidationRule,
-                    "profile-pictures",
-                    user.getId().toString()
-            );
-
-            user.setAvatarId(fileUploadResult.id());
         }
     }
 

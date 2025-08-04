@@ -8,11 +8,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Users")
 @SecurityRequirement(name = "bearerAuth")
@@ -25,7 +27,7 @@ public class UserController {
     private final UserService service;
 
     @Operation(
-            summary = "Delete user by session",
+            summary = "Delete authenticated user",
             responses = {
                     @ApiResponse(responseCode = "204", description = "User deleted")
             }
@@ -37,14 +39,36 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Update user information by session",
+            summary = "Update authenticated user's information",
             responses = {
                     @ApiResponse(responseCode = "200", description = "User information updated")
             }
     )
-    @PatchMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<UserPreviewResponse> updateUser(@ModelAttribute UpdateUserRequest userRequest) {
-        service.updateUser(userRequest);
+    @PatchMapping(value = "/me")
+    public ResponseEntity<UserProfileResponse> updateUser(@Valid @RequestBody UpdateUserRequest userRequest) {
+        return ResponseEntity.ok(service.updateUser(userRequest));
+    }
+
+    @Operation(
+            summary = "Update authenticated user's avatar",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User avatar updated")
+            }
+    )
+    @PostMapping(value = "/me/avatar")
+    public ResponseEntity<UserPreviewResponse> updateUserAvatar(@RequestParam("avatarImage") MultipartFile avatarImage) {
+        return ResponseEntity.ok(service.updateUserAvatar(avatarImage));
+    }
+
+    @Operation(
+            summary = "Delete authenticated user's avatar",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User avatar updated")
+            }
+    )
+    @DeleteMapping(value = "/me/avatar")
+    public ResponseEntity<Void> deleteUserAvatar() {
+        service.deleteUserAvatar();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
