@@ -2,7 +2,6 @@ package io.github.adampyramide.BlogAPI.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.adampyramide.BlogAPI.user.Gender;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -14,9 +13,6 @@ public record UpdateUserRequest(
 
         @Size(min = 1, max = 20, message = "Username must be between 1 and 20 characters")
         String username,
-
-        @Email(message = "Invalid email format")
-        String email,
 
         @Size(min = 1, max = 20, message = "Display name must be between 1 and 20 characters")
         String displayName,
