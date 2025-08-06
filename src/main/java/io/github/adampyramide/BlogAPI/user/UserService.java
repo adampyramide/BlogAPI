@@ -91,7 +91,6 @@ public class UserService {
 
         LocalDate today = LocalDate.now();
         LocalDate minDate = today.minusYears(150);
-        LocalDate maxDate = today;
 
         if (dateOfBirth.isBefore(minDate)) {
             throw new ApiException(
