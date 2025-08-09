@@ -3,7 +3,6 @@ package io.github.adampyramide.BlogAPI.user;
 import io.github.adampyramide.BlogAPI.error.ApiException;
 import io.github.adampyramide.BlogAPI.filestorage.CloudinaryFileStorageService;
 import io.github.adampyramide.BlogAPI.filestorage.FileUploadResult;
-import io.github.adampyramide.BlogAPI.filestorage.FileValidationRule;
 import io.github.adampyramide.BlogAPI.filestorage.MimeTypeRules;
 import io.github.adampyramide.BlogAPI.security.SecurityUtils;
 import io.github.adampyramide.BlogAPI.user.dto.UpdateUserRequest;
