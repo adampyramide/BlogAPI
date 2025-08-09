@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserUtilsTest {
 
-    private final String resourceName = "aResource";
+    private final String resourceName = "aResourceName";
 
     // ====================
     // Tests for validateOwnership
@@ -33,9 +33,9 @@ public class UserUtilsTest {
     void validateOwnership_ThrowsException_WhenUserIsNotOwner() {
         // Arrange
         User user = User.builder()
-                .id(1L).build();
+                .id(99L).build();
         User author = User.builder()
-                .id(2L).build();
+                .id(1L).build();
 
         // Act & Assert
         ApiException exception = assertThrows(
@@ -44,8 +44,9 @@ public class UserUtilsTest {
         );
 
         // confirms that proper api exception is returned
-        assertEquals("NOT_RESOURCE_OWNER", exception.getErrorCode());
         assertThat(exception.getHttpStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertEquals("NOT_RESOURCE_OWNER", exception.getErrorCode());
+        assertEquals("User ID 99 attempted to access aResourceName owned by user ID 1.", exception.getMessage());
     }
 
 }
