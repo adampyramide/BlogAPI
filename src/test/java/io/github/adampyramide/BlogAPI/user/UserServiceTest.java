@@ -242,15 +242,15 @@ class UserServiceTest {
         prepareUpdateUserTests(user, userRequest);
 
         // Act & Assert
-        ApiException ex = assertThrows(
+        ApiException exception = assertThrows(
                 ApiException.class,
                 () -> underTest.updateUser(userRequest)
         );
 
         // confirms that proper api exception is returned
-        assertEquals("INVALID_DATE_OF_BIRTH", ex.getErrorCode());
-        assertThat(ex.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertTrue(ex.getMessage().contains("Date of birth is too old"));
+        assertEquals("INVALID_DATE_OF_BIRTH", exception.getErrorCode());
+        assertThat(exception.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertTrue(exception.getMessage().contains("Date of birth is too old"));
     }
 
     // ====================
