@@ -29,6 +29,9 @@ public class UserService {
 
     private final FileValidationRule fileValidationRule = MimeTypeRules.IMAGE_ONLY;
 
+    // CONSTANTS
+    static final int MAX_DATE_OF_BIRTH_YEARS = 150;
+
     // ====================
     // Public methods
     // ====================
@@ -90,7 +93,7 @@ public class UserService {
         }
 
         LocalDate today = LocalDate.now();
-        LocalDate minDate = today.minusYears(150);
+        LocalDate minDate = today.minusYears(MAX_DATE_OF_BIRTH_YEARS);
 
         if (dateOfBirth.isBefore(minDate)) {
             throw new ApiException(
