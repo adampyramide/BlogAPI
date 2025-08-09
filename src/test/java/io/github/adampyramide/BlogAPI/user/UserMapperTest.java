@@ -29,7 +29,7 @@ public class UserMapperTest {
     private CloudinaryFileStorageService fileStorageService;
 
     // ====================
-    // Test Helper Methods
+    // Test Helpers
     // ====================
 
     private User createMockUser() {

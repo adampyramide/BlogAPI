@@ -45,7 +45,7 @@ class UserServiceTest {
     private CloudinaryFileStorageService fileStorageService;
 
     // ====================
-    // Test Helper Methods
+    // Test Helpers
     // ====================
 
     private User createMockUser() {
@@ -76,7 +76,7 @@ class UserServiceTest {
     }
 
     // ====================
-    // Tests for GetUserById
+    // Tests for getUserById
     // ====================
 
     @Test
@@ -99,7 +99,7 @@ class UserServiceTest {
     }
 
     // ====================
-    // Tests for DeleteUser
+    // Tests for deleteUser
     // ====================
 
     @Test
@@ -116,7 +116,7 @@ class UserServiceTest {
     }
 
     // ====================
-    // Tests for UpdateUser
+    // Tests for updateUser
     // ====================
 
     @ParameterizedTest
@@ -254,7 +254,7 @@ class UserServiceTest {
     }
 
     // ====================
-    // Tests for UpdateUserAvatar
+    // Tests for updateUserAvatar
     // ====================
 
     @Test
