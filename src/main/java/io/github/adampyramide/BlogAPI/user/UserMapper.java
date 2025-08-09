@@ -25,7 +25,6 @@ public abstract class UserMapper {
 
     // CONVERTERS
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "email", target = "email")
     public abstract User toEntity(AuthRequest dto);
 
     public abstract UserPreviewResponse toUserPreviewResponse(User user);
