@@ -64,6 +64,7 @@ public class UserMapperTest {
                 () -> underTest.toEntity(authRequest)
         );
 
+        // validate fields are same in expected and returned, and id is null
         assertThat(result.getId()).isNull();
         assertThat(result.getUsername()).isEqualTo("aUsername");
         assertThat(result.getPassword()).isEqualTo("aPassword");
@@ -88,6 +89,7 @@ public class UserMapperTest {
                 () -> underTest.toUserPreviewResponse(user)
         );
 
+        // validate fields are same in expected and returned
         assertThat(result)
                 .usingRecursiveAssertion()
                 .isEqualTo(expected);
@@ -117,6 +119,7 @@ public class UserMapperTest {
                 () -> underTest.toUserProfileResponse(user)
         );
 
+        // validate fields are same in expected and returned
         assertThat(result)
                 .usingRecursiveAssertion()
                 .isEqualTo(expected);
@@ -143,11 +146,12 @@ public class UserMapperTest {
         expected.setDateOfBirth(updateRequest.dateOfBirth());
         expected.setGender(updateRequest.gender());
 
-        // Act
+        // Act & Aaawer
         assertDoesNotThrow(
                 () -> underTest.updateEntity(updateRequest, user)
         );
 
+        // validate fields are same in expected and returned
         assertThat(user)
                 .usingRecursiveAssertion()
                 .isEqualTo(expected);
