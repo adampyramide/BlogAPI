@@ -45,11 +45,8 @@ public class UserUtilsTest {
 
         // confirms that proper api exception is returned
         assertThat(exception.getHttpStatus()).isEqualTo(HttpStatus.FORBIDDEN);
-        assertEquals("NOT_RESOURCE_OWNER", exception.getErrorCode());
-        assertEquals(
-                "User ID 99 attempted to access " + RESOURCE_NAME + " owned by user ID 1.",
-                exception.getMessage()
-        );
+        assertThat(exception.getErrorCode()).isEqualTo("NOT_RESOURCE_OWNER");
+        assertThat(exception.getMessage()).isEqualTo("User ID 99 attempted to access " + RESOURCE_NAME + " owned by user ID 1.");
     }
 
 }
