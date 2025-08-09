@@ -247,7 +247,7 @@ class UserServiceTest {
                 () -> underTest.updateUser(userRequest)
         );
 
-        // confirms that proper api
+        // confirms that proper api exception is returned
         assertEquals("INVALID_DATE_OF_BIRTH", ex.getErrorCode());
         assertThat(ex.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertTrue(ex.getMessage().contains("Date of birth is too old"));
