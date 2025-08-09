@@ -27,8 +27,6 @@ public class UserService {
     private final SecurityUtils securityUtils;
     private final CloudinaryFileStorageService fileStorageService;
 
-    private final FileValidationRule fileValidationRule = MimeTypeRules.IMAGE_ONLY;
-
     // CONSTANTS
     static final int MAX_DATE_OF_BIRTH_YEARS = 150;
 
@@ -56,7 +54,7 @@ public class UserService {
         User user = securityUtils.getAuthenticatedUser();
         FileUploadResult fileUploadResult = fileStorageService.save(
                 avatarImage,
-                fileValidationRule,
+                MimeTypeRules.IMAGE_ONLY,
                 "profile-pictures",
                 user.getId().toString()
         );
