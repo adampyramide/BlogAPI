@@ -14,5 +14,6 @@ public class UserPreviewResponse {
     private Long id;
     private String username;
     private String avatarUrl;
+    private String displayName;
 
 }
