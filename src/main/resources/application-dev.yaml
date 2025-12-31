@@ -2,14 +2,10 @@ spring:
   config:
     activate:
       on-profile: dev
-  datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/blog_db}
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:root}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
   sql:
     init:
