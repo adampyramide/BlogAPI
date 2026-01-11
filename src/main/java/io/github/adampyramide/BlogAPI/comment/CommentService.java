@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CommentService {
 
+    // Constants
+    private static final String RESOURCE_NAME = Comment.class.getSimpleName();
+
+    // Dependencies
     private final CommentRepository repo;
     private final CommentMapper mapper;
 
@@ -44,7 +48,7 @@ public class CommentService {
         UserUtils.validateOwnership(
                 comment.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
-                "comment"
+                RESOURCE_NAME
         );
 
         mapper.updateEntity(commentRequest, comment);
@@ -69,7 +73,7 @@ public class CommentService {
         UserUtils.validateOwnership(
                 comment.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
-                "comment"
+                RESOURCE_NAME
         );
 
         repo.deleteById(id);

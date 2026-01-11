@@ -20,6 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BlogPostService {
 
+    // Constants
+    private static final String RESOURCE_NAME = BlogPost.class.getSimpleName();
+
+    // Dependencies
     private final BlogPostRepository repo;
     private final BlogPostAssembler assembler;
     private final BlogPostQueryService queryService;
@@ -55,7 +59,7 @@ public class BlogPostService {
         UserUtils.validateOwnership(
                 blogPost.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
-                "blogpost"
+                RESOURCE_NAME
         );
 
         mapper.updateEntity(blogPostRequest, blogPost);
@@ -71,7 +75,7 @@ public class BlogPostService {
         UserUtils.validateOwnership(
                 blogPost.getAuthor(),
                 securityUtils.getAuthenticatedUser(),
-                "blogpost"
+                RESOURCE_NAME
         );
 
         repo.deleteById(id);
@@ -100,7 +104,7 @@ public class BlogPostService {
             UserUtils.validateOwnership(
                     blogPost.getAuthor(),
                     authenticatedUser,
-                    "blogpost"
+                    RESOURCE_NAME
             );
         }
 
