@@ -15,29 +15,40 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
+/**
+ * Service for managing {@link User} entities.
+ * <p>
+ * Provides methods to update, delete, and retrieve users and their avatars.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    static final int MAX_DATE_OF_BIRTH_YEARS = 150;
+
     private final UserRepository repo;
     private final UserMapper mapper;
     private final UserQueryService queryService;
-
     private final SecurityUtils securityUtils;
     private final CloudinaryFileStorageService fileStorageService;
 
-    // CONSTANTS
-    static final int MAX_DATE_OF_BIRTH_YEARS = 150;
-
-    // ====================
-    // Public methods
-    // ====================
-
+    /**
+     * Deletes the authenticated {@link User}.
+     *
+     * @throws ApiException if no authenticated user is found
+     */
     public void deleteUser() {
         User user = securityUtils.getAuthenticatedUser();
         repo.delete(user);
     }
 
+    /**
+     * Updates the authenticated {@link User} with the provided data.
+     *
+     * @param userRequest the data to update
+     * @return the updated {@link UserProfileResponse}
+     * @throws ApiException if validation fails or no authenticated user is found
+     */
     public UserProfileResponse updateUser(UpdateUserRequest userRequest) {
         User user = securityUtils.getAuthenticatedUser();
         mapper.updateEntity(userRequest, user);
@@ -49,6 +60,13 @@ public class UserService {
         return mapper.toUserProfileResponse(user);
     }
 
+    /**
+     * Updates the authenticated {@link User}'s avatar.
+     *
+     * @param avatarImage the new avatar image
+     * @return the updated {@link UserPreviewResponse}
+     * @throws ApiException if file validation fails or no authenticated user is found
+     */
     public UserPreviewResponse updateUserAvatar(MultipartFile avatarImage) {
         User user = securityUtils.getAuthenticatedUser();
         FileUploadResult fileUploadResult = fileStorageService.save(
@@ -64,6 +82,11 @@ public class UserService {
         return mapper.toUserPreviewResponse(user);
     }
 
+    /**
+     * Deletes the currently authenticated {@link User}'s avatar.
+     *
+     * @throws ApiException if no authenticated user is found
+     */
     public void deleteUserAvatar() {
         User user = securityUtils.getAuthenticatedUser();
         String avatarId = user.getAvatarId();
@@ -76,14 +99,20 @@ public class UserService {
         repo.save(user);
     }
 
+    /**
+     * Retrieves a {@link UserProfileResponse} for a given user ID.
+     *
+     * @param id the user ID
+     * @return the {@link UserProfileResponse} for the given ID
+     * @throws ApiException if no user exists with the given ID
+     */
     public UserProfileResponse getUserById(Long id) {
         return mapper.toUserProfileResponse(queryService.getByIdOrThrow(id));
     }
 
-    // ====================
-    // Private methods
-    // ====================
-
+    /**
+     * Validates the user's date of birth against the maximum allowed age.
+     */
     private void validateDateOfBirth(LocalDate dateOfBirth) {
         if (dateOfBirth == null) {
             return;

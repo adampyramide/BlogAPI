@@ -3,15 +3,18 @@ package io.github.adampyramide.BlogAPI.user;
 import io.github.adampyramide.BlogAPI.error.ApiException;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Methods commonly used by other classes
+ */
 public class UserUtils {
 
     /**
-     * Validates whether the current user is the owner of a resource. If not, it will throw an API exception.
+     * Validates whether a {@link User} is the owner of a resource.
      *
-     * @param author the user who owns the resource
-     * @param user the user performing the action
-     * @param resourceName a readable name for the resource (e.g., "comment", "blogpost")
-     * @throws ApiException if the current user is not the author
+     * @param author the {@link User} who owns the resource
+     * @param user the {@link User} attempting to access the resource
+     * @param resourceName a readable name for the resource (e.g. "comment", "blogpost")
+     * @throws ApiException if the user is not the resource owner
      */
     public static void validateOwnership(User author, User user, String resourceName) {
         if (!author.getId().equals(user.getId())) {

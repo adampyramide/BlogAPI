@@ -11,12 +11,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for user authentication and registration.
+ */
 @Service
 public class AuthService {
 
     private final UserRepository userRepo;
     private final UserMapper userMapper;
-
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -29,10 +31,13 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ====================
-    // Public methods
-    // ====================
-
+    /**
+     * Registers a new user.
+     *
+     * @param authRequest the registration request
+     * @return an {@link AuthResponse} containing a JWT
+     * @throws ApiException if the username is already taken
+     */
     public AuthResponse registerUser(AuthRequest authRequest) {
         if (userRepo.existsByUsername(authRequest.username()))
             throw new ApiException(
@@ -49,7 +54,13 @@ public class AuthService {
         return getAuthResponse(authRequest);
     }
 
-
+    /**
+     * Authenticates a user.
+     *
+     * @param authRequest the login request
+     * @return an {@link AuthResponse} containing a JWT
+     * @throws ApiException if authentication fails
+     */
     public AuthResponse loginUser(AuthRequest authRequest) {
         try {
             authManager.authenticate(
@@ -67,10 +78,9 @@ public class AuthService {
         }
     }
 
-    // ====================
-    // Private methods
-    // ====================
-
+    /**
+     * Generates an AuthResponse with a JWT.
+     */
     private AuthResponse getAuthResponse(AuthRequest authRequest) {
         return new AuthResponse(jwtService.generateToken(authRequest.username()));
     }

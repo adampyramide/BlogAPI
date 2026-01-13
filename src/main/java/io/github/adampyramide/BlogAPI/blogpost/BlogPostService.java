@@ -16,43 +16,74 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service responsible for handling blog post use cases.
+ *
+ * <p>
+ * Coordinates persistence, authorization, and mapping between entities and DTOs.
+ * This service enforces ownership checks for modifying operations and delegates
+ * entity retrieval and DTO assembly to dedicated collaborators.
+ */
 @Service
 @RequiredArgsConstructor
 public class BlogPostService {
 
-    // Constants
     private static final String RESOURCE_NAME = BlogPost.class.getSimpleName();
 
-    // Dependencies
     private final BlogPostRepository repo;
     private final BlogPostAssembler assembler;
     private final BlogPostQueryService queryService;
     private final BlogPostMapper mapper;
-
     private final UserQueryService userQueryService;
     private final SecurityUtils securityUtils;
 
-    // ====================
-    // Public methods
-    // ====================
-
+    /**
+     * Retrieves a paginated list of all blog posts.
+     *
+     * @param pageable pagination and sorting information
+     * @return a page of {@link BlogPostResponse} objects
+     */
     public Page<BlogPostResponse> getBlogPosts(Pageable pageable) {
-        return assembler.mapToBlogPostResponses(repo.findAll(pageable));
+        return assembler.mapAndEnrichToBlogPostResponses(repo.findAll(pageable));
     }
 
+    /**
+     * Retrieves a blog post by its ID.
+     *
+     * @param id the ID of the blog post
+     * @return the {@link BlogPostResponse}
+     * @throws ApiException if the blog post does not exist
+     */
     public BlogPostResponse getBlogPostById(Long id) {
-        return assembler.mapToBlogPostResponse(queryService.getByIdOrThrow(id));
+        return assembler.mapAndEnrichToBlogPostResponse(queryService.getByIdOrThrow(id));
     }
 
+    /**
+     * Creates a new blog post authored by the authenticated user.
+     *
+     * @param blogPostRequest the request containing blog post data
+     * @return the created {@link BlogPostResponse}
+     */
     public BlogPostResponse createBlogPost(CreateBlogPostRequest blogPostRequest) {
         BlogPost blogPost = mapper.toEntity(blogPostRequest);
         blogPost.setAuthor(securityUtils.getAuthenticatedUser());
 
         repo.save(blogPost);
 
-        return assembler.mapToBlogPostResponse(blogPost);
+        return assembler.mapAndEnrichToBlogPostResponse(blogPost);
     }
 
+    /**
+     * Updates an existing blog post.
+     *
+     * <p>
+     * The authenticated user must be the owner of the blog post.
+     *
+     * @param id the ID of the blog post
+     * @param blogPostRequest the update request
+     * @return the updated {@link BlogPostResponse}
+     * @throws ApiException if the blog post does not exist or the user is not the owner
+     */
     public BlogPostResponse updateBlogPostById(Long id, UpdateBlogPostRequest blogPostRequest) {
         BlogPost blogPost = queryService.getByIdOrThrow(id);
 
@@ -65,9 +96,18 @@ public class BlogPostService {
         mapper.updateEntity(blogPostRequest, blogPost);
         repo.save(blogPost);
 
-        return assembler.mapToBlogPostResponse(blogPost);
+        return assembler.mapAndEnrichToBlogPostResponse(blogPost);
     }
 
+    /**
+     * Deletes a blog post by its ID.
+     *
+     * <p>
+     * The authenticated user must be the owner of the blog post.
+     *
+     * @param id the ID of the blog post
+     * @throws ApiException if the blog post does not exist or the user is not the owner
+     */
     public void deleteBlogPostById(Long id) {
 
         BlogPost blogPost = queryService.getByIdOrThrow(id);
@@ -81,6 +121,15 @@ public class BlogPostService {
         repo.deleteById(id);
     }
 
+    /**
+     * Deletes multiple blog posts by their IDs.
+     *
+     * <p>
+     * All requested blog posts must exist and must be owned by the authenticated user.
+     *
+     * @param ids the IDs of the blog posts to delete
+     * @throws ApiException if any blog post does not exist or is not owned by the user
+     */
     public void bulkDeleteBlogPostsByIds(List<Long> ids) {
         List<BlogPost> blogPosts = repo.findAllById(ids);
 
@@ -111,9 +160,17 @@ public class BlogPostService {
         repo.deleteAll(blogPosts);
     }
 
+    /**
+     * Retrieves a paginated list of blog posts authored by a specific user.
+     *
+     * @param userId the ID of the author
+     * @param pageable pagination and sorting information
+     * @return a page of {@link BlogPostResponse} objects
+     * @throws ApiException if the user does not exist
+     */
     public Page<BlogPostResponse> getBlogPostsByUserId(Long userId, Pageable pageable) {
         userQueryService.getByIdOrThrow(userId);
-        return assembler.mapToBlogPostResponses(repo.findAllByAuthorId(userId, pageable));
+        return assembler.mapAndEnrichToBlogPostResponses(repo.findAllByAuthorId(userId, pageable));
     }
 
 }

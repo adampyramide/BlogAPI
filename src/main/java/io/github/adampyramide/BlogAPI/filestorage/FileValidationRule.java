@@ -6,11 +6,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+/**
+ * Defines validation rules for uploaded files.
+ */
 public record FileValidationRule (
         List<String> allowedMimeTypes,
         long maxSizeBytes,
         String fileCategory
 ) {
+
+    /**
+     * Validates a file against the configured MIME types and maximum size.
+     *
+     * @param file the file to validate
+     * @throws ApiException if the file type is not allowed or the file size exceeds the limit
+     */
     public void validate(MultipartFile file) {
         String mimeType = file.getContentType();
         long size = file.getSize();
@@ -31,6 +41,6 @@ public record FileValidationRule (
                             .formatted(size, maxSizeBytes)
             );
         }
-
     }
+
 }

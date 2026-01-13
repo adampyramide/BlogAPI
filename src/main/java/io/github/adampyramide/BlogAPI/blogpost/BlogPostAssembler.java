@@ -11,44 +11,61 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Assembler responsible for converting {@link BlogPost} entities into {@link BlogPostResponse} DTOs.
+ * <p>
+ * Enriches the response with reaction data, including the current user's reaction
+ * and counts of likes and dislikes for each post.
+ */
 @Component
 @RequiredArgsConstructor
 public class BlogPostAssembler {
 
     private final BlogPostMapper mapper;
-
     private final ReactionService reactionService;
     private final SecurityUtils securityUtils;
 
-    // ====================
-    // Public methods
-    // ====================
-
-    public BlogPostResponse mapToBlogPostResponse(BlogPost blogPost) {
+    /**
+     * Maps and enriches a single {@link BlogPost} entity to a {@link BlogPostResponse} DTO.
+     * <p>
+     * Sets the authenticated user's reaction and the total like/dislike counts.
+     *
+     * @param blogPost the blog post entity to map
+     * @return the enriched {@link BlogPostResponse}
+     */
+    public BlogPostResponse mapAndEnrichToBlogPostResponse(BlogPost blogPost) {
         BlogPostResponse blogPostResponse = mapper.toResponse(blogPost);
-        long BlogPostId = blogPostResponse.getId();
+        long blogPostId = blogPost.getId();
 
         blogPostResponse.setUserReaction(
                 reactionService.getUserReactionTypeForPost(
                         securityUtils.getAuthenticatedUser().getId(),
-                        BlogPostId
+                        blogPostId
                 )
         );
 
-        Map<ReactionType, Long> reactionCounts = reactionService.getReactionCountsByPostId(BlogPostId);
+        Map<ReactionType, Long> reactionCounts = reactionService.getReactionCountsByPostId(blogPostId);
         blogPostResponse.setLikeCount(reactionCounts.getOrDefault(ReactionType.LIKE, 0L));
         blogPostResponse.setDislikeCount(reactionCounts.getOrDefault(ReactionType.DISLIKE, 0L));
         return blogPostResponse;
     }
 
-    public Page<BlogPostResponse> mapToBlogPostResponses(Page<BlogPost> page) {
-        List<Long> postIds = page.getContent().stream()
+    /**
+     * Maps and enriches a paginated {@link BlogPost} page to a page of {@link BlogPostResponse} DTOs.
+     * <p>
+     * Fetches user reactions and reaction counts for all posts in the page.
+     *
+     * @param page the paginated blog posts
+     * @return a page of enriched {@link BlogPostResponse} DTOs
+     */
+    public Page<BlogPostResponse> mapAndEnrichToBlogPostResponses(Page<BlogPost> page) {
+        List<Long> blogPostIds = page.getContent().stream()
                 .map(BlogPost::getId)
                 .toList();
 
         Long userId = securityUtils.getAuthenticatedUser().getId();
-        Map<Long, ReactionType> userReactions = reactionService.getUserReactionTypesForPosts(userId, postIds);
-        Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(postIds);
+        Map<Long, ReactionType> userReactions = reactionService.getUserReactionTypesForPosts(userId, blogPostIds);
+        Map<Long, Map<ReactionType, Long>> reactionsCounts = reactionService.getReactionCountsForPostIds(blogPostIds);
 
         return page.map(blogPost -> {
             BlogPostResponse blogPostResponse = mapper.toResponse(blogPost);

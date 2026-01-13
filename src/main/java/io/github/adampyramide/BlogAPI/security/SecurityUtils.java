@@ -14,6 +14,12 @@ public class SecurityUtils {
 
     private final UserRepository userRepo;
 
+    /**
+     * Returns the authenticated {@link User}.
+     *
+     * @return the authenticated {@link User}
+     * @throws ApiException if the user cannot be found in the database
+     */
     public User getAuthenticatedUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepo.findByUsername(username)
